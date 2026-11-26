@@ -652,7 +652,11 @@ function waterSchema(){
 /* ---------- Doel: afvallen, fitter worden, spiermassa ---------- */
 const DOEL={afvallen:{l:'Afvallen',s:'Vet verliezen'},fit:{l:'Fitter',s:'Op gewicht blijven'},spier:{l:'Spiermassa',s:'Met krachttraining'}};
 const TEMPO_SPIER={rustig:{l:'Rustig',s:'+10% kcal · ca. 0,25% per week erbij',pct:.10,bw:.0025},normaal:{l:'Normaal',s:'+15% kcal · ca. 0,4% per week erbij',pct:.15,bw:.004}};
-const TEMPO={rustig:{l:'Rustig',s:'−300 kcal · ca. 0,3 kg per week',d:300},normaal:{l:'Normaal',s:'−500 kcal · ca. 0,5 kg per week',d:500}};
+// Afvallen: 10 of 20% onder onderhoud; spiermassa: 10 of 15% erboven. Beide tonen kcal-% en verwachte verandering per week in kg en % van je gewicht.
+const TEMPO={rustig:{l:'Rustig',pct:.10},normaal:{l:'Normaal',pct:.20}};
+function tempoSub(soort,key){const p=S.profiel,q={...p,doel:soort};if(soort==='afvallen')q.tempo=key;else q.tempoSpier=key;const P2=plan(q),T=(soort==='afvallen'?TEMPO:TEMPO_SPIER)[key];
+  return `${soort==='afvallen'?'−':'+'}${Math.round(T.pct*100)}% kcal · ca. ${kg1(P2.kgWeek)} kg (${(P2.kgWeek/p.gewicht*100).toLocaleString('nl-NL',{maximumFractionDigits:1})}%) per week`}
+const kgPct=(kg,gew)=>`${kg1(kg)} kg (${(kg/gew*100).toLocaleString('nl-NL',{maximumFractionDigits:1})}% van je gewicht)`;
 const bmi=p=>p.gewicht/((p.lengte/100)**2);
 function plan(p){
   const tdee=kcalDoel(p), rust=Math.round(bmr(p)), B=bmi(p);
@@ -663,7 +667,7 @@ function plan(p){
   const streefBmi=p.streef/((p.lengte/100)**2), streefLaag=doel==='afvallen'&&streefBmi<18.5;
   if(doel==='afvallen'){
     const min=Math.max(rust,p.geslacht==='man'?1500:1200);
-    kcal=tdee-TEMPO[p.tempo].d; if(kcal<min){kcal=min;ondergrens=true}
+    kcal=tdee*(1-TEMPO[p.tempo].pct); if(kcal<min){kcal=min;ondergrens=true}
     kgWeek=(tdee-kcal)*7/7700; ek=[1.6,2.0]; vetPct=.25;
     if(!streefLaag&&p.streef<p.gewicht&&kgWeek>0)weken=Math.ceil((p.gewicht-p.streef)/kgWeek);
   }
@@ -1113,8 +1117,8 @@ function renderProfiel(){
   const p=S.profiel, d=S.doelen, b=Math.round(bmr(p)), k=kcalDoel(p), wb=waterBasis(p)+ACT[p.activiteit].w, P=plan(p);
   const bmiTxt=P.bmi.toLocaleString('nl-NL',{maximumFractionDigits:1});
   const samenvatting=P.doel==='afvallen'
-    ?`Ongeveer ${kg1(P.kgWeek)} kg per week eraf.${P.weken?` Je streefgewicht van ${kg1(p.streef)} kg haal je over ongeveer ${P.weken} weken.`:''}${P.ondergrens?' We gaan niet lager dan dit, ook al kies je een sneller tempo.':''}`
-    :P.doel==='spier'?(P.geenTraining?'Je eet nu op onderhoud. Een overschot komt er pas bij als je gaat trainen.':`Ongeveer ${kg1(P.kgWeek)} kg per week erbij.${P.weken?` Je streefgewicht van ${kg1(p.streefSpier)} kg haal je over ongeveer ${P.weken} weken.`:''} Alleen met 3 keer per week krachttraining.`)
+    ?`Ongeveer ${kgPct(P.kgWeek,p.gewicht)} per week eraf.${P.weken?` Je streefgewicht van ${kg1(p.streef)} kg haal je over ongeveer ${P.weken} weken.`:''}${P.ondergrens?' We gaan niet lager dan dit, ook al kies je een sneller tempo.':''}`
+    :P.doel==='spier'?(P.geenTraining?'Je eet nu op onderhoud. Een overschot komt er pas bij als je gaat trainen.':`Ongeveer ${kgPct(P.kgWeek,p.gewicht)} per week erbij.${P.weken?` Je streefgewicht van ${kg1(p.streefSpier)} kg haal je over ongeveer ${P.weken} weken.`:''} Alleen met 3 keer per week krachttraining.`)
     :'Om op gewicht te blijven en fitter te worden.';
   const num=(id,l,v,u,min,max,step=1)=>`<div class="field"><label for="${id}">${l}</label><div class="unit"><input type="number" id="${id}" data-p="${id.replace('p-','')}" value="${v}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><span>${u}</span></div></div>`;
   const doel=(k,l,stap,eenheid)=>`<div class="toggle"><span>${l}</span><div class="stepper"><button class="btn round ghost sm" data-doel="${k}" data-d="-${stap}" aria-label="Verlaag">−</button><span>${d[k].toLocaleString('nl-NL')} ${eenheid}</span><button class="btn round sm" data-doel="${k}" data-d="${stap}" aria-label="Verhoog">+</button></div></div>`;
@@ -1148,7 +1152,7 @@ function renderProfiel(){
       <div class="seg seg3">${Object.entries(DOEL).map(([key,o])=>`<button class="act ${p.doel===key?'on':''}" data-doelkeuze="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div>
       ${p.doel==='afvallen'?(P.blok
         ?`<div class="warnbox">Je BMI is ${bmiTxt}. Onder de 18,5 raden we afvallen af, dus we rekenen met op gewicht blijven. Twijfel je? Overleg dan met je huisarts.</div>`
-        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO).map(([key,o])=>`<button class="act ${p.tempo===key?'on':''}" data-tempo="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div></div>
+        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO).map(([key,o])=>`<button class="act ${p.tempo===key?'on':''}" data-tempo="${key}">${o.l}<small>${tempoSub('afvallen',key)}</small></button>`).join('')}</div></div>
           ${num('p-streef','Streefgewicht',p.streef,'kg',35,250,0.5)}
           ${P.streefLaag?'<div class="warnbox">Bij dit streefgewicht is je BMI lager dan 18,5. Dat is ondergewicht. Kies een hoger streefgewicht.</div>':''}
           ${!P.streefLaag&&p.streef>=p.gewicht?'<div class="warnbox">Je streefgewicht ligt niet onder je huidige gewicht. Pas het aan of kies een ander doel.</div>':''}
@@ -1157,7 +1161,7 @@ function renderProfiel(){
         ?`<div class="warnbox"><b>Spiermassa opbouwen kan alleen als je traint.</b> Je activiteit staat op zittend. Eet je dan meer dan je verbruikt, dan kom je vooral vet aan en dat is niet gezond. Daarom rekenen we nu met je onderhoud van ${nl(P.tdee)} kcal.</div>
           <div class="plan">Ga je 3 keer per week krachttraining doen? Zet dan je activiteit hoger. Pas dan komt er een overschot bij.</div>
           <button class="btn" data-act="gatrainen">Ik ga 3 keer per week trainen</button>`
-        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO_SPIER).map(([key,o])=>`<button class="act ${p.tempoSpier===key?'on':''}" data-tempospier="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div></div>
+        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO_SPIER).map(([key,o])=>`<button class="act ${p.tempoSpier===key?'on':''}" data-tempospier="${key}">${o.l}<small>${tempoSub('spier',key)}</small></button>`).join('')}</div></div>
           ${num('p-streefSpier','Streefgewicht',p.streefSpier,'kg',35,250,0.5)}
           ${p.streefSpier<=p.gewicht?'<div class="warnbox">Je streefgewicht ligt niet boven je huidige gewicht. Pas het aan of kies een ander doel.</div>':''}
           ${p.streefSpier>p.gewicht*1.1?'<div class="warnbox">Dat is meer dan 10% erbij. Kies liever eerst een tussendoel. Na een paar maanden zie je beter hoeveel je echt aankomt aan spier en hoeveel aan vet.</div>':''}
@@ -1233,7 +1237,7 @@ function renderProfiel(){
     <details class="how" data-keep="how" ${isOpen('how')}>
       <summary>Hoe berekenen we dit?</summary>
       <p><b>Calorieën.</b> Je verbruik in rust volgens de Mifflin-St Jeor-formule: <code>10 × gewicht + 6,25 × lengte − 5 × leeftijd ${p.geslacht==='man'?'+ 5':'− 161'}</code> = ${nl(b)} kcal. Keer je activiteitsfactor (${ACT[p.activiteit].f.toLocaleString('nl-NL')}) is ${nl(k)} kcal: je onderhoud.</p>
-      <p><b>Je doel.</b> Afvallen: 300 of 500 kcal onder je onderhoud. 1 kilo lichaamsvet is ongeveer 7.700 kcal, dus 500 kcal per dag minder is ongeveer 0,45 kg per week. Nooit onder je verbruik in rust, en nooit onder 1.500 kcal (man) of 1.200 kcal (vrouw). Spiermassa: 10% (rustig) of 15% (normaal) boven je onderhoud, goed voor ongeveer 0,25 of 0,4% van je lichaamsgewicht per week erbij. Dat geldt alleen als je activiteitsniveau laat zien dat je traint. Zittend rekenen we met je onderhoud, omdat een overschot zonder training vooral vet oplevert.</p>
+      <p><b>Je doel.</b> Afvallen: 10% (rustig) of 20% (normaal) onder je onderhoud. 1 kilo lichaamsvet is ongeveer 7.700 kcal, dus bij een onderhoud van 2.400 kcal is 20% minder ongeveer 0,4 kg per week. Het advies is maximaal 0,5 tot 1% van je lichaamsgewicht per week, zodat je vooral vet verliest en geen spier. Nooit onder je verbruik in rust, en nooit onder 1.500 kcal (man) of 1.200 kcal (vrouw). Spiermassa: 10% (rustig) of 15% (normaal) boven je onderhoud, goed voor ongeveer 0,25 of 0,4% van je lichaamsgewicht per week erbij. Bij beide doelen zie je dus hoeveel procent kcal erbij of eraf gaat, en wat dat per week betekent in kilo's en procenten van je gewicht. Dat geldt alleen als je activiteitsniveau laat zien dat je traint. Zittend rekenen we met je onderhoud, omdat een overschot zonder training vooral vet oplevert.</p>
       <p><b>Eiwit, koolhydraten en vet.</b> Eiwit per kilo: afvallen 1,6 tot 2,0 g, spiermassa 1,6 tot 2,2 g, fitter 1,2 tot 1,6 g. Bij een BMI van 30 of hoger rekenen we met het gewicht bij BMI 25. Vet is ${Math.round(P.vetPct*100)}% van je calorieën, de rest komt uit koolhydraten.</p>
       <p><b>Water.</b> EFSA adviseert ${p.geslacht==='man'?'2,5':'2,0'} liter vocht per dag, waarvan ongeveer 80% uit drinken: ${liter(waterBasis(p))} liter. Plus ${ACT[p.activiteit].w} ml voor je activiteitsniveau, en 500 ml op warme of sportdagen.</p>
       <p>Dit zijn schattingen voor gezonde volwassenen. Zwanger, topsporter of een medische aandoening? Overleg met je huisarts of een diëtist.</p>
