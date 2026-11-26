@@ -1,0 +1,1725 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ritmo</title>
+<meta name="description" content="Ritmo: gezonder leven voor (beginnende) sporters. Gewoontes, voeding, water, training en persoonlijk advies.">
+<meta name="theme-color" content="#1F6B4A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ritmo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}*{-webkit-tap-highlight-color:transparent}body{margin:0;font:14px/1.45 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: telefoonframe op desktop, volledig scherm op mobiel; vier tabbladen onder in beeld */
+:root{
+  --bg:#E9EEE6; --surface:#FBFCF8; --surface-2:#F1F4EC; --ink:#17251D; --muted:#5D6B61;
+  --line:#D7DFD2; --accent:#1F6B4A; --accent-soft:#D5EBDD; --sun:#E8A33A; --water:#2F7FB8; --water-soft:#D8E9F5;
+  --sleep:#6B5BB0; --sleep-soft:#E4E0F3; --kcal:#C8642E; --kcal-soft:#F6E1D3;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,-apple-system,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0E1511; --surface:#162019; --surface-2:#1C2820; --ink:#E6EEE7; --muted:#9AAA9F; --line:#2A382F;
+  --accent:#5FC293; --accent-soft:#1F3B2C; --sun:#F0B451; --water:#6CB3E6; --water-soft:#1A3142; --sleep:#A397E3; --sleep-soft:#2A2645; --kcal:#EE9662; --kcal-soft:#3A2619; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1511; --surface:#162019; --surface-2:#1C2820; --ink:#E6EEE7; --muted:#9AAA9F; --line:#2A382F;
+  --accent:#5FC293; --accent-soft:#1F3B2C; --sun:#F0B451; --water:#6CB3E6; --water-soft:#1A3142; --sleep:#A397E3; --sleep-soft:#2A2645; --kcal:#EE9662; --kcal-soft:#3A2619; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;display:flex;justify-content:center;align-items:center}
+.shell{display:flex;gap:40px;align-items:center;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.intro{max-width:300px}
+.intro h1{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.02em;margin:0 0 12px}
+.intro p{color:var(--muted);margin:0 0 10px}
+.intro .tag{display:inline-block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:99px;margin-bottom:14px}
+.phone{width:390px;height:780px;max-height:calc(100vh - 48px);background:var(--surface);border-radius:44px;border:10px solid var(--ink);box-shadow:0 30px 60px -20px rgba(20,40,30,.35);display:flex;flex-direction:column;overflow:hidden;position:relative}
+@media (max-width:760px){
+  body{display:block}
+  .shell{display:block;padding:0;height:100%}
+  .intro{display:none}
+  .phone{width:100%;height:100%;max-height:none;border:0;border-radius:0;box-shadow:none}
+}
+.screen{flex:1;overflow-y:auto;padding-block:22px 24px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.screen::-webkit-scrollbar{width:0}
+header.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.date{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h2.hello{font-family:var(--display);font-size:28px;font-weight:700;margin:2px 0 0;letter-spacing:-.01em;text-wrap:balance}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--accent);color:var(--surface);display:grid;place-items:center;font-weight:700;font-family:var(--display);border:0;cursor:pointer}
+.card{background:var(--surface-2);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid2>*{min-width:0}
+.field select,.field input{width:100%}
+.label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.big{font-family:var(--display);font-size:30px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.big small{font-family:var(--body);font-size:13px;font-weight:500;color:var(--muted);margin-left:4px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.score{display:flex;gap:18px;align-items:center;background:var(--ink);color:var(--surface);border-radius:24px;padding:18px}
+.score .txt h3{font-family:var(--display);font-size:20px;margin:0 0 4px}
+.score .txt p{margin:0;font-size:13px;opacity:.8}
+.ring{width:92px;height:92px;flex:none;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .n{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:26px;font-weight:800}
+.glasses{display:grid;grid-template-columns:repeat(auto-fill,minmax(26px,1fr));gap:6px}
+.glass{aspect-ratio:3/4;max-width:100%;border-radius:6px 6px 10px 10px;border:2px solid var(--water);background:transparent;cursor:pointer;padding:0;position:relative;overflow:hidden}
+.glass i{position:absolute;left:0;right:0;bottom:0;background:var(--water)}
+.glass:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:10px 14px;cursor:pointer;background:var(--accent);color:var(--surface)}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.sm{padding:6px 10px;font-size:13px;border-radius:10px}
+.btn.round{width:34px;height:34px;padding:0;border-radius:50%;font-size:18px;line-height:1}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.moods{display:flex;gap:6px}
+.mood{flex:1;font:inherit;font-size:12px;font-weight:600;padding:10px 4px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.mood b{font-family:var(--display);font-size:18px;color:var(--ink)}
+.mood.on{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+.habit{display:flex;align-items:center;gap:12px;padding:10px 12px;background:var(--surface);border-radius:14px;cursor:pointer;border:0;font:inherit;color:var(--ink);text-align:left;width:100%}
+.check{width:24px;height:24px;border-radius:8px;border:2px solid var(--line);flex:none;display:grid;place-items:center;color:var(--surface)}
+.habit.done .check{background:var(--accent);border-color:var(--accent)}
+.habit.done span.t{text-decoration:line-through;color:var(--muted)}
+.streak{margin-left:auto;font-size:12px;color:var(--sun);font-weight:700;white-space:nowrap}
+.addrow{display:flex;gap:8px}
+input[type=text],input[type=number],input[type=time],select{font:inherit;flex:1;min-width:0;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+.sleep{background:var(--sleep-soft)}
+.sleep .big{color:var(--sleep)}
+.waterc{background:var(--water-soft)}
+.kcalc{background:var(--kcal-soft)}
+.kcalc .big{color:var(--kcal)}
+.kcalc .bar i{background:var(--kcal)}
+.meal{display:flex;gap:12px;align-items:center;padding:12px;background:var(--surface);border-radius:14px}
+.meal .time{font-size:12px;font-weight:700;color:var(--muted);width:72px;flex:none}
+.meal .name{font-weight:600}
+.meal .kc{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip{font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.chip.warn{background:color-mix(in srgb,var(--sun) 22%,transparent);color:var(--ink)}
+.del{background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px;padding:4px}
+.chart{display:flex;align-items:flex-end;gap:8px;height:140px;padding-top:8px}
+.chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.chart .b{width:100%;background:var(--accent);border-radius:8px 8px 4px 4px;min-height:4px;transition:height .4s}
+.chart .col.today .b{background:var(--sun)}
+.chart .d{font-size:11px;color:var(--muted);font-weight:600}
+.chart .v{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.act{font:inherit;font-weight:600;font-size:13px;padding:8px 12px;border-radius:99px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.act.on{border-color:var(--accent);background:var(--accent-soft)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.seg .act{border-radius:12px;padding:10px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600}
+.unit{position:relative;display:flex}
+.unit input{padding-right:44px}
+.unit span{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:13px;color:var(--muted);pointer-events:none}
+.result{background:var(--ink);color:var(--surface);border-radius:20px;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.result .label{color:inherit;opacity:.7}
+.result .big{color:var(--surface)}
+.result .big small{color:inherit;opacity:.7}
+.result .full{grid-column:1/-1;font-size:12px;opacity:.75}
+details.how{background:var(--surface);border-radius:14px;padding:12px 14px;font-size:13px}
+details.how summary{cursor:pointer;font-weight:600}
+details.how p{margin:8px 0 0;color:var(--muted)}
+details.how code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--surface-2);padding:1px 5px;border-radius:5px;color:var(--ink)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:600;background:var(--surface);border-radius:12px;padding:10px 12px;cursor:pointer;border:0;font-family:inherit;color:var(--ink);width:100%;text-align:left}
+.switch .k{width:40px;height:24px;border-radius:99px;background:var(--line);position:relative;flex:none;transition:.2s}
+.switch .k::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface);transition:.2s}
+.switch.on .k{background:var(--water)}
+.switch.on .k::after{left:19px}
+nav.tabs{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--line);background:var(--surface);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs button{font:inherit;font-size:11px;font-weight:600;background:none;border:0;padding:10px 0 12px;color:var(--muted);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected=true]{color:var(--accent)}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.note{font-size:12px;color:var(--muted)}
+.toggle{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line);gap:10px}
+.toggle:last-child{border-bottom:0}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper span{min-width:56px;text-align:center;font-weight:700;font-variant-numeric:tabular-nums}
+.advice{background:var(--surface-2);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.advice .head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.advice .head>div{min-width:0}
+.advice .plan{font-size:13px;background:var(--surface);border-radius:12px;padding:10px 12px}
+.advice .plan b{color:var(--accent)}
+.advice .mine{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sec{font-family:var(--display);font-size:20px;font-weight:700;margin:8px 0 0;text-wrap:balance}
+.sec-sub{margin:-6px 0 0;font-size:13px;color:var(--muted)}
+.tip{background:var(--accent-soft);border-radius:20px;padding:16px;display:flex;gap:12px;align-items:flex-start}
+.tip .ic{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--surface);display:grid;place-items:center;flex:none}
+.tip p{margin:4px 0 0;font-size:14px}
+.plan{font-size:13px;background:var(--surface);border-radius:12px;padding:10px 12px}
+.plan b{color:var(--accent)}
+.seg3{grid-template-columns:repeat(3,1fr)}
+.act small{display:block;font-weight:500;font-size:11px;color:var(--muted);margin-top:2px}
+.macros{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.macros div{background:color-mix(in srgb,var(--surface) 12%,transparent);border-radius:12px;padding:10px;min-width:0}
+.macros b{display:block;font-family:var(--display);font-size:20px;font-variant-numeric:tabular-nums}
+.macros span{font-size:11px;opacity:.75}
+.goalpill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--sun);color:#17251D;padding:3px 9px;border-radius:99px}
+.sched{display:flex;flex-direction:column;gap:8px;background:var(--surface);border-radius:14px;padding:12px}
+.sched .track{position:relative;height:12px;border-radius:99px;background:var(--line)}
+.sched .fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--water);transition:width .4s}
+.sched .mark{position:absolute;top:-5px;width:3px;height:22px;border-radius:2px;background:var(--ink);transform:translateX(-50%)}
+.sched .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.status{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.status.ok{background:var(--accent-soft);color:var(--accent)}
+.status.bijna{background:var(--water-soft);color:var(--water)}
+.status.achter{background:color-mix(in srgb,var(--sun) 25%,transparent);color:var(--ink)}
+.hrow{display:flex;gap:12px;align-items:flex-start;padding:12px;background:var(--surface);border-radius:14px}
+.checkbtn{width:30px;height:30px;border-radius:10px;border:2px solid var(--line);background:transparent;display:grid;place-items:center;color:var(--surface);cursor:pointer;flex:none;padding:0}
+.hrow.done .checkbtn{background:var(--accent);border-color:var(--accent)}
+.hrow .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.hrow .ttl{font-weight:600;min-width:0}
+.hrow.done .ttl{color:var(--muted);text-decoration:line-through}
+.hrow .meta{font-size:12px;color:var(--muted)}
+.hrow details.how{background:var(--surface-2);padding:10px 12px}
+.dots{display:flex;gap:5px;align-items:center}
+.dots i{width:16px;height:16px;border-radius:5px;background:var(--line);display:block}
+.dots i.on{background:var(--accent)}
+.dots i.today{outline:2px solid var(--sun);outline-offset:1px}
+.dots span{font-size:11px;color:var(--muted);margin-left:4px}
+.miss{font-size:11px;font-weight:700;color:var(--ink);background:color-mix(in srgb,var(--sun) 25%,transparent);padding:3px 8px;border-radius:99px;align-self:flex-start}
+.ident{background:var(--ink);color:var(--surface);border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ident textarea{font:inherit;resize:none;padding:10px 12px;border-radius:12px;background:transparent;color:var(--surface);border:1.5px solid color-mix(in srgb,var(--surface) 30%,transparent);font-family:var(--display);font-size:17px;font-weight:700;line-height:1.25}
+.ident .label,.ident .note{color:inherit;opacity:.75}
+.ident .big small{color:inherit;opacity:.75}
+.banner{background:var(--sun);color:#17251D;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.banner .btn{background:#17251D;color:#FBFCF8}
+.banner .btn.ghost{background:transparent;color:#17251D;border:1.5px solid #17251D}
+.steps{display:flex;gap:6px}
+.steps i{flex:1;height:5px;border-radius:99px;background:var(--line)}
+.steps i.on{background:var(--accent)}
+.law{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.sentence{font-family:var(--display);font-size:20px;font-weight:700;line-height:1.25;text-wrap:balance}
+.sect{background:var(--surface-2);border-radius:20px}
+.sect>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:20px}
+.sect>summary::-webkit-details-marker{display:none}
+.sect>summary>div{min-width:0}
+.sect-t{font-family:var(--display);font-size:17px;font-weight:700}
+.sect-s{font-size:12px;color:var(--muted);margin-top:2px}
+.chev{flex:none;color:var(--muted);transition:transform .2s}
+.sect[open]>summary .chev{transform:rotate(180deg)}
+.sect-b{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+.sect-b .card,.sect-b .advice{background:var(--surface)}
+.sect-b .plan,.sect-b .advice details.how,.sect-b .card .unit input{background:var(--surface-2)}
+.sect-b details.how p b{color:var(--ink)}
+.more>summary{list-style:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:2px}
+.more>summary::-webkit-details-marker{display:none}
+.more .chev{transition:transform .2s}
+.more[open]>summary .chev{transform:rotate(180deg)}
+.more-b{display:flex;flex-direction:column;gap:10px;padding-top:10px}
+.waterc .more{border-top:1px solid color-mix(in srgb,var(--water) 25%,transparent);padding-top:10px}
+.more.dark{margin-top:8px}
+.more.dark>summary{color:inherit;opacity:.85;justify-content:flex-start;text-decoration:underline;text-underline-offset:3px}
+.more.dark .more-b{padding-top:6px}
+.more.dark p{margin:0;font-size:13px}
+.sched-track{position:relative;height:10px;border-radius:99px;background:color-mix(in srgb,var(--water) 18%,var(--surface))}
+.sched-track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:var(--water)}
+.sched-track .mark{position:absolute;top:-5px;width:3px;height:20px;border-radius:2px;background:var(--ink);transform:translateX(-50%)}
+.waterc .ticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.scanbtn{display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;cursor:pointer}
+label.btn.ghost{background:transparent}
+.nutri{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:20px;color:#fff;flex:none}
+.n-A{background:#038141}.n-B{background:#85BB2F}.n-C{background:#FECB02;color:#17251D}.n-D{background:#EE8100}.n-E{background:#E63E11}
+table.nut{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+table.nut th{text-align:left;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-bottom:4px}
+table.nut td{padding:6px 0;border-bottom:1px solid var(--line)}
+table.nut td:last-child{text-align:right;font-weight:600}
+table.nut tr.sub td:first-child{padding-left:14px;color:var(--muted)}
+.unitin{display:inline-flex;align-items:center;gap:6px;justify-content:flex-end}
+.unitin span{font-size:12px;color:var(--muted);font-weight:500;width:28px;text-align:left}
+input.mini{width:84px;flex:none;padding:6px 8px;text-align:right;border-radius:10px}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:20}
+.reward{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%) scale(.85);opacity:0;pointer-events:none;z-index:21;background:var(--ink);color:var(--surface);border-radius:20px;padding:16px 18px;display:flex;gap:14px;align-items:center;width:min(320px,calc(100% - 40px));box-shadow:0 20px 40px -12px rgba(0,0,0,.45);transition:opacity .2s,transform .4s cubic-bezier(.2,1.6,.4,1)}
+.reward.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.rw-xp{font-family:var(--display);font-weight:800;font-size:22px;color:var(--sun);white-space:nowrap}
+.rw-t{font-family:var(--display);font-weight:700;font-size:17px;text-wrap:balance}
+.rw-s{font-size:12px;opacity:.85;margin-top:3px}
+.reward.groot{flex-direction:column;text-align:center;padding:26px 22px;gap:8px}
+.reward.groot .rw-xp{font-size:36px}
+.reward.groot .rw-t{font-size:24px}
+.hrow.pop .checkbtn{animation:pop .45s cubic-bezier(.2,1.8,.4,1)}
+@keyframes pop{0%{transform:scale(.5)}100%{transform:scale(1)}}
+#groeiSvg{width:100%;height:auto;display:block;touch-action:pan-y;overflow:visible}
+.chev{width:16px;height:16px;flex:none}
+.gtip{position:absolute;top:-6px;background:var(--ink);color:var(--surface);font-size:12px;line-height:1.35;padding:6px 9px;border-radius:9px;pointer-events:none;white-space:nowrap;font-variant-numeric:tabular-nums}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:18px;border-top:2px solid var(--accent);vertical-align:middle;margin-right:6px}
+.legend i.d{border-top-style:dashed;opacity:.7}
+@media (prefers-reduced-motion:reduce){.reward{transition:opacity .2s}.hrow.pop .checkbtn{animation:none}}
+.wchart{display:flex;align-items:flex-end;gap:8px;height:130px;padding-top:8px}
+.wchart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;min-width:0}
+.wchart .stackb{width:100%;display:flex;flex-direction:column;gap:2px;min-height:0;transition:height .4s}
+.wchart .stackb i{display:block;min-height:4px}
+.wchart .stackb i:first-child{border-radius:4px 4px 0 0}
+.wchart .stackb i:last-child{border-radius:0 0 2px 2px}
+.wchart .stackb i:only-child{border-radius:4px 4px 2px 2px}
+.wchart .d{font-size:11px;color:var(--muted);font-weight:600}
+.wchart .col.today .d{color:var(--ink);font-weight:800}
+.wchart .v{font-size:11px;font-weight:700;font-variant-numeric:tabular-nums}
+i.kr{background:var(--accent)}i.ov{background:var(--water)}
+.legend i.sq{width:10px;height:10px;border:0;border-radius:3px;margin-right:6px}
+.logitem{background:var(--surface);border-radius:14px;padding:12px}
+.logitem>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logitem>summary::-webkit-details-marker{display:none}
+.logitem .ttl{font-weight:600}.logitem .meta{font-size:12px;color:var(--muted)}
+.logitem[open]>summary .chev{transform:rotate(180deg)}
+.logitem .chev{color:var(--muted);transition:transform .2s}
+.wo-set{display:grid;grid-template-columns:28px 1fr 1fr 28px;gap:8px;align-items:center}
+.wo-set.head span{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.wo-set input{width:100%;text-align:right;padding:8px 10px}
+.wo-set .unit input{padding-right:34px}
+.oefkop{display:grid;grid-template-columns:1fr auto 28px;gap:8px;align-items:center}
+.oefkop input{font-weight:600}
+.oefkop select{width:auto;padding:10px 8px;font-size:13px}
+.more.wk>summary{align-items:flex-start;color:var(--ink)}
+.more.wk>summary>.chev{display:none}
+.more.wk>summary span.row{font-size:13px;font-weight:600;color:var(--muted)}
+.more.wk[open] summary span.row .chev{transform:rotate(180deg)}
+table.rec td:last-child{white-space:nowrap}
+table.rec .meta{font-size:11px;color:var(--muted);font-weight:500}
+table.rec .del{font-size:16px;padding:0 0 0 8px;vertical-align:middle}
+input[type=date]{font:inherit;width:100%;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink)}
+table.rec .recbtn{margin-left:10px;padding:4px 9px;font-size:12px}
+.welkom{display:flex;flex-direction:column;gap:14px;padding-top:8vh}
+.live{position:absolute;inset:0;z-index:30;background:#000;display:flex;flex-direction:column}
+.live video{flex:1;width:100%;object-fit:cover;min-height:0}
+.live-frame{position:absolute;left:12%;right:12%;top:32%;height:22%;border:3px solid #E8A33A;border-radius:16px;box-shadow:0 0 0 9999px rgba(0,0,0,.35)}
+.live-bar{position:absolute;left:0;right:0;bottom:0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px;align-items:center;color:#fff;font-weight:600;background:linear-gradient(transparent,rgba(0,0,0,.7))}
+.live-btn{min-width:130px;text-align:center}
+.live .btn.ghost{color:#fff;border-color:#fff}
+.warnbox{font-size:13px;border-left:3px solid var(--sun);padding:8px 12px;background:var(--surface);border-radius:0 12px 12px 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="shell">
+  <div class="intro">
+    <span class="tag">Webapp</span>
+    <h1>Ritmo</h1>
+    <p>Gezonder leven, één gewoonte tegelijk. Open Ritmo op je telefoon en zet hem op je beginscherm: dan werkt hij als een app, ook zonder internet.</p>
+    <p>Je gegevens blijven op je eigen apparaat.</p>
+  </div>
+
+  <div class="phone">
+    <main class="screen" id="screen"></main>
+    <div class="toast" id="toast"></div>
+    <input type="file" id="scanBarcodeGlobal" accept="image/*" capture="environment" hidden>
+    <div class="live" id="live" hidden>
+      <video id="liveVideo" playsinline muted autoplay></video>
+      <div class="live-frame" aria-hidden="true"></div>
+      <div class="live-bar"><span>Houd de barcode in het kader</span>
+        <div class="row" style="justify-content:center;gap:10px"><label class="btn ghost live-btn" for="scanBarcodeGlobal" data-act="livefoto">Maak een foto</label><button class="btn live-btn" data-act="livestop">Annuleren</button></div></div>
+    </div>
+    <canvas id="fx" aria-hidden="true"></canvas>
+    <div class="reward" id="reward" role="status" aria-live="polite"></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="vandaag" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>Vandaag</button>
+      <button role="tab" data-tab="gewoontes" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg>Gewoontes</button>
+      <button role="tab" data-tab="voeding" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21c-4 0-7-3-7-8 0-4 3-6 7-5 4-1 7 1 7 5 0 5-3 8-7 8z"/><path d="M12 8c0-3 2-5 4-5"/></svg>Voeding</button>
+      <button role="tab" data-tab="beweging" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>Beweging</button>
+      <button role="tab" data-tab="profiel" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/></svg>Profiel</button>
+    </nav>
+  </div>
+</div>
+
+<script src="vendor/zxing.min.js"></script>
+<script>
+const KEY='ritmo-v1';
+const IN_CLAUDE=!!(window.claude&&window.claude.use);
+function pad(n){return String(n).padStart(2,'0')}
+// Datumsleutel in lokale tijd, o = aantal dagen terug
+function dk(o=0){const d=new Date();d.setDate(d.getDate()-o);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`}
+// Voorbeeldlog: patroon van de afgelopen dagen (laatste teken = gisteren)
+function mkDoelLog(){const w='11011011101101111011011110111',st='01001101010011010110110101101',g='00100101001010010110100101011',o={};for(let i=0;i<29;i++)o[dk(29-i)]={water:w[i]==='1',stappen:st[i]==='1',groente:g[i]==='1'};return o}
+function mkLog(p,vandaag){const log={};[...p].forEach((c,i)=>{if(c==='1')log[dk(p.length-i)]=true});if(vandaag)log[dk(0)]=true;return log}
+const ACT={
+  zittend:{l:'Zittend',s:'Kantoorwerk, weinig sport',f:1.2,w:0},
+  licht:{l:'Licht actief',s:'1 tot 3 keer per week sporten',f:1.375,w:250},
+  matig:{l:'Gemiddeld actief',s:'3 tot 5 keer per week sporten',f:1.55,w:500},
+  actief:{l:'Zeer actief',s:'6 tot 7 keer per week sporten',f:1.725,w:750},
+  extreem:{l:'Extreem actief',s:'Zwaar fysiek werk of 2x per dag trainen',f:1.9,w:1000}
+};
+const defaults=()=>({
+  naam:'Mo',
+  profiel:{geslacht:'man',leeftijd:30,lengte:180,gewicht:78,activiteit:'licht',stappenNu:5000,beweegNu:60,doel:'afvallen',tempo:'normaal',streef:74},
+  dag:dk(0), weekStart:dk((new Date().getDay()+6)%7),
+  glasMl:250, waterMl:1250, warm:false, mijnProducten:{}, doelLog:mkDoelLog(), bonus:{}, geluid:true, workouts:mkWorkouts(), records:{lijst:['Goblet squat','Push-up','Glute bridge','Plank'],handmatig:[]},
+  ritme:{werk:{op:'07:00',bed:'23:00'},weekend:{op:'09:30',bed:'00:00'}}, startVandaag:null,
+  doelen:{stappen:8000,slaap:8,groente:250,beweegWeek:150},
+  stappen:6420, slaap:7.25, stemming:3,
+  identiteit:'Ik ben iemand die goed voor zijn lichaam zorgt',
+  gewoontes:[
+    {id:'h1',t:'Een glas water drinken',stapel:'Nadat ik ben opgestaan',waar:'in de keuken',tijd:'07:05',tweeMin:'Een glas vullen en opdrinken',beloning:'Afvinken en mijn reeks zien groeien',herinnering:true,log:mkLog('110111110111111111111111111111'.slice(1),true)},
+    {id:'h2',t:'Wandelen',stapel:'Na de lunch',waar:'rond het kantoor',tijd:'12:45',tweeMin:'Mijn jas aantrekken en naar buiten lopen',beloning:'Mijn favoriete podcast luisteren tijdens het lopen',herinnering:true,log:mkLog('0011011101111011011111011111'.padStart(29,'0'))},
+    {id:'h3',t:'Thuis trainen',stapel:'Als ik thuiskom van mijn werk',waar:'in de woonkamer',tijd:'18:00',tweeMin:'Eén set squats doen',beloning:'Daarna douchen met muziek aan',herinnering:true,log:mkLog('00010010001010010100101001100'.slice(0,29))},
+    {id:'h4',t:'Mijn telefoon wegleggen',stapel:'Nadat ik mijn tanden heb gepoetst',waar:'aan de oplader in de gang',tijd:'22:45',tweeMin:'Mijn telefoon in de gang leggen',beloning:'10 minuten lezen in bed',herinnering:false,log:mkLog('00000001001001100110110111010'.slice(0,29))}
+  ],
+  maaltijden:[
+    {type:'Ontbijt',naam:'Havermout met banaan en noten',kcal:420,eiwit:14,groente:0,fruit:1},
+    {type:'Lunch',naam:'Volkorenwrap met kip en rauwkost',kcal:480,eiwit:32,groente:100,fruit:0},
+    {type:'Tussendoor',naam:'Magere kwark met appel',kcal:160,eiwit:16,groente:0,fruit:1}
+  ],
+  week:[35,0,45,20,30,0,25],
+  activiteit:null,_min:30,
+  meldingen:{water:true,beweeg:true,slaap:false}
+});
+let S, eersteKeer=false;
+try{if(!localStorage.getItem(KEY))eersteKeer=true}catch(e){}
+try{S=Object.assign(defaults(),JSON.parse(localStorage.getItem(KEY))||{});S.profiel=Object.assign(defaults().profiel,S.profiel);if(!S.records||!Array.isArray(S.records.lijst))S.records=defaults().records}catch(e){S=defaults()}
+if(!Array.isArray(S.gewoontes)||S.gewoontes.some(h=>!h.id||!h.log))S.gewoontes=defaults().gewoontes;
+
+/* ---------- Nieuwe dag en dag resetten ---------- */
+const RESET=[['water','Water'],['voeding','Maaltijden'],['gewoontes','Gewoontes van vandaag'],['stappen','Stappen'],['beweging','Sporten van vandaag'],['stemming','Stemming']];
+let resetSel={water:true,voeding:true,gewoontes:true,stappen:true,beweging:false,stemming:true};
+let lastReset=null, nieuweDagMelding=false;
+const maandagKey=()=>dk((new Date().getDay()+6)%7);
+function resetDag(keys){
+  if(keys.includes('water')){S.waterMl=0;S.warm=false;S.startVandaag=null}
+  if(keys.includes('voeding'))S.maaltijden=[];
+  if(keys.includes('gewoontes'))S.gewoontes.forEach(h=>{delete h.log[dk(0)]});
+  if(keys.includes('stappen'))S.stappen=0;
+  if(keys.includes('beweging'))S.workouts=(S.workouts||[]).filter(w=>w.date!==dk(0));
+  if(keys.includes('stemming'))S.stemming=null;
+}
+// Automatisch: bij een nieuwe dag gaan de dagtellers op nul, bij een nieuwe week ook de weekgrafiek. Gewoontes houden hun geschiedenis.
+function nieuweDag(){
+  if(!S.dag)S.dag=dk(0);
+  if(!S.weekStart)S.weekStart=maandagKey();
+  if(S.dag!==dk(0)){resetDag(['water','voeding','stappen','stemming']);S.dag=dk(0);nieuweDagMelding=true}
+  if(S.weekStart!==maandagKey()){S.week=[0,0,0,0,0,0,0];S.weekStart=maandagKey()}
+}
+function doReset(keys){
+  if(!keys.length)return toast('Kies eerst wat je wilt wissen');
+  lastReset={snap:JSON.stringify(S),labels:RESET.filter(([k])=>keys.includes(k)).map(([,l])=>l.toLowerCase())};
+  resetDag(keys);toast('Gewist');render();
+}
+function undoHTML(){
+  let h='';
+  if(lastReset)h+=`<div class="tip" style="background:var(--surface-2);align-items:center"><div style="flex:1"><div class="label">Gewist</div><p>${esc(lastReset.labels.join(', '))}</p></div><button class="btn sm" data-act="undo">Ongedaan maken</button></div>`;
+  if(nieuweDagMelding&&tab==='vandaag')h+=`<div class="tip" style="align-items:center"><div style="flex:1"><div class="label">Nieuwe dag</div><p>Water, maaltijden, stappen en stemming staan weer op nul. Je gewoontes en reeksen blijven bewaard.</p></div><button class="btn sm ghost" data-act="nieuwedagok" aria-label="Melding sluiten">Oké</button></div>`;
+  return h;
+}
+nieuweDag();
+
+/* ---------- Gewoontes (Atomic Habits) ---------- */
+const CHECK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path d="M5 12l5 5 9-10"/></svg>';
+const isDone=h=>!!h.log[dk(0)];
+function reeks(h){let n=0,o=h.log[dk(0)]?0:1;while(h.log[dk(o)]){n++;o++}return n}
+const gemist=h=>Object.keys(h.log).length>0&&!h.log[dk(1)]&&!h.log[dk(0)];
+const stemmen=()=>S.gewoontes.reduce((a,h)=>a+Object.keys(h.log).length,0);
+const byTijd=(a,b)=>tm(a.tijd||'23:59')-tm(b.tijd||'23:59');
+const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+const low=s=>s?s.charAt(0).toLowerCase()+s.slice(1):s;
+function zin(h){const begin=h.stapel?`${cap(h.stapel)},`:(h.tijd?`Om ${h.tijd}`:'Elke dag');return `${begin} ga ik ${low(h.t)}${h.waar?` ${h.waar}`:''}.`}
+let wiz=null, pendingDel=null, banner=null;
+const openSet=new Set();
+const CHEV='<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+
+/* ---------- AI-plan op basis van identiteit ---------- */
+const samp=(window.claude&&window.claude.use)?window.claude.use('sample').catch(()=>null):Promise.resolve(null);
+let aiState='idle', aiErr='', aiCtl=null;
+const VOORBEELD={
+  train:[
+    {t:'Mijn sportkleding klaarleggen',stapel:'Nadat ik mijn tanden heb gepoetst',waar:'op de stoel in de slaapkamer',tijd:'22:30',tweeMin:'Mijn sportschoenen bij de deur zetten',beloning:'Afvinken en mijn reeks zien groeien',waarom:'Wie sport, maakt het zichzelf makkelijk om te beginnen.'},
+    {t:'10 squats doen',stapel:'Na mijn ochtendkoffie',waar:'in de keuken',tijd:'07:30',tweeMin:'Eén squat doen',beloning:'Mijn favoriete nummer aan tijdens het doen',waarom:'Elke dag een beetje kracht bouwt de basis voor alles wat daarna komt.'},
+    {t:'De trap nemen',stapel:'Als ik op mijn werk aankom',waar:'in het kantoorgebouw',tijd:'08:45',tweeMin:'Eén verdieping met de trap gaan',beloning:'Even trots zijn dat ik de lift heb laten staan',waarom:'Actieve mensen pakken beweging mee waar het kan.'}],
+  voeding:[
+    {t:'Groente eten bij de lunch',stapel:'Als ik mijn lunch klaarmaak',waar:'in de keuken',tijd:'12:15',tweeMin:'Een handje snoeptomaatjes erbij pakken',beloning:'Afvinken en mijn reeks zien groeien',waarom:'Wie gezond eet, haalt de groente niet alleen uit het avondeten.'},
+    {t:'Een glas water drinken voor het eten',stapel:'Voordat ik ga eten',waar:'aan tafel',tijd:'18:15',tweeMin:'Een glas water inschenken en neerzetten',beloning:'Mijn waterdoel sneller halen',waarom:'Water voor het eten helpt je beter te voelen wanneer je vol zit.'},
+    {t:'Mijn boodschappenlijst maken',stapel:'Op zondag na het ontbijt',waar:'aan de keukentafel',tijd:'10:00',tweeMin:'Drie gezonde producten opschrijven',beloning:'Een lekkere koffie erbij',waarom:'Wat in huis is, eet je. Gezond eten begint in de supermarkt.'}],
+  slaap:[
+    {t:'Mijn telefoon wegleggen',stapel:'Nadat ik mijn tanden heb gepoetst',waar:'aan de oplader in de gang',tijd:'22:30',tweeMin:'Mijn telefoon in de gang leggen',beloning:'10 minuten lezen in bed',waarom:'Wie uitgerust wil zijn, geeft zijn hoofd rust voor het slapen.'},
+    {t:'Naar buiten gaan',stapel:'Na mijn ontbijt',waar:'voor de deur',tijd:'07:45',tweeMin:'Twee minuten buiten daglicht vangen',beloning:'Mijn eerste koffie buiten drinken',waarom:'Daglicht in de ochtend helpt je biologische klok op ritme te komen.'},
+    {t:'Thee drinken in plaats van koffie',stapel:'Bij mijn middagpauze',waar:'op het werk',tijd:'15:00',tweeMin:'Een kop kruidenthee zetten',beloning:'Een thee uitkiezen die ik echt lekker vind',waarom:'Minder cafeïne in de middag maakt inslapen makkelijker.'}]
+};
+function voorbeeldPlan(id){
+  const s=id.toLowerCase();
+  let set=/slaap|rust|uitgerust|energie|stress/.test(s)?VOORBEELD.slaap:/afval|gewicht|slank|eten|voeding|eet/.test(s)?VOORBEELD.voeding:/sport|fit|sterk|spier|train|beweg/.test(s)?VOORBEELD.train:[VOORBEELD.train[2],VOORBEELD.voeding[0],VOORBEELD.slaap[1]];
+  const bestaand=S.gewoontes.map(h=>h.t.toLowerCase());
+  return {richting:`Je wilt iemand worden die zegt: "${id}". Begin klein: deze drie gewoontes kosten weinig tijd, maar laten je elke dag zien dat je die kant op gaat.`,items:set.filter(x=>!bestaand.includes(x.t.toLowerCase())).map(x=>({...x})),bron:'voorbeeld',voor:id};
+}
+function aiPrompt(id){
+  const p=S.profiel;
+  return `Je bent een coach in een Nederlandse app voor beginnende sporters die gezonder willen leven. De app volgt de methode uit Atomic Habits: begin bij identiteit, en maak gewoontes zichtbaar (koppel ze aan een bestaand moment), aantrekkelijk, makkelijk (de 2-minutenregel) en bevredigend.
+
+De gebruiker wil dit worden: "${id}"
+Over de gebruiker: ${p.leeftijd} jaar, ${p.geslacht}, doel: ${DOEL[p.doel].l.toLowerCase()}, activiteitsniveau: ${ACT[p.activiteit].l.toLowerCase()}, zet nu ongeveer ${p.stappenNu} stappen per dag en sport nu ${p.beweegNu} minuten per week. Doordeweeks staat de gebruiker op om ${S.ritme.werk.op} en gaat om ${S.ritme.werk.bed} naar bed.
+Gewoontes die al in de app staan: ${S.gewoontes.map(h=>h.t).join('; ')||'geen'}.
+
+Stel 3 nieuwe, kleine gewoontes voor die passen bij deze identiteit en die nog niet in de lijst staan. Regels: geschikt voor beginners, haalbaar vanaf dag één, geen medische claims, geen extreme diëten of calorie-adviezen, geen gedachtestreepjes. Schrijf gewoon en vriendelijk Nederlands in de je-vorm. Is de tekst van de gebruiker onduidelijk of niet over gezondheid, kies dan gewoontes rond bewegen, slapen en gezond eten.
+
+Antwoord met alleen JSON in precies deze vorm:
+{"richting":"2 korte zinnen over de richting die deze persoon op gaat en waarom deze gewoontes daarbij passen","gewoontes":[{"t":"de gewoonte als werkwoordsgroep die past in 'ga ik ...', bv. wandelen of een glas water drinken","stapel":"het bestaande moment waar je het aan koppelt, bv. Na de lunch","waar":"de plek, beginnend met een voorzetsel, bv. rond het kantoor","tijd":"HH:MM","tweeMin":"de versie van 2 minuten","beloning":"iets leuks dat erbij hoort","waarom":"1 zin waarom dit bij de identiteit past"}]}`;
+}
+const s70=v=>String(v??'').replace(/\s+/g,' ').trim().slice(0,90);
+async function maakPlan(opnieuw){
+  const ta=$('#identInput'); const id=(ta&&ta.value.trim())||S.identiteit; S.identiteit=id; aiErr='';
+  aiState='loading'; render();
+  const sample=await samp;
+  if(!sample){S.aiPlan=voorbeeldPlan(id);aiErr='De AI-coach komt in een volgende versie van Ritmo. Dit is alvast een voorbeeldplan op basis van je tekst.';aiState='idle';return render()}
+  aiCtl=new AbortController();
+  try{
+    const opts={signal:aiCtl.signal}; if(opnieuw)opts.cache=false;
+    const r=await sample.json(aiPrompt(id),opts);
+    const items=(Array.isArray(r&&r.gewoontes)?r.gewoontes:[]).slice(0,4).map(g=>({t:cap(s70(g.t)),stapel:cap(s70(g.stapel)),waar:s70(g.waar),tijd:/^\d{2}:\d{2}$/.test(String(g.tijd))?String(g.tijd):'',tweeMin:cap(s70(g.tweeMin)),beloning:cap(s70(g.beloning)),waarom:String(g.waarom??'').trim().slice(0,200)})).filter(g=>g.t);
+    if(!items.length)throw {code:'empty_completion'};
+    S.aiPlan={richting:String(r.richting??'').trim().slice(0,400),items,bron:'ai',voor:id};
+  }catch(e){
+    const c=e&&e.code;
+    if(c==='cancelled'){}
+    else if(['not_granted','sampling_disabled','not_declared','capability_disabled','capability_removed'].includes(c)){S.aiPlan=voorbeeldPlan(id);aiErr='Je hebt de app geen toegang tot Claude gegeven, dus dit is een voorbeeldplan op basis van je tekst.'}
+    else if(c==='rate_limited')aiErr='Je hebt even te vaak gevraagd. Probeer het over een paar minuten opnieuw.';
+    else if(c==='refused')aiErr='Hier kan Claude geen plan voor maken. Probeer een andere omschrijving van wie je wilt worden.';
+    else aiErr='Het plan maken lukte niet. Probeer het nog een keer.';
+  }
+  aiCtl=null; aiState='idle'; render();
+}
+function voegToe(it){S.gewoontes.push({id:'h'+Date.now()+Math.random().toString(36).slice(2,6),t:it.t||'Nieuwe gewoonte',stapel:it.stapel,waar:it.waar,tijd:it.tijd,tweeMin:it.tweeMin||it.t,beloning:it.beloning||'Afvinken en mijn reeks zien groeien',herinnering:!!it.tijd,log:{}})}
+function aiHTML(){
+  let h='';
+  if(aiState==='loading')h+=`<div class="card" aria-live="polite"><div class="label">Claude denkt mee</div><p style="margin:0">Ik maak een plan voor "${esc(S.identiteit)}". Dit duurt meestal 10 tot 30 seconden.</p><button class="btn sm ghost" data-act="aistop" style="align-self:flex-start">Stoppen</button></div>`;
+  if(aiErr)h+=`<div class="warnbox">${esc(aiErr)}</div>`;
+  const P=S.aiPlan;
+  if(P&&P.items&&P.items.length&&aiState!=='loading'){
+    const f=(i,k,l,type='text')=>`<div class="field"><label for="ai-${i}-${k}">${l}</label><input type="${type}" id="ai-${i}-${k}" data-ai="${i}.${k}" value="${esc(P.items[i][k]||'')}" maxlength="90"></div>`;
+    h+=`<div class="card">
+      <div class="row"><div class="label">Jouw richting</div><span class="chip">${P.bron==='ai'?'Advies van Claude':'Voorbeeldadvies'}</span></div>
+      ${P.richting?`<p style="margin:0">${esc(P.richting)}</p>`:''}
+      <span class="note">Pas het advies aan zoals het bij jou past. Voeg toe wat je wilt proberen, sla de rest over.</span>
+      ${P.items.map((it,i)=>`<div class="hrow" style="flex-direction:column;align-items:stretch;gap:10px">
+        ${f(i,'t','Gewoonte')}
+        <div class="grid2">${f(i,'stapel','Na welk moment?')}${f(i,'tijd','Hoe laat?','time')}</div>
+        ${f(i,'waar','Waar?')}${f(i,'tweeMin','2-minutenversie')}${f(i,'beloning','Beloning')}
+        ${it.waarom?`<span class="note"><b>Waarom:</b> ${esc(it.waarom)}</span>`:''}
+        <div class="row" style="justify-content:flex-start"><button class="btn sm" data-aiadd="${i}">Toevoegen</button><button class="btn sm ghost" style="border-color:var(--muted);color:var(--muted)" data-aiskip="${i}">Overslaan</button></div>
+      </div>`).join('')}
+      <div class="row" style="flex-wrap:wrap"><button class="btn" data-act="aialles">Alles toevoegen</button><button class="btn sm ghost" data-act="aiopnieuw">Nieuw voorstel</button></div>
+    </div>`;
+  }
+  return h;
+}
+const snooze={};
+function checkHerinnering(){
+  const m=minNu();
+  const kand=S.gewoontes.filter(h=>h.herinnering&&h.tijd&&!isDone(h)&&tm(h.tijd)<=m&&m-tm(h.tijd)<=180&&!(snooze[h.id]>m)).sort((a,b)=>tm(b.tijd)-tm(a.tijd));
+  banner=kand[0]?kand[0].id:null;
+}
+function bannerHTML(){
+  const h=S.gewoontes.find(x=>x.id===banner);if(!h)return '';
+  return `<div class="banner" role="status"><div class="label" style="color:inherit;opacity:.8">Herinnering · ${h.tijd}</div>
+    <div style="font-weight:700">${esc(zin(h))}</div>
+    <div style="font-size:13px">Geen zin? Doe alleen de 2-minutenversie: ${esc(low(h.tweeMin))}.</div>
+    <div class="row" style="justify-content:flex-start"><button class="btn sm" data-habit="${h.id}">Gedaan</button><button class="btn sm ghost" data-snooze="${h.id}">Over 15 minuten</button></div></div>`;
+}
+function habitRow(h,compact){
+  const d=isDone(h), r=reeks(h);
+  return `<div class="hrow ${d?'done':''} ${h.id===justDone?'pop':''}">
+    <button class="checkbtn" data-habit="${h.id}" aria-label="${d?'Ongedaan maken':'Afvinken'}: ${esc(h.t)}">${d?CHECK:''}</button>
+    <div class="body">
+      <div class="row" style="align-items:flex-start"><span class="ttl">${esc(h.t)}</span>${r?`<span class="streak">${r} ${r===1?'dag':'dagen'}</span>`:''}</div>
+      <span class="meta">${esc(h.stapel||'')}${h.stapel&&h.tijd?' · ':''}${h.tijd||''}${h.herinnering?' · herinnering aan':''}</span>
+      ${gemist(h)?'<span class="miss">Gisteren gemist. Mis niet twee keer achter elkaar.</span>':''}
+      ${compact?'':`<div class="dots" aria-label="Afgelopen 7 dagen">${[6,5,4,3,2,1,0].map(o=>`<i class="${h.log[dk(o)]?'on':''} ${o===0?'today':''}"></i>`).join('')}<span>7 dagen</span></div>
+      <details class="how"><summary>Jouw plan</summary>
+        <p><b>Plan:</b> ${esc(zin(h))}</p><p><b>2-minutenversie:</b> ${esc(h.tweeMin)}</p><p><b>Beloning:</b> ${esc(h.beloning)}</p>
+        <div class="row" style="margin-top:10px;flex-wrap:wrap"><button class="btn sm ${h.herinnering?'':'ghost'}" data-herinner="${h.id}" ${h.tijd?'':'disabled'}>Herinnering ${h.herinnering?'aan':'uit'}</button>
+        <button class="btn sm ghost" style="border-color:var(--muted);color:var(--muted)" data-delhabit="${h.id}">${pendingDel===h.id?'Zeker weten? Tik nog een keer':'Verwijderen'}</button></div>
+      </details>`}
+    </div></div>`;
+}
+function renderGewoontes(){
+  if(wiz)return renderWizard();
+  const m=minNu(), list=[...S.gewoontes].sort(byTijd), done=S.gewoontes.filter(isDone).length;
+  const volg=list.filter(h=>h.herinnering&&h.tijd&&!isDone(h)&&tm(h.tijd)>m)[0];
+  const wetten=[
+    ['Wet 1 · Maak het zichtbaar','Een gewoonte begint met een seintje. Koppel je nieuwe gewoonte aan iets wat je al elke dag doet, bijvoorbeeld: na mijn koffie doe ik 10 squats. Of maak een plan met een vaste tijd en plek. Leg je sportkleren de avond ervoor al klaar.'],
+    ['Wet 2 · Maak het aantrekkelijk','Koppel iets wat je moet doen aan iets wat je leuk vindt. Luister je favoriete podcast bijvoorbeeld alleen tijdens het wandelen. En zoek mensen op voor wie jouw nieuwe gewoonte normaal is.'],
+    ['Wet 3 · Maak het makkelijk','Hoe minder moeite iets kost, hoe groter de kans dat je het doet. Gebruik de 2-minutenregel: maak je gewoonte zo klein dat het in 2 minuten lukt. Eerst moet het een gewoonte worden, daarna maak je het groter.'],
+    ['Wet 4 · Maak het bevredigend','Wat meteen goed voelt, herhaal je. Vink je gewoonte direct af en zie je reeks groeien. Een dag missen kan iedereen gebeuren. Zorg alleen dat je nooit twee keer achter elkaar mist.']
+  ];
+  return `
+  <header class="top"><div><div class="date">Gewoontes</div><h2 class="hello">Kleine stappen, elke dag</h2></div></header>
+  <div class="stack">
+    ${undoHTML()}
+    ${bannerHTML()}
+    <div class="ident">
+      <div class="label">Wie wil je worden?</div>
+      <textarea id="identInput" rows="2" maxlength="70" aria-label="Wie wil je worden?">${esc(S.identiteit)}</textarea>
+      <div class="row"><span class="note">Elke keer dat je een gewoonte afvinkt, is een stem voor deze persoon.</span><div class="big" style="color:var(--sun);white-space:nowrap">${stemmen()}<small>stemmen</small></div></div>
+      <button class="btn" style="background:var(--sun);color:#17251D;display:flex;align-items:center;justify-content:center;gap:8px" data-act="aimaak" ${aiState==='loading'?'disabled':''}><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.2 6.3L20 10l-5.8 1.7L12 18l-2.2-6.3L4 10l5.8-1.7zM19 15l1 2.5 2.5 1-2.5 1L19 22l-1-2.5-2.5-1 2.5-1z"/></svg>${aiState==='loading'?'Plan wordt gemaakt...':'Maak mijn plan met AI'}</button>
+      <span class="note">Typ wie je wilt worden. Claude stelt gewoontes voor die je die kant op helpen, en jij past ze aan.</span>
+    </div>
+    ${aiHTML()}
+    <div class="card">
+      <div class="row"><div class="label">Vandaag</div><span class="note">${done} van ${S.gewoontes.length} gedaan · <b style="color:var(--accent)">+${pctTxt(dagFractie(dk(0)).s)}% groei</b></span></div>
+      ${list.map(h=>habitRow(h,false)).join('')||'<p class="note">Nog geen gewoontes. Maak hieronder je eerste.</p>'}
+      <button class="btn" data-act="wizstart">+ Nieuwe gewoonte</button>
+      ${done?'<button class="btn sm ghost" style="align-self:flex-start" data-reset="gewoontes">Vinkjes van vandaag wissen</button>':''}
+    </div>
+    ${groeiHTML()}
+    <div class="card">
+      <div class="label">Herinneringen</div>
+      ${volg?`<div class="row"><span><b>${volg.tijd}</b> · ${esc(volg.t)}</span><span class="chip">Volgende</span></div>`:'<span class="note">Geen herinneringen meer voor vandaag.</span>'}
+      <span class="note">In de echte app krijg je een melding op je telefoon. In dit prototype verschijnt de herinnering bovenaan in de app zodra het tijd is.</span>
+    </div>
+    <h3 class="sec">De methode</h3>
+    <p class="sec-sub">Gebaseerd op de ideeën uit Atomic Habits van James Clear.</p>
+    <div class="stack" style="gap:8px">
+      <details class="how"><summary>Begin bij wie je wilt zijn</summary><p>De meeste mensen beginnen bij een resultaat, zoals 5 kilo afvallen. Sterker is beginnen bij wie je wilt zijn: iemand die gezond leeft. Elke keer dat je je gewoonte doet, bewijs je aan jezelf dat je die persoon bent.</p></details>
+      ${wetten.map(([t,a])=>`<details class="how"><summary>${t}</summary><p>${a}</p></details>`).join('')}
+      <details class="how"><summary>Elke dag 1% beter</summary><p>Word je elke dag 1% beter, dan ben je na een jaar ongeveer 37 keer beter (1,01 tot de macht 365). In het begin lijkt het alsof er niets gebeurt, maar kleine stappen tellen op.</p></details>
+    </div>
+  </div>`;
+}
+function renderWizard(){
+  const s=wiz.step, d=wiz.d, N=5;
+  const chips=(key,opts)=>`<div class="acts">${opts.map(o=>`<button type="button" class="act ${d[key]===o?'on':''}" data-wset="${key}" data-v="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
+  const inp=(key,ph,type='text')=>`<input type="${type}" id="w-${key}" data-w="${key}" value="${esc(d[key]||'')}" placeholder="${ph}" maxlength="70">`;
+  let body='';
+  if(s===0)body=`<div class="law">Begin</div><div class="sentence">Welke gewoonte wil je opbouwen?</div>
+    ${inp('t','Bijv. wandelen')}${chips('t',['Wandelen','Een glas water drinken','Thuis trainen','Groente eten bij de lunch','Eerder naar bed gaan'])}
+    <span class="note">Kies één gewoonte tegelijk. Past hij bij "${esc(S.identiteit)}"? Dan zit je goed.</span>`;
+  if(s===1)body=`<div class="law">Wet 1 · Maak het zichtbaar</div><div class="sentence">Wanneer en waar ga je het doen?</div>
+    <span class="note">Koppel het aan iets wat je al elke dag doet. Dat moment wordt je seintje.</span>
+    <div class="field"><label for="w-stapel">Na welke bestaande gewoonte?</label>${inp('stapel','Bijv. na mijn ochtendkoffie')}</div>
+    ${chips('stapel',['Nadat ik ben opgestaan','Na mijn ochtendkoffie','Na de lunch','Als ik thuiskom van mijn werk','Nadat ik mijn tanden heb gepoetst'])}
+    <div class="grid2"><div class="field"><label for="w-waar">Waar?</label>${inp('waar','Bijv. in de woonkamer')}</div><div class="field"><label for="w-tijd">Hoe laat ongeveer?</label>${inp('tijd','','time')}</div></div>`;
+  if(s===2)body=`<div class="law">Wet 3 · Maak het makkelijk</div><div class="sentence">Wat is de versie van 2 minuten?</div>
+    <span class="note">Maak het zo klein dat je geen nee kunt zeggen. Wil je gaan hardlopen? Dan is de 2-minutenversie: je hardloopschoenen aantrekken. Eerst moet het een gewoonte worden, daarna maak je het groter.</span>
+    ${inp('tweeMin','Bijv. mijn sportschoenen aantrekken')}`;
+  if(s===3)body=`<div class="law">Wet 2 en 4 · Maak het aantrekkelijk en bevredigend</div><div class="sentence">Hoe maak je het leuk?</div>
+    <span class="note">Koppel je gewoonte aan iets waar je zin in hebt, of beloon jezelf direct daarna.</span>
+    ${inp('beloning','Bijv. podcast luisteren tijdens het doen')}${chips('beloning',['Mijn favoriete podcast erbij','Muziek aan die ik goed vind','Afvinken en mijn reeks zien groeien','Daarna een kop koffie of thee'])}
+    <button type="button" class="switch ${d.herinnering?'on':''}" data-act="wizherinner"><span>Herinner me ${d.tijd?`om ${d.tijd}`:'(kies in stap 2 een tijd)'}</span><span class="k"></span></button>`;
+  if(s===4)body=`<div class="law">Jouw plan</div><div class="sentence">${esc(zin(d))}</div>
+    <div class="plan"><b>2-minutenversie:</b> ${esc(d.tweeMin||d.t)}<br><b>Beloning:</b> ${esc(d.beloning||'Afvinken en je reeks zien groeien')}<br><b>Herinnering:</b> ${d.herinnering&&d.tijd?d.tijd:'uit'}</div>
+    <span class="note">Tip: zeg je plan een keer hardop. Met een concreet plan voor wanneer en waar houden mensen een gewoonte vaker vol.</span>`;
+  return `
+  <header class="top"><div><div class="date">Nieuwe gewoonte · stap ${s+1} van ${N}</div><h2 class="hello">${['Kies je gewoonte','Maak het zichtbaar','Maak het makkelijk','Maak het leuk','Klaar om te starten'][s]}</h2></div></header>
+  <div class="stack">
+    <div class="steps">${Array.from({length:N},(_,i)=>`<i class="${i<=s?'on':''}"></i>`).join('')}</div>
+    <div class="card">${body}</div>
+    <div class="row"><button class="btn ghost" data-act="${s===0?'wizcancel':'wizprev'}">${s===0?'Annuleren':'Vorige'}</button><button class="btn" data-act="${s===N-1?'wizsave':'wiznext'}">${s===N-1?'Gewoonte opslaan':'Volgende'}</button></div>
+  </div>`;
+}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+
+/* ---------- Berekeningen ---------- */
+// Ruststofwisseling (BMR) volgens Mifflin-St Jeor
+function bmr(p){return 10*p.gewicht+6.25*p.lengte-5*p.leeftijd+(p.geslacht==='man'?5:-161)}
+// Dagbehoefte om op gewicht te blijven = BMR x activiteitsfactor
+function kcalDoel(p){return Math.round(bmr(p)*ACT[p.activiteit].f/10)*10}
+// Drinkadvies: EFSA-basis uit dranken (man 2,0 l, vrouw 1,6 l) + extra voor sport + extra bij warm weer of training vandaag
+function waterBasis(p){return p.geslacht==='man'?2000:1600}
+function waterDoel(){const p=S.profiel;return waterBasis(p)+ACT[p.activiteit].w+(S.warm?500:0)}
+// Drinkschema: doel gelijk verdeeld van opstaan tot 1 uur voor bedtijd (doordeweeks en weekend apart), op basis van de klok van de telefoon
+const minNu=()=>{const n=new Date();return n.getHours()*60+n.getMinutes()};
+const hhmm=m=>{m=((Math.round(m)%1440)+1440)%1440;return `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`};
+const tm=s=>{const[h,mi]=String(s||'0:0').split(':').map(Number);return (h||0)*60+(mi||0)};
+const isWeekend=()=>[0,6].includes(new Date().getDay());
+const dagKey=()=>new Date().toDateString();
+function drinkVenster(){
+  const soort=isWeekend()?'weekend':'werk', r=S.ritme[soort];
+  const op=tm(r.op); let bed=tm(r.bed); if(bed<=op)bed+=1440;
+  const aangepast=!!(S.startVandaag&&S.startVandaag.d===dagKey());
+  const s=aangepast?S.startVandaag.m:op; let e=bed-60; if(e<s+120)e=s+120;
+  let m=minNu(); if(e>=1440&&m<s&&m+1440<=e+60)m+=1440;
+  return {s,e,m,soort,aangepast,op};
+}
+function waterNu(){const V=drinkVenster(),f=Math.max(0,Math.min(1,(V.m-V.s)/(V.e-V.s)));return Math.round(waterDoel()*f/50)*50}
+function waterSchema(){
+  const V=drinkVenster(), DRINK_START=V.s, DRINK_EIND=V.e;
+  const wd=waterDoel(), nu=waterNu(), m=V.m, diff=S.waterMl-nu;
+  let status,klasse,tekst;
+  if(m<DRINK_START){status='Nog niet begonnen';klasse='bijna';tekst=`Je drinkschema begint om ${hhmm(DRINK_START)}. Start de dag met een glas water.`}
+  else if(S.waterMl>=wd){status='Doel gehaald';klasse='ok';tekst='Je hebt je water voor vandaag binnen. Drink gerust bij als je dorst hebt.'}
+  else if(diff>=0){status='Op schema';klasse='ok';tekst=diff>=S.glasMl?`Je ligt ${nl(diff)} ml voor op schema.`:'Je zit precies goed.'}
+  else if(-diff<=S.glasMl){status='Bijna op schema';klasse='bijna';tekst=`Nog ${nl(-diff)} ml, dat is minder dan 1 glas, om weer op schema te komen.`}
+  else{const gl=Math.ceil(-diff/S.glasMl);status='Achter op schema';klasse='achter';tekst=`Je loopt ${nl(-diff)} ml achter. Drink de komende uren ${gl} ${gl===1?'glas':'glazen'} extra om bij te komen.`}
+  // Wanneer is het volgende glas gepland?
+  const volgendMl=S.waterMl+S.glasMl, tVolg=DRINK_START+(volgendMl/wd)*(DRINK_EIND-DRINK_START);
+  const volgend=S.waterMl>=wd?null:(tVolg<=m?'nu':hhmm(Math.min(tVolg,DRINK_EIND)));
+  return {wd,nu,m,status,klasse,tekst,volgend,V};
+}
+
+/* ---------- Doel: afvallen, fitter worden, spiermassa ---------- */
+const DOEL={afvallen:{l:'Afvallen',s:'Vet verliezen'},fit:{l:'Fitter',s:'Op gewicht blijven'},spier:{l:'Spiermassa',s:'Met krachttraining'}};
+const TEMPO={rustig:{l:'Rustig',s:'−300 kcal · ca. 0,3 kg per week',d:300},normaal:{l:'Normaal',s:'−500 kcal · ca. 0,5 kg per week',d:500}};
+const bmi=p=>p.gewicht/((p.lengte/100)**2);
+function plan(p){
+  const tdee=kcalDoel(p), rust=Math.round(bmr(p)), B=bmi(p);
+  const blok=p.doel==='afvallen'&&B<18.5, doel=blok?'fit':p.doel;
+  // Bij BMI 30+ rekenen we eiwit met het gewicht bij BMI 25, anders valt het advies te hoog uit
+  const refKg=B>=30?25*(p.lengte/100)**2:p.gewicht;
+  let kcal=tdee, ek=[1.2,1.6], vetPct=.30, kgWeek=0, weken=null, ondergrens=false;
+  const streefBmi=p.streef/((p.lengte/100)**2), streefLaag=doel==='afvallen'&&streefBmi<18.5;
+  if(doel==='afvallen'){
+    const min=Math.max(rust,p.geslacht==='man'?1500:1200);
+    kcal=tdee-TEMPO[p.tempo].d; if(kcal<min){kcal=min;ondergrens=true}
+    kgWeek=(tdee-kcal)*7/7700; ek=[1.6,2.0]; vetPct=.25;
+    if(!streefLaag&&p.streef<p.gewicht&&kgWeek>0)weken=Math.ceil((p.gewicht-p.streef)/kgWeek);
+  }
+  // Spiermassa: alleen een overschot als je ook traint. Zittend + overschot = vooral vet erbij.
+  const geenTraining=doel==='spier'&&p.activiteit==='zittend';
+  if(doel==='spier'&&!geenTraining){kcal=tdee+300;kgWeek=.25;ek=[1.6,2.2];vetPct=.25}
+  kcal=Math.round(kcal/10)*10;
+  const eiwit=Math.round(refKg*(ek[0]+ek[1])/2), vet=Math.round(kcal*vetPct/9), kh=Math.max(0,Math.round((kcal-eiwit*4-vet*9)/4));
+  return {doel,blok,tdee,rust,kcal,ek,refKg,eiwit,vet,kh,vetPct,kgWeek,weken,ondergrens,streefLaag,bmi:B,geenTraining};
+}
+const kg1=n=>n.toLocaleString('nl-NL',{maximumFractionDigits:1});
+
+/* ---------- Advies op basis van profiel ---------- */
+// Stappen: einddoel 7.000 (Lancet Public Health 2025), opbouw +1.000 per week vanaf huidig gemiddelde
+// Bewegen: einddoel 150 min/week (Beweegrichtlijnen Gezondheidsraad), opbouw +20 min per week
+// Slaap: 7 tot 9 uur (65+: 7 tot 8 uur); groente 250 g (Schijf van Vijf); eiwit 0,8 g/kg, sporters 1,2 tot 1,6 g/kg
+function advies(){
+  const p=S.profiel, ST=7000, BW=150;
+  const stKlaar=p.stappenNu>=ST, bwKlaar=p.beweegNu>=BW;
+  return {
+    stappen:{doel:stKlaar?Math.round(p.stappenNu/500)*500:Math.min(ST,Math.ceil((p.stappenNu+1000)/500)*500),eind:ST,weken:stKlaar?0:Math.ceil((ST-p.stappenNu)/1000),klaar:stKlaar},
+    beweegWeek:{doel:bwKlaar?Math.round(p.beweegNu/10)*10:Math.min(BW,Math.ceil((p.beweegNu+20)/10)*10),eind:BW,weken:bwKlaar?0:Math.ceil((BW-p.beweegNu)/20),klaar:bwKlaar},
+    slaap:{doel:p.leeftijd>=65?7.5:8,range:p.leeftijd>=65?'7 tot 8':'7 tot 9'},
+    groente:{doel:250},
+    eiwit:{basis:Math.round(p.gewicht*0.8),laag:Math.round(p.gewicht*1.2),hoog:Math.round(p.gewicht*1.6),sport:p.activiteit!=='zittend'}
+  };
+}
+function tipVandaag(){
+  const h=new Date().getHours(), verwacht=waterNu(), g=som('groente');
+  if(S.waterMl<verwacht-S.glasMl)return `Je zit op ${liter(S.waterMl)} liter water. Rond deze tijd is ${liter(verwacht)} liter een goed tempo. Zet een glas naast je neer, dan vergeet je het minder snel.`;
+  if(h>=12&&S.stappen<S.doelen.stappen*0.6)return `Nog ${nl(S.doelen.stappen-S.stappen)} stappen tot je doel. Een wandeling van 15 minuten levert ongeveer 1.500 stappen op.`;
+  if(h>=14&&g<150)return `Je zit op ${g} gram groente. Schep vanavond de helft van je bord vol groente, dan kom je dicht bij de 250 gram.`;
+  if(S.slaap<S.doelen.slaap-1)return `Je sliep korter dan je doel. Ga vanavond een half uur eerder naar bed. Na een korte nacht herstelt je lichaam minder goed van sporten.`;
+  return 'Je ligt goed op schema. Kies vandaag één gewoonte uit je lijst en maak die zeker af. Kleine stappen die je volhoudt werken beter dan grote sprongen.';
+}
+
+const $=s=>document.querySelector(s);
+const screen=$('#screen');
+const dagen=['ma','di','wo','do','vr','za','zo'];
+const vandaagIdx=(new Date().getDay()+6)%7;
+let tab='vandaag';
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800)}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function pct(a,b){return Math.max(0,Math.min(100,Math.round(a/b*100)))}
+const nl=n=>Math.round(n).toLocaleString('nl-NL');
+const liter=ml=>(ml/1000).toLocaleString('nl-NL',{minimumFractionDigits:1,maximumFractionDigits:2});
+const som=k=>S.maaltijden.reduce((a,m)=>a+(+m[k]||0),0);
+function dagScore(){
+  const d=S.doelen;
+  const parts=[pct(S.waterMl,waterDoel()),pct(S.stappen,d.stappen),pct(S.slaap,d.slaap),pct(som('groente'),d.groente),
+    S.gewoontes.length?pct(S.gewoontes.filter(isDone).length,S.gewoontes.length):100];
+  return Math.round(parts.reduce((a,b)=>a+b,0)/parts.length);
+}
+function fmtSlaap(h){const u=Math.floor(h),m=Math.round((h-u)*60);return `${u}<small>u</small> ${String(m).padStart(2,'0')}<small>m</small>`}
+function datum(){return new Date().toLocaleDateString('nl-NL',{weekday:'long',day:'numeric',month:'long'})}
+function groet(){const h=new Date().getHours();return h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond'}
+
+/* ---------- Schermen ---------- */
+function renderVandaag(){
+  const sc=dagScore(), C=2*Math.PI*30, wd=waterDoel(), n=Math.ceil(wd/S.glasMl), W=waterSchema();
+  const P=plan(S.profiel), kd=P.kcal, kg=som('kcal'), ew=som('eiwit');
+  const tekst=sc>=80?'Sterke dag. Hou dit ritme vast.':sc>=50?'Goed op weg. Nog een paar kleine stappen.':'Rustig begin. Eén glas water is al winst.';
+  const moods=[['1','Slecht'],['2','Matig'],['3','Oké'],['4','Goed'],['5','Top']];
+  const glazen=Array.from({length:n},(_,i)=>{const vul=Math.max(0,Math.min(1,(S.waterMl-i*S.glasMl)/S.glasMl));return `<button class="glass" data-glass="${i}" aria-label="Glas ${i+1}"><i style="height:${vul*100}%"></i></button>`}).join('');
+  const op=id=>openSet.has(id)?'open':'';
+  const meer=(id,titel,body)=>`<details class="more" data-keep="${id}" ${op(id)}><summary>${titel}${CHEV}</summary><div class="more-b">${body}</div></details>`;
+  const gedaan=S.gewoontes.filter(isDone).length;
+  return `
+  <header class="top"><div><div class="date">${datum()}</div><h2 class="hello">${groet()}, ${esc(S.naam)}</h2></div>
+  <button class="avatar" data-go="profiel" aria-label="Profiel">${esc((S.naam[0]||'?').toUpperCase())}</button></header>
+  <div class="stack">
+    ${undoHTML()}
+    ${bannerHTML()}
+
+    <div class="score">
+      <div class="ring" style="width:72px;height:72px"><svg width="72" height="72"><circle cx="36" cy="36" r="30" stroke="rgba(255,255,255,.18)" stroke-width="8" fill="none"/>
+      <circle cx="36" cy="36" r="30" stroke="var(--sun)" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-sc/100)}" style="transition:stroke-dashoffset .5s"/></svg><div class="n" style="font-size:22px">${sc}</div></div>
+      <div class="txt" style="min-width:0;flex:1"><h3>Dagscore</h3><p>${tekst}</p>
+        <details class="more dark" data-keep="v-tip" ${op('v-tip')}><summary>Advies voor vandaag${CHEV}</summary><div class="more-b"><p style="opacity:.9">${tipVandaag()}</p></div></details>
+      </div>
+    </div>
+
+    <div class="card waterc">
+      <div class="row"><div class="label">Water</div><span class="status ${W.klasse}">${W.status}${S.warm?' · +500 ml':''}</span></div>
+      <div class="row"><div class="big">${liter(S.waterMl)}<small>/ ${liter(wd)} liter</small></div>
+      <div class="row" style="gap:6px"><button class="btn round ghost" style="border-color:var(--water);color:var(--water)" data-act="water-" aria-label="Glas minder">−</button><button class="btn round" style="background:var(--water)" data-act="water+" aria-label="Glas erbij">+</button></div></div>
+      <div class="glasses">${glazen}</div>
+      <div class="track sched-track" role="img" aria-label="Gedronken ${liter(S.waterMl)} liter, schema ${liter(W.nu)} liter"><div class="fill" style="width:${pct(S.waterMl,W.wd)}%"></div><div class="mark" style="left:${pct(W.nu,W.wd)}%"></div></div>
+      <span class="note">Schema: nu ${liter(W.nu)} liter${W.volgend?` · volgende glas <b style="color:var(--ink)">${W.volgend==='nu'?'nu':W.volgend}</b>`:''}</span>
+      ${meer('v-water','Schema en instellingen',`
+        <div class="ticks">${[0,1,2,3,4].map(i=>`<span>${hhmm(W.V.s+(W.V.e-W.V.s)*i/4)}</span>`).join('')}</div>
+        <span class="note">${W.tekst} Het streepje op de balk is waar je volgens het schema nu zou moeten zitten.</span>
+        <div class="row" style="flex-wrap:wrap"><span class="note">${W.V.soort==='weekend'?'Weekend':'Doordeweeks'}: ${W.V.aangepast?`gestart om ${hhmm(W.V.s)}`:`opstaan ${hhmm(W.V.s)}`}, laatste glas ${hhmm(W.V.e)}</span>
+        <button class="btn sm ghost" style="border-color:var(--water);color:var(--water)" data-act="${W.V.aangepast?'startreset':'startnu'}">${W.V.aangepast?'Normale tijd terugzetten':'Net opgestaan? Start nu'}</button></div>
+        <button class="switch ${S.warm?'on':''}" data-act="warm"><span>Warm weer of gesport vandaag (+500 ml)</span><span class="k"></span></button>
+        <div class="row"><span class="note">1 glas = ${S.glasMl} ml</span><button class="btn sm ghost" style="border-color:var(--water);color:var(--water)" data-go="profiel">Glas en dagritme aanpassen</button></div>`)}
+    </div>
+
+    <div class="card kcalc">
+      <div class="row"><div class="label">Calorieën</div><span class="note">nog ${nl(Math.max(0,kd-kg))} kcal</span></div>
+      ${P.geenTraining?'<button class="miss" style="border:0;cursor:pointer;font:inherit;font-size:11px;font-weight:700" data-go="profiel">Spiermassa vraagt krachttraining. Nu op onderhoud. Aanpassen</button>':''}
+      <div class="row"><div class="big">${nl(kg)}<small>/ ${nl(kd)} kcal</small></div><button class="btn sm ghost" style="border-color:var(--kcal);color:var(--kcal)" data-go="voeding">+ Maaltijd</button></div>
+      <div class="bar"><i style="width:${pct(kg,kd)}%"></i></div>
+      <div class="row"><span class="note">Eiwit</span><span class="note"><b style="color:var(--ink)">${ew}</b> / ${P.eiwit} g</span></div>
+      <div class="bar" style="margin-top:-6px"><i style="width:${pct(ew,P.eiwit)}%;background:var(--accent)"></i></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="label">Stappen</div>
+        <div class="big" style="font-size:24px">${nl(S.stappen)}</div>
+        <div class="bar"><i style="width:${pct(S.stappen,S.doelen.stappen)}%"></i></div>
+        <button class="btn sm ghost" data-act="stappen">+ 1.000</button>
+      </div>
+      <div class="card sleep">
+        <div class="label">Slaap</div>
+        <div class="big" style="font-size:24px">${fmtSlaap(S.slaap)}</div>
+        <div class="row"><button class="btn round ghost sm" style="border-color:var(--sleep);color:var(--sleep)" data-act="slaap-" aria-label="Kwartier minder">−</button>
+        <span class="note">doel ${S.doelen.slaap}u</span>
+        <button class="btn round sm" style="background:var(--sleep)" data-act="slaap+" aria-label="Kwartier meer">+</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row"><div class="label">Gewoontes</div><span class="note">${gedaan} van ${S.gewoontes.length} · <b style="color:var(--accent)">+${pctTxt(dagFractie(dk(0)).s)}% groei</b></span></div>
+      ${[...S.gewoontes].sort(byTijd).map(h=>habitRow(h,true)).join('')}
+      <button class="btn sm ghost" style="align-self:flex-start" data-go="gewoontes">Alle gewoontes</button>
+    </div>
+
+    <div class="card">
+      <div class="label">Hoe voel je je?</div>
+      <div class="moods">${moods.map(([v,l])=>`<button class="mood ${S.stemming==v?'on':''}" data-mood="${v}"><b>${v}</b>${l}</button>`).join('')}</div>
+    </div>
+
+    <div class="card" style="padding-block:12px">
+      ${meer('v-reset','Dag resetten',`
+        <span class="note">Om middernacht begint de app vanzelf een nieuwe dag. Kies wat je nu wilt wissen.</span>
+        <div class="acts">${RESET.map(([k,l])=>`<button class="act ${resetSel[k]?'on':''}" data-rsel="${k}" aria-pressed="${resetSel[k]}">${l}</button>`).join('')}</div>
+        <button class="btn ghost" data-act="resetnu">Gekozen onderdelen wissen</button>`)}
+    </div>
+  </div>`;
+}
+
+function renderVoeding(){
+  const g=som('groente'), f=som('fruit'), kg=som('kcal'), P=plan(S.profiel), kd=P.kcal, ew=som('eiwit');
+  return `
+  <header class="top"><div><div class="date">Voeding</div><h2 class="hello">Wat at je vandaag?</h2></div></header>
+  <div class="stack">
+    ${undoHTML()}
+    ${scanHTML()}
+    <div class="card kcalc">
+      <div class="label">Calorieën</div>
+      <div class="big">${nl(kg)}<small>/ ${nl(kd)} kcal</small></div>
+      <div class="bar"><i style="width:${pct(kg,kd)}%"></i></div>
+      <span class="note"><span class="goalpill">${DOEL[P.doel].l}</span> ${kg>kd?`${nl(kg-kd)} kcal boven je dagdoel.`:`Nog ${nl(kd-kg)} kcal tot je dagdoel.`}</span>
+    </div>
+    <div class="card">
+      <div class="label">Eiwit</div>
+      <div class="big">${ew}<small>/ ${P.eiwit} g</small></div>
+      <div class="bar"><i style="width:${pct(ew,P.eiwit)}%"></i></div>
+      <span class="note">${ew>=P.eiwit?'Eiwitdoel gehaald.':`Nog ${P.eiwit-ew} g. Bijvoorbeeld 250 g magere kwark levert ongeveer 25 g eiwit.`}</span>
+    </div>
+    <div class="grid2">
+      <div class="card"><div class="label">Groente</div><div class="big">${g}<small>/ ${S.doelen.groente} g</small></div><div class="bar"><i style="width:${pct(g,S.doelen.groente)}%"></i></div></div>
+      <div class="card"><div class="label">Fruit</div><div class="big">${f}<small>/ 2 stuks</small></div><div class="bar"><i style="width:${pct(f,2)}%;background:var(--sun)"></i></div></div>
+    </div>
+
+    <div class="card">
+      <div class="label">Maaltijden</div>
+      ${S.maaltijden.length?S.maaltijden.map((m,i)=>`<div class="meal"><div class="time">${esc(m.type)}</div><div style="min-width:0"><div class="name">${esc(m.naam)}</div><div style="display:flex;gap:6px;margin-top:4px;flex-wrap:wrap">${m.groente?`<span class="chip">${m.groente} g groente</span>`:''}${m.fruit?`<span class="chip warn">${m.fruit} fruit</span>`:''}${m.eiwit?`<span class="chip" style="background:var(--kcal-soft);color:var(--kcal)">${m.eiwit} g eiwit</span>`:''}</div></div><span class="kc">${nl(m.kcal||0)} kcal</span><button class="del" data-delmeal="${i}" aria-label="Verwijder">×</button></div>`).join(''):'<p class="note">Nog niets gelogd. Voeg hieronder je eerste maaltijd toe.</p>'}
+      ${S.maaltijden.length?'<button class="btn sm ghost" style="align-self:flex-start" data-reset="voeding">Maaltijden van vandaag wissen</button>':''}
+    </div>
+
+    <form class="card" id="mealForm">
+      <div class="label">Maaltijd toevoegen</div>
+      <select id="mealType"><option>Ontbijt</option><option>Lunch</option><option selected>Avondeten</option><option>Tussendoor</option></select>
+      <input type="text" id="mealName" placeholder="Bijv. pasta met spinazie en zalm" maxlength="50" required>
+      <div class="grid2"><div class="unit"><input type="number" id="mealKcal" placeholder="Calorieën" min="0" max="3000" inputmode="numeric"><span>kcal</span></div>
+      <div class="unit"><input type="number" id="mealEiwit" placeholder="Eiwit" min="0" max="200" inputmode="numeric"><span>g</span></div></div>
+      <div class="row"><span class="note">Groente</span><div class="acts">${[0,50,100,150].map(v=>`<button type="button" class="act ${v===gSel?'on':''}" data-g="${v}">${v} g</button>`).join('')}</div></div>
+      <div class="row"><span class="note">Fruit</span><div class="acts">${[0,1,2].map(v=>`<button type="button" class="act ${v===fSel?'on':''}" data-f="${v}">${v}</button>`).join('')}</div></div>
+      <button class="btn" type="submit">Opslaan</button>
+      <span class="note">Straks vult de productscanner de calorieën automatisch in.</span>
+    </form>
+  </div>`;
+}
+
+/* ---------- Workout-logboek ---------- */
+const WTYPES=['Krachttraining','Hardlopen','Voetbal','Zwemmen','Fietsen','Wandelen','Yoga','Overig'];
+const ZWAAR={1:['Licht','Praten gaat makkelijk'],2:['Gemiddeld','Praten lukt nog net'],3:['Zwaar','Praten lukt niet']};
+const OEFENINGEN=[['Squat (eigen gewicht)','herh',0],['Goblet squat','herh',1],['Push-up','herh',0],['Push-up (op knieën)','herh',0],['Lunges','herh',0],['Glute bridge','herh',0],['Plank','sec',0],['Deadlift','herh',1],['Bankdrukken','herh',1],['Roeien met dumbbell','herh',1],['Schouderdrukken','herh',1],['Lat pulldown','herh',1],['Biceps curl','herh',1],['Kettlebell swing','herh',1]];
+const SCHEMA=[['Squat (eigen gewicht)','herh',10],['Push-up (op knieën)','herh',8],['Lunges','herh',8],['Glute bridge','herh',12],['Plank','sec',20]];
+const oefInfo=n=>OEFENINGEN.find(o=>o[0]===n)||[n,'herh',1];
+let wo=null, woDel=null;
+function mkWorkouts(){
+  const K=(o,min,z,oef)=>({id:'w'+o,date:dk(o),type:'Krachttraining',min,zwaar:z,notitie:'',oef:oef.map(([naam,eh,sets])=>({naam,eenheid:eh,sets:sets.map(([r,kg])=>({r,kg}))}))});
+  const C=(o,type,min,z,sport)=>({id:'w'+o,date:dk(o),type,min,zwaar:z,notitie:'',oef:[],sport:sport||{}});
+  return [
+    K(20,30,2,[['Goblet squat','herh',[[10,8],[10,8],[10,8]]],['Push-up (op knieën)','herh',[[8,0],[8,0],[8,0]]],['Glute bridge','herh',[[12,0],[12,0],[12,0]]],['Plank','sec',[[20,0],[20,0],[20,0]]]]),
+    C(18,'Wandelen',40,1,{afstand:'3,5'}),
+    C(17,'Zwemmen',30,2,{afstand:'800',tijd:'24:00',slag:'Schoolslag'}),
+    K(16,30,2,[['Goblet squat','herh',[[10,10],[10,10],[10,10]]],['Push-up (op knieën)','herh',[[10,0],[10,0],[10,0]]],['Glute bridge','herh',[[12,0],[12,0],[12,0]]],['Plank','sec',[[25,0],[25,0],[25,0]]]]),
+    C(13,'Fietsen',35,2,{afstand:'13',tijd:'34:30',soort:'Woon-werk'}),
+    C(12,'Voetbal',90,3,{soort:'Wedstrijd',positie:'Middenvelder',goals:1}),
+    K(11,35,2,[['Goblet squat','herh',[[10,10],[10,10],[10,10]]],['Push-up','herh',[[5,0],[5,0],[4,0]]],['Glute bridge','herh',[[15,0],[15,0],[15,0]]],['Plank','sec',[[30,0],[30,0],[30,0]]]]),
+    C(9,'Hardlopen',25,3,{afstand:'4',tijd:'24:40',soort:'Duurloop'}),
+    C(7,'Zwemmen',35,2,{afstand:'1000',tijd:'28:30',slag:'Borstcrawl'}),
+    K(6,35,3,[['Goblet squat','herh',[[10,12],[10,12],[8,12]]],['Push-up','herh',[[6,0],[6,0],[5,0]]],['Glute bridge','herh',[[15,0],[15,0],[15,0]]],['Plank','sec',[[30,0],[30,0],[30,0]]]]),
+    C(4,'Wandelen',45,1,{afstand:'4'}),
+    C(5,'Voetbal',75,2,{soort:'Training',positie:'Middenvelder'}),
+    C(3,'Hardlopen',30,2,{afstand:'5',tijd:'29:50',soort:'Duurloop'}),
+    K(1,35,2,[['Goblet squat','herh',[[10,12],[10,12],[10,12]]],['Push-up','herh',[[8,0],[7,0],[6,0]]],['Lunges','herh',[[8,0],[8,0],[8,0]]],['Plank','sec',[[35,0],[35,0],[30,0]]]])
+  ];
+}
+const nlDag=k=>{if(k===dk(0))return 'Vandaag';if(k===dk(1))return 'Gisteren';return new Date(k+'T12:00').toLocaleDateString('nl-NL',{weekday:'short',day:'numeric',month:'short'})};
+const sorteerWo=()=>[...(S.workouts||[])].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
+function fmtSets(o){
+  const s=o.sets.filter(x=>x.r>0);if(!s.length)return 'geen sets';
+  const eh=o.eenheid==='sec'?' sec':'';const kgs=[...new Set(s.map(x=>x.kg||0))];const rs=[...new Set(s.map(x=>x.r))];
+  if(kgs.length>1)return s.map(x=>`${x.r}${eh}${x.kg?` × ${n1(x.kg)} kg`:''}`).join(', ');
+  const kgTxt=kgs[0]?` · ${n1(kgs[0])} kg`:'';
+  return (rs.length===1?`${s.length}×${rs[0]}${eh}`:`${s.map(x=>x.r).join(', ')}${eh}`)+kgTxt;
+}
+function vorigeOef(naam,behalveId){for(const w of sorteerWo()){if(w.id===behalveId)continue;const o=(w.oef||[]).find(x=>x.naam===naam);if(o)return {o,date:w.date}}return null}
+function besteVan(naam,behalveId){let kg=0,r=0;(S.workouts||[]).forEach(w=>{if(w.id===behalveId)return;(w.oef||[]).forEach(o=>{if(o.naam!==naam)return;o.sets.forEach(s=>{if((s.kg||0)>kg)kg=s.kg||0;if(s.r>r)r=s.r})})});((S.records||{}).handmatig||[]).forEach(m=>{if(m.naam!==naam)return;if(m.eenheid==='kg'){if(m.waarde>kg)kg=m.waarde}else if(m.waarde>r)r=m.waarde});return {kg,r}}
+function overloadTip(naam,eh,v){
+  if(!v)return 'Eerste keer: kies een gewicht of variant waarmee de laatste herhalingen zwaar voelen, maar je techniek goed blijft.';
+  const kg=Math.max(...v.o.sets.map(s=>s.kg||0));
+  if(eh==='sec')return 'Lukte het? Probeer vandaag 5 seconden langer.';
+  return kg>0?'Lukten alle sets goed? Probeer vandaag 1 herhaling meer per set. Haal je 12, ga dan 2 kg zwaarder en begin weer bij 8.':'Lukten alle sets goed? Probeer vandaag 1 of 2 herhalingen meer per set.';
+}
+function nieuweWo(type){return {id:'w'+Date.now(),date:dk(0),type:type||'Krachttraining',min:30,zwaar:2,notitie:'',oef:[],sport:{}}}
+function oefVan(naam,eh,sets){return {naam,eenheid:eh,sets:sets}}
+function woKaart(w){
+  return `<div class="hrow" style="flex-direction:column;align-items:stretch;gap:8px">
+    <div class="row"><div style="min-width:0"><div class="ttl">${esc(woTitel(w))}</div><div class="meta">${w.min} min · ${ZWAAR[w.zwaar][0].toLowerCase()}</div>${sportSam(w)?`<div class="meta">${esc(sportSam(w))}</div>`:''}</div><button class="btn sm ghost" data-wobewerk="${w.id}">Aanpassen</button></div>
+    ${w.oef.map(o=>`<div class="row"><span>${esc(o.naam)}</span><span class="note" style="font-variant-numeric:tabular-nums;text-align:right">${fmtSets(o)}</span></div>`).join('')}
+    ${w.notitie?`<span class="note">${esc(w.notitie)}</span>`:''}
+  </div>`;
+}
+function renderBeweging(){
+  if(wo)return renderWorkout();
+  const vi=(new Date().getDay()+6)%7, keys=[0,1,2,3,4,5,6].map(i=>dk(vi-i));
+  const W=S.workouts||[];
+  const perDag=keys.map(k=>{const ws=W.filter(w=>w.date===k);return {k,kracht:ws.filter(w=>w.type==='Krachttraining').reduce((a,w)=>a+(+w.min||0),0),overig:ws.filter(w=>w.type!=='Krachttraining').reduce((a,w)=>a+(+w.min||0),0)}});
+  const tot=perDag.reduce((a,d)=>a+d.kracht+d.overig,0), max=Math.max(60,...perDag.map(d=>d.kracht+d.overig));
+  const krachtN=W.filter(w=>w.type==='Krachttraining'&&keys.includes(w.date)).length, krachtDoel=S.profiel.doel==='spier'?3:2, doel=S.doelen.beweegWeek;
+  const lijst=sorteerWo(), laatsteKracht=lijst.find(w=>w.type==='Krachttraining'&&w.oef.length), vandaag=lijst.filter(w=>w.date===dk(0));
+  const records=[...new Set(W.flatMap(w=>(w.oef||[]).map(o=>o.naam)))].map(n=>{const b=besteVan(n),eh=oefInfo(n)[1];return [n,b.kg?`${n1(b.kg)} kg`:`${b.r}${eh==='sec'?' sec':' herhalingen'}`]});
+  const op=id=>openSet.has(id)?'open':'';
+  const snel=`<div class="acts">${WTYPES.map(t=>`<button class="act" data-woquick="${t}">${t}</button>`).join('')}</div>
+      <div class="row" style="flex-wrap:wrap;justify-content:flex-start">
+        ${laatsteKracht?'<button class="btn sm" data-act="woherhaal">Herhaal laatste krachttraining</button>':''}
+        <button class="btn sm ghost" data-act="woschema">Beginnersschema</button>
+      </div>`;
+  return `
+  <header class="top"><div><div class="date">Beweging</div><h2 class="hello">Training</h2></div></header>
+  <div class="stack">
+    ${undoHTML()}
+    <div class="card">
+      <div class="row"><div class="label">Training van vandaag</div>${vandaag.length?`<span class="chip">${vandaag.reduce((a,w)=>a+w.min,0)} min gelogd</span>`:''}</div>
+      ${vandaag.length?vandaag.map(woKaart).join('')+`<details class="more" data-keep="wo-nog" ${op('wo-nog')}><summary>Nog een training loggen${CHEV}</summary><div class="more-b">${snel}</div></details>`
+        :`<span class="note">Wat heb je vandaag gedaan? Kies een soort training om te loggen.</span>${snel}`}
+    </div>
+
+    <div class="card">
+      <details class="more wk" data-keep="weekschema" ${op('weekschema')}>
+        <summary><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+          <div class="row"><span class="label">Deze week</span><span class="chip ${tot>=doel?'':'warn'}">${tot>=doel?'Doel gehaald':`nog ${doel-tot} min`}</span></div>
+          <div class="row" style="align-items:flex-end"><div class="big" style="font-size:26px;color:var(--ink)">${tot}<small>/ ${doel} min</small></div><span class="note">kracht ${krachtN} van ${krachtDoel} keer</span></div>
+          <div class="bar"><i style="width:${pct(tot,doel)}%"></i></div>
+          <span class="row" style="justify-content:flex-start;gap:6px">Weekschema bekijken${CHEV}</span>
+        </div></summary>
+        <div class="more-b">
+          <div class="wchart" role="img" aria-label="Actieve minuten per dag deze week">${perDag.map((d,i)=>{const t=d.kracht+d.overig;return `<div class="col ${i===vi?'today':''}" title="${t} min"><span class="v">${t||''}</span><div class="stackb" style="height:${t/max*100}%">${d.overig?`<i class="ov" style="flex:${d.overig}"></i>`:''}${d.kracht?`<i class="kr" style="flex:${d.kracht}"></i>`:''}</div><span class="d">${['ma','di','wo','do','vr','za','zo'][i]}</span></div>`}).join('')}</div>
+          <div class="legend"><span><i class="sq kr"></i>Krachttraining</span><span><i class="sq ov"></i>Overig</span></div>
+          ${(()=>{const wk=W.filter(w=>keys.includes(w.date));const r=[];['Hardlopen','Zwemmen','Fietsen','Wandelen'].forEach(t=>{const a=wk.filter(w=>w.type===t).reduce((x,w)=>x+(getal((w.sport||{}).afstand)||0),0);if(a)r.push([t,SPORT[t].afstand==='m'?`${nl(a)} m`:`${n1(a)} km`])});const vb=wk.filter(w=>w.type==='Voetbal');if(vb.length)r.push(['Voetbal',`${vb.length} keer${vb.some(w=>w.sport&&w.sport.soort==='Wedstrijd')?', waarvan '+vb.filter(w=>w.sport&&w.sport.soort==='Wedstrijd').length+' wedstrijd':''}`]);return r.length?`<table class="nut"><tbody>${r.map(([t,v])=>`<tr><td>${t}</td><td>${v}</td></tr>`).join('')}</tbody></table>`:''})()}
+          <div class="row"><span class="note">Krachttraining</span><div class="dots">${Array.from({length:Math.max(krachtDoel,krachtN)},(_,i)=>`<i class="${i<krachtN?'on':''}" style="width:20px;height:20px;border-radius:6px"></i>`).join('')}</div></div>
+          <span class="note">${S.profiel.doel==='spier'?'Voor spiermassa: 3 keer per week krachttraining.':'Advies: 150 minuten bewegen en 2 keer per week oefeningen voor je spieren en botten.'}${S.profiel.doel==='spier'&&krachtN===0&&vi>=4?' Je hebt deze week nog niet getraind. Eet op onderhoud als je deze week niet traint.':''}</span>
+        </div>
+      </details>
+    </div>
+
+    <div class="card" style="padding-block:12px"><details class="more" data-keep="logboek" ${op('logboek')}><summary>Logboek · ${lijst.filter(w=>w.date!==dk(0)).length} eerdere trainingen${CHEV}</summary><div class="more-b">
+      ${lijst.filter(w=>w.date!==dk(0)).length?lijst.filter(w=>w.date!==dk(0)).slice(0,8).map(w=>`<details class="logitem" data-keep="log-${w.id}" ${op('log-'+w.id)}>
+        <summary><div style="min-width:0"><div class="ttl">${esc(woTitel(w))}</div><div class="meta">${nlDag(w.date)} · ${w.min} min · ${ZWAAR[w.zwaar][0].toLowerCase()}${w.oef.length?` · ${w.oef.length} oefeningen`:''}</div>${sportSam(w)?`<div class="meta">${esc(sportSam(w))}</div>`:''}</div>${CHEV}</summary>
+        <div class="more-b">
+          ${w.oef.map(o=>`<div class="row"><span>${esc(o.naam)}</span><span class="note" style="font-variant-numeric:tabular-nums;text-align:right">${fmtSets(o)}</span></div>`).join('')}
+          ${w.notitie?`<span class="note">${esc(w.notitie)}</span>`:''}
+          <div class="row" style="justify-content:flex-start"><button class="btn sm ghost" data-wobewerk="${w.id}">Aanpassen</button><button class="btn sm ghost" style="border-color:var(--muted);color:var(--muted)" data-wodel="${w.id}">${woDel===w.id?'Zeker weten? Tik nog een keer':'Verwijderen'}</button></div>
+        </div></details>`).join(''):'<p class="note">Je eerdere trainingen komen hier te staan.</p>'}
+    </div></details></div>
+
+    ${recordsHTML()}
+
+    <div class="card" style="padding-block:12px"><details class="more" data-keep="beweeg-uitleg" ${op('beweeg-uitleg')}><summary>Hoeveel moet ik bewegen?${CHEV}</summary><div class="more-b">
+      <span class="note">De beweegrichtlijn is minstens 150 minuten per week matig intensief bewegen, verdeeld over meerdere dagen, plus 2 keer per week oefeningen voor je spieren en botten. Matig intensief betekent dat je hartslag en ademhaling omhooggaan, maar dat je nog kunt praten.</span>
+      <span class="note">Word sterker door elke week een klein beetje meer te doen dan de vorige keer: 1 herhaling extra, iets zwaarder gewicht of 5 seconden langer. De app laat bij elke oefening zien wat je de vorige keer deed.</span></div></details></div>
+  </div>`;
+}
+/* ---------- Sportspecifieke velden ---------- */
+const SPORT={
+  Zwemmen:{afstand:'m',tijd:true,tempo:'100m',kies:[['slag','Slag',['Schoolslag','Borstcrawl','Rugslag','Vlinderslag','Wisselslag']]]},
+  Hardlopen:{afstand:'km',tijd:true,tempo:'km',kies:[['soort','Soort training',['Duurloop','Interval','Tempoloop','Herstelloop','Wedstrijd']]]},
+  Fietsen:{afstand:'km',tijd:true,tempo:'kmu',kies:[['soort','Soort rit',['Buiten','Binnen of spinning','Woon-werk','Mountainbike']]]},
+  Wandelen:{afstand:'km',kies:[]},
+  Voetbal:{afstand:'km',opt:true,kies:[['soort','Training of wedstrijd',['Training','Wedstrijd']],['positie','Positie',['Keeper','Verdediger','Middenvelder','Aanvaller']]],tellers:[['goals','Doelpunten'],['assists','Assists']]},
+  Yoga:{kies:[['soort','Soort yoga',['Flow','Yin','Power','Herstel']]]},
+  Overig:{naam:true,afstand:'km',opt:true,tijd:true}
+};
+function parseTijd(t){t=String(t||'').trim().replace(/[.,]/g,':');if(!t)return null;const p=t.split(':').map(Number);if(p.some(x=>!isFinite(x)||x<0))return null;
+  if(p.length===1)return p[0]*60; if(p.length===2)return p[0]*60+p[1]; if(p.length===3)return p[0]*3600+p[1]*60+p[2]; return null}
+const fmtTijd=s=>{s=Math.round(s);const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?`${h}:${pad(m)}:${pad(x)}`:`${m}:${pad(x)}`};
+function tempoVan(type,sp){const c=SPORT[type];if(!c||!c.tempo||!sp)return null;const a=getal(sp.afstand),t=parseTijd(sp.tijd);if(!a||!t)return null;
+  if(c.tempo==='100m')return {v:t/(a/100),txt:`${fmtTijd(t/(a/100))} /100 m`,sneller:'laag'};
+  if(c.tempo==='km')return {v:t/a,txt:`${fmtTijd(t/a)} /km`,sneller:'laag'};
+  return {v:a/(t/3600),txt:`${n1(a/(t/3600))} km/u`,sneller:'hoog'}}
+const woTitel=w=>w.type==='Overig'&&w.sport&&w.sport.naam?w.sport.naam:w.type;
+function sportSam(w){const c=SPORT[w.type],sp=w.sport||{};if(!c)return '';const d=[];
+  const a=getal(sp.afstand);if(a&&c.afstand)d.push(c.afstand==='m'?`${nl(a)} m`:`${n1(a)} km`);
+  if(sp.tijd&&parseTijd(sp.tijd))d.push(fmtTijd(parseTijd(sp.tijd)));
+  const tp=tempoVan(w.type,sp);if(tp)d.push(tp.txt);
+  (c.kies||[]).forEach(([k])=>{if(sp[k])d.push(sp[k].toLowerCase())});
+  (c.tellers||[]).forEach(([k,l])=>{if(sp[k])d.push(`${sp[k]} ${sp[k]===1?{goals:'doelpunt',assists:'assist'}[k]:l.toLowerCase()}`)});
+  return d.join(' · ')}
+function sportVelden(w){
+  const c=SPORT[w.type];if(!c)return '';const sp=w.sport||(w.sport={});
+  const tp=tempoVan(w.type,sp);
+  return `<div class="card">
+    <div class="label">Details ${esc(w.type.toLowerCase())}</div>
+    ${c.naam?`<div class="field"><label for="sp-naamw">Welke sport?</label><input type="text" id="sp-naamw" data-sport="naam" value="${esc(sp.naam||'')}" maxlength="30" placeholder="Bijv. padel, tennis, boksen"></div>`:''}
+    ${c.afstand||c.tijd?`<div class="grid2">
+      ${c.afstand?`<div class="field"><label for="sp-afstand">Afstand${c.opt?' (optioneel)':''}</label><div class="unit"><input type="text" id="sp-afstand" data-sport="afstand" value="${esc(sp.afstand??'')}" inputmode="decimal" autocomplete="off" placeholder="${c.afstand==='m'?'Bijv. 1000':'Bijv. 5'}"><span>${c.afstand}</span></div></div>`:''}
+      ${c.tijd?`<div class="field"><label for="sp-tijd">Tijd</label><input type="text" id="sp-tijd" data-sport="tijd" value="${esc(sp.tijd||'')}" inputmode="numeric" autocomplete="off" placeholder="mm:ss"></div>`:''}
+    </div>`:''}
+    ${c.tempo?`<div class="plan" id="wo-tempo" aria-live="polite">${tp?`Je tempo: <b>${tp.txt}</b>`:'Vul afstand en tijd in, dan rekent de app je tempo uit.'}</div>`:''}
+    ${(c.kies||[]).map(([k,l,opts])=>`<div class="field"><label>${l}</label><div class="acts">${opts.map(o=>`<button type="button" class="act ${sp[k]===o?'on':''}" data-sportkies="${k}|${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`).join('')}
+    ${(c.tellers||[]).map(([k,l])=>`<div class="toggle" style="border:0;padding:0"><span>${l}</span><div class="stepper"><button type="button" class="btn round ghost sm" data-teller="${k}|-1" aria-label="${l} min 1">−</button><span>${sp[k]||0}</span><button type="button" class="btn round sm" data-teller="${k}|1" aria-label="${l} plus 1">+</button></div></div>`).join('')}
+  </div>`;
+}
+function sportRecords(behalveId){
+  const W=(S.workouts||[]).filter(w=>w.id!==behalveId), out={};
+  ['Hardlopen','Zwemmen','Fietsen','Wandelen'].forEach(t=>{const c=SPORT[t];const ws=W.filter(w=>w.type===t&&getal((w.sport||{}).afstand));
+    if(!ws.length)return;const lang=ws.reduce((a,w)=>getal(w.sport.afstand)>getal(a.sport.afstand)?w:a);
+    out[t+'|lang']={label:{Hardlopen:'Langste loop',Zwemmen:'Langste zwemsessie',Fietsen:'Langste rit',Wandelen:'Langste wandeling'}[t],v:getal(lang.sport.afstand),txt:c.afstand==='m'?`${nl(getal(lang.sport.afstand))} m`:`${n1(getal(lang.sport.afstand))} km`,date:lang.date};
+    if(c.tempo){const min=c.afstand==='m'?100:1;let best=null;ws.forEach(w=>{if(getal(w.sport.afstand)<min)return;const tp=tempoVan(t,w.sport);if(!tp)return;if(!best||(tp.sneller==='laag'?tp.v<best.v:tp.v>best.v))best={...tp,date:w.date}});
+      if(best)out[t+'|tempo']={label:{Hardlopen:'Snelste looptempo (vanaf 1 km)',Zwemmen:'Snelste zwemtempo (vanaf 100 m)',Fietsen:'Hoogste gemiddelde fietssnelheid'}[t],v:best.v,sneller:best.sneller,txt:best.txt,date:best.date}}});
+  const vb=W.filter(w=>w.type==='Voetbal'&&(w.sport||{}).goals);if(vb.length){const b=vb.reduce((a,w)=>w.sport.goals>a.sport.goals?w:a);out['Voetbal|goals']={label:'Meeste doelpunten in één keer',v:b.sport.goals,txt:`${b.sport.goals}`,date:b.date}}
+  return out;
+}
+
+/* ---------- Persoonlijke records ---------- */
+let recEdit=false, recForm=null;
+function openRecForm(n){const dd=recDetail(n);recForm={naam:n,waarde:'',eenheid:dd.kg||oefInfo(n)[2]||!OEFENINGEN.some(o=>o[0]===n)?'kg':dd.eh,date:dk(0)};recEdit=false;openSet.add('records');render();
+  const el=$('#rec-waarde');if(el){el.scrollIntoView({block:'center',behavior:'smooth'});try{el.focus({preventScroll:true})}catch(e){}}}
+function recDetail(naam){
+  let kg=0,kgD=null,r=0,rD=null,eh=oefInfo(naam)[1];
+  (S.workouts||[]).forEach(w=>(w.oef||[]).forEach(o=>{if(o.naam!==naam)return;if(o.eenheid)eh=o.eenheid;o.sets.forEach(s=>{if((s.kg||0)>kg){kg=s.kg;kgD=w.date}if(s.r>r){r=s.r;rD=w.date}})}));
+  ((S.records||{}).handmatig||[]).forEach(m=>{if(m.naam!==naam)return;if(m.eenheid==='kg'){if(m.waarde>kg){kg=m.waarde;kgD=m.date}}else{eh=m.eenheid;if(m.waarde>r){r=m.waarde;rD=m.date}}});
+  return {kg,kgD,r,rD,eh};
+}
+function recordsHTML(){
+  const R=S.records, op=openSet.has('records')?'open':'';
+  const bekend=[...new Set([...OEFENINGEN.map(o=>o[0]),...(S.workouts||[]).flatMap(w=>(w.oef||[]).map(o=>o.naam)),...R.handmatig.map(m=>m.naam)])].filter(n=>!R.lijst.includes(n));
+  const rows=R.lijst.map(n=>{const d=recDetail(n),val=d.kg?`${n1(d.kg)} kg`:d.r?`${d.r} ${d.eh==='sec'?'sec':'herh'}`:'nog geen',dat=d.kg?d.kgD:d.rD;
+    return `<tr><td>${esc(n)}${dat?`<div class="meta">${nlDag(dat)}</div>`:''}</td><td><span class="recval">${val}</span>${recEdit?`<button class="del" data-recdel="${esc(n)}" aria-label="${esc(n)} uit je records halen">×</button>`:`<button class="btn sm ghost recbtn" data-reclog="${esc(n)}" aria-label="Record invullen voor ${esc(n)}">${d.kg||d.r?'Nieuw PR':'Invullen'}</button>`}</td></tr>`}).join('');
+  const F=recForm;
+  const form=F?`<div class="hrow" style="flex-direction:column;align-items:stretch;gap:10px">
+      <div class="label">Record loggen · ${esc(F.naam)}</div>
+      <div class="field"><label for="rec-naam">Oefening</label><select id="rec-naam" data-rec="naam">${[...R.lijst,...bekend].map(n=>`<option ${n===F.naam?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
+      <div class="grid2"><div class="field"><label for="rec-waarde">Record</label><input type="text" id="rec-waarde" data-rec="waarde" value="${esc(F.waarde||'')}" inputmode="decimal" autocomplete="off" placeholder="Bijv. 40"></div>
+        <div class="field"><label for="rec-eh">Eenheid</label><select id="rec-eh" data-rec="eenheid">${[['kg','kg'],['herh','herhalingen'],['sec','seconden']].map(([v,l])=>`<option value="${v}" ${F.eenheid===v?'selected':''}>${l}</option>`).join('')}</select></div></div>
+      <div class="field"><label for="rec-date">Datum</label><input type="date" id="rec-date" data-rec="date" value="${F.date}" max="${dk(0)}"></div>
+      ${(()=>{const d=recDetail(F.naam),cur=F.eenheid==='kg'?d.kg:d.r;return cur?`<span class="note">Je huidige record: ${F.eenheid==='kg'?n1(cur)+' kg':cur+(F.eenheid==='sec'?' sec':' herhalingen')}.</span>`:''})()}
+      <div class="row"><button class="btn sm ghost" data-act="recannul">Annuleren</button><button class="btn sm" data-act="recsave">Record opslaan</button></div>
+    </div>`:'';
+  return `<div class="card" style="padding-block:12px"><details class="more" data-keep="records" ${op}><summary>Persoonlijke records · ${R.lijst.length} ${R.lijst.length===1?'oefening':'oefeningen'}${CHEV}</summary><div class="more-b">
+    ${R.lijst.length?`<table class="nut rec"><tbody>${rows}</tbody></table>`:'<span class="note">Nog geen oefeningen in je records. Tik op Lijst aanpassen om er een toe te voegen.</span>'}
+    ${(()=>{const sr=Object.values(sportRecords());return sr.length?`<div class="label" style="margin-top:4px">Sportrecords (automatisch)</div><table class="nut rec"><tbody>${sr.map(x=>`<tr><td>${x.label}<div class="meta">${nlDag(x.date)}</div></td><td><span class="recval">${x.txt}</span></td></tr>`).join('')}</tbody></table>`:''})()}
+    ${form}
+    ${recEdit?`<div class="label">Oefening toevoegen</div><div class="acts">${bekend.map(n=>`<button type="button" class="act" data-recadd="${esc(n)}">${esc(n)}</button>`).join('')}</div>
+      <form class="addrow" id="recAddForm"><input type="text" id="recAddNaam" placeholder="Andere oefening" maxlength="40" aria-label="Andere oefening"><button class="btn sm" type="submit">Toevoegen</button></form>`:''}
+    <div class="row" style="justify-content:flex-start;flex-wrap:wrap">${F?'':'<button class="btn sm" data-act="recnieuw">+ Record loggen</button>'}<button class="btn sm ghost" data-act="recedit">${recEdit?'Klaar':'Lijst aanpassen'}</button></div>
+    <span class="note">Records uit je workouts, zoals je zwaarste gewicht, langste loop of snelste tempo, worden automatisch bijgehouden. Een record van buiten de app, zoals in de sportschool of een test, log je hier zelf.</span>
+  </div></details></div>`;
+}
+function renderWorkout(){
+  const w=wo, kracht=w.type==='Krachttraining';
+  const toegevoegd=new Set(w.oef.map(o=>o.naam));
+  return `
+  <header class="top"><div><div class="date">${w.bewerk?'Workout bewerken':'Workout loggen'} · ${nlDag(w.date)}</div><h2 class="hello">${esc(woTitel(w))}</h2></div></header>
+  <div class="stack">
+    <div class="card">
+      <div class="label">Soort training</div>
+      <div class="acts">${WTYPES.map(t=>`<button class="act ${w.type===t?'on':''}" data-wotype="${t}">${t}</button>`).join('')}</div>
+      <div class="field"><label for="wo-min">Hoe lang?</label><div class="unit"><input type="number" id="wo-min" data-wo="min" value="${w.min}" min="1" max="600" inputmode="numeric"><span>min</span></div></div>
+      <div class="field"><label>Hoe zwaar voelde het?</label><div class="seg seg3">${[1,2,3].map(z=>`<button class="act ${w.zwaar===z?'on':''}" data-wozwaar="${z}">${ZWAAR[z][0]}<small>${ZWAAR[z][1]}</small></button>`).join('')}</div></div>
+    </div>
+    ${sportVelden(w)}
+    ${kracht?`<div class="card">
+      <div class="label">Oefeningen</div>
+      ${w.oef.length?'<span class="note">Alles is aan te passen: de naam van de oefening, het aantal sets, herhalingen en gewicht. Gewicht leeg laten = eigen lichaamsgewicht.</span>':'<span class="note">Voeg hieronder je eerste oefening toe, of vul het beginnersschema in.</span>'}
+      ${w.oef.map((o,oi)=>{const v=vorigeOef(o.naam,w.id),gew=o.eenheid!=='sec',eh=o.eenheid==='sec'?'sec':'herh';
+        return `<div class="hrow" style="flex-direction:column;align-items:stretch;gap:8px">
+          <div class="oefkop"><input type="text" id="oef-${oi}-naam" data-oef="${oi}.naam" value="${esc(o.naam)}" maxlength="40" aria-label="Naam oefening">
+            <select id="oef-${oi}-eh" data-oef="${oi}.eenheid" aria-label="Meten in"><option value="herh" ${eh==='herh'?'selected':''}>herhalingen</option><option value="sec" ${eh==='sec'?'selected':''}>seconden</option></select>
+            <button class="del" data-oefdel="${oi}" aria-label="Oefening verwijderen">×</button></div>
+          ${v?`<span class="note">Vorige keer (${nlDag(v.date).toLowerCase()}): <b style="color:var(--ink)">${fmtSets(v.o)}</b></span>`:''}
+          <span class="note">${overloadTip(o.naam,o.eenheid,v)}</span>
+          <div class="wo-set head"><span>Set</span><span>${eh==='sec'?'Seconden':'Herhalingen'}</span><span>${gew?'Gewicht (kg)':''}</span><span></span></div>
+          ${o.sets.map((s,si)=>`<div class="wo-set"><span class="note">${si+1}</span>
+            <input type="number" id="s-${oi}-${si}-r" data-set="${oi}.${si}.r" value="${s.r||''}" min="0" max="999" inputmode="numeric" aria-label="Set ${si+1} ${eh}">
+            ${gew?`<div class="unit"><input type="number" id="s-${oi}-${si}-kg" data-set="${oi}.${si}.kg" value="${s.kg||''}" placeholder="0" min="0" max="500" step="0.5" inputmode="decimal" aria-label="Set ${si+1} gewicht in kg"><span>kg</span></div>`:'<span></span>'}
+            <button class="del" data-setdel="${oi}.${si}" aria-label="Set verwijderen">×</button></div>`).join('')}
+          <div class="row" style="justify-content:flex-start"><button class="btn sm ghost" data-setadd="${oi}">+ Set</button>${oi>0?`<button class="btn sm ghost" style="border-color:var(--muted);color:var(--muted)" data-oefop="${oi}" aria-label="Oefening omhoog">Omhoog</button>`:''}</div>
+        </div>`}).join('')}
+      <div class="label" style="margin-top:4px">Oefening toevoegen</div>
+      <div class="acts">${OEFENINGEN.filter(o=>!toegevoegd.has(o[0])).map(o=>`<button type="button" class="act" data-oefadd="${esc(o[0])}">${esc(o[0])}</button>`).join('')}</div>
+      <form class="addrow" id="oefForm"><input type="text" id="oefNaam" placeholder="Andere oefening" maxlength="40" aria-label="Andere oefening"><button class="btn sm" type="submit">Toevoegen</button></form>
+      ${w.oef.length?'':'<button class="btn ghost" data-act="woschemavul">Vul het beginnersschema in</button>'}
+    </div>`:''}
+    <div class="card"><div class="field"><label for="wo-notitie">Notitie (optioneel)</label><input type="text" id="wo-notitie" data-wo="notitie" value="${esc(w.notitie||'')}" maxlength="120" placeholder="Bijv. knie voelde goed, volgende keer zwaarder"></div></div>
+    <div class="row"><button class="btn ghost" data-act="wocancel">Annuleren</button><button class="btn" data-act="wosave">Workout opslaan</button></div>
+  </div>`;
+}
+function bewaarWorkout(){
+  const w=wo;
+  w.min=Math.round(+w.min||0);if(w.min<=0)return toast('Vul in hoe lang je hebt getraind');
+  const sc=SPORT[w.type];w.sport=w.sport||{};
+  if(sc){const t=parseTijd(w.sport.tijd);if(sc.tijd&&w.sport.tijd&&!t)return toast('Vul de tijd in als mm:ss, bijvoorbeeld 27:30');if(t)w.sport.tijd=fmtTijd(t);}
+  const srVoor=sportRecords(w.id);
+  if(w.type==='Krachttraining'){w.oef=w.oef.map(o=>({...o,naam:cap(String(o.naam||'').trim())||'Oefening',sets:o.sets.filter(s=>(+s.r||0)>0).map(s=>({r:+s.r,kg:+s.kg||0}))})).filter(o=>o.sets.length)}else w.oef=[];
+  // Records bepalen tegen alle eerdere workouts
+  const recs=[];w.oef.forEach(o=>{const b=besteVan(o.naam,w.id),kg=Math.max(...o.sets.map(s=>s.kg)),r=Math.max(...o.sets.map(s=>s.r));const eerder=vorigeOef(o.naam,w.id);if(!eerder)return;
+    if(kg>0&&kg>b.kg)recs.push(`${o.naam} ${n1(kg)} kg`);else if(kg===0&&b.kg===0&&r>b.r)recs.push(`${o.naam} ${r}${o.eenheid==='sec'?' sec':' herhalingen'}`)});
+  const {bewerk,...rec}=w;const srNa=(()=>{const old=S.workouts;S.workouts=old.filter(x=>x.id!==w.id).concat([rec]);const r=sportRecords();S.workouts=old;return r})();
+  Object.keys(srNa).forEach(k=>{if(!k.startsWith(w.type+'|'))return;const a=srVoor[k],b=srNa[k];if(!a)return;const beter=k.endsWith('tempo')?(b.sneller==='laag'?b.v<a.v:b.v>a.v):b.v>a.v;if(beter)recs.push(`${b.label.toLowerCase()}: ${b.txt}`)});
+  S.workouts=(S.workouts||[]).filter(x=>x.id!==w.id).concat([rec]);
+  wo=null;render();screen.scrollTop=0;
+  if(bewerk)return toast('Workout bijgewerkt');
+  vier({titel:recs.length?'Nieuw record!':'Workout gelogd!',sub:recs.length?esc(cap(recs.join(', '))):`${esc(woTitel(w))} · ${esc(sportSam(w)||w.min+' minuten')}. Elke training telt.`,xp:20,groot:recs.length>0});
+}
+
+function renderProfiel(){
+  const p=S.profiel, d=S.doelen, b=Math.round(bmr(p)), k=kcalDoel(p), wb=waterBasis(p)+ACT[p.activiteit].w, P=plan(p);
+  const bmiTxt=P.bmi.toLocaleString('nl-NL',{maximumFractionDigits:1});
+  const samenvatting=P.doel==='afvallen'
+    ?`Ongeveer ${kg1(P.kgWeek)} kg per week eraf.${P.weken?` Je streefgewicht van ${kg1(p.streef)} kg haal je over ongeveer ${P.weken} weken.`:''}${P.ondergrens?' We gaan niet lager dan dit, ook al kies je een sneller tempo.':''}`
+    :P.doel==='spier'?(P.geenTraining?'Je eet nu op onderhoud. Een overschot komt er pas bij als je gaat trainen.':'Een klein overschot van 300 kcal, samen met 3 keer per week krachttraining. Zo kom je ongeveer 0,25 kg per week aan en blijft de vettoename beperkt.')
+    :'Om op gewicht te blijven en fitter te worden.';
+  const num=(id,l,v,u,min,max,step=1)=>`<div class="field"><label for="${id}">${l}</label><div class="unit"><input type="number" id="${id}" data-p="${id.replace('p-','')}" value="${v}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><span>${u}</span></div></div>`;
+  const doel=(k,l,stap,eenheid)=>`<div class="toggle"><span>${l}</span><div class="stepper"><button class="btn round ghost sm" data-doel="${k}" data-d="-${stap}" aria-label="Verlaag">−</button><span>${d[k].toLocaleString('nl-NL')} ${eenheid}</span><button class="btn round sm" data-doel="${k}" data-d="${stap}" aria-label="Verhoog">+</button></div></div>`;
+  const tg=(k,l)=>`<div class="toggle"><span>${l}</span><button class="btn sm ${S.meldingen[k]?'':'ghost'}" data-melding="${k}">${S.meldingen[k]?'Aan':'Uit'}</button></div>`;
+  const A=advies(), fmt=v=>v.toLocaleString('nl-NL');
+  const isOpen=id=>openSet.has(id)?'open':'';
+  const chev='<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+  const sect=(id,titel,sum,body)=>`<details class="sect" data-keep="${id}" ${isOpen(id)}><summary><div><div class="sect-t">${titel}</div><div class="sect-s">${sum}</div></div>${chev}</summary><div class="sect-b">${body}</div></details>`;
+  const advBlok=(key,titel,stap,eenheid,adv,sub,planTxt,qas)=>`
+    <div class="advice">
+      <div class="head"><div><div class="label">${titel}</div><div class="big" style="font-size:22px">${fmt(adv)}<small>${eenheid} advies</small></div><div class="note">${sub}</div></div>
+      ${d[key]===adv?'<span class="chip">Gevolgd</span>':`<button class="btn sm" data-adopt="${key}" data-v="${adv}">Overnemen</button>`}</div>
+      ${planTxt?`<div class="plan">${planTxt}</div>`:''}
+      <div class="mine"><span class="note">Jouw doel</span><div class="stepper"><button class="btn round ghost sm" data-doel="${key}" data-d="-${stap}" aria-label="Verlaag ${titel}">−</button><span>${fmt(d[key])} ${eenheid==='stappen'?'':eenheid}</span><button class="btn round sm" data-doel="${key}" data-d="${stap}" aria-label="Verhoog ${titel}">+</button></div></div>
+      <details class="how" data-keep="adv-${key}" ${isOpen('adv-'+key)}><summary>Waarom dit advies?</summary>${qas.map(([q,a])=>`<p><b>${q}</b><br>${a}</p>`).join('')}</details>
+    </div>`;
+  const aanTal=['water','beweeg','slaap'].filter(k=>S.meldingen[k]).length;
+
+  const overBody=`
+      <div class="field"><label for="naamInput">Naam</label><input type="text" id="naamInput" value="${esc(S.naam)}" maxlength="20"></div>
+      <div class="field"><label>Geslacht</label><div class="seg">
+        <button class="act ${p.geslacht==='man'?'on':''}" data-sex="man">Man</button>
+        <button class="act ${p.geslacht==='vrouw'?'on':''}" data-sex="vrouw">Vrouw</button></div></div>
+      <div class="grid2">${num('p-leeftijd','Leeftijd',p.leeftijd,'jaar',18,100)}${num('p-gewicht','Gewicht',p.gewicht,'kg',35,250,0.1)}</div>
+      ${num('p-lengte','Lengte',p.lengte,'cm',130,230)}
+      <div class="field"><label for="p-act">Hoe actief ben je?</label>
+        <select id="p-act">${Object.entries(ACT).map(([key,a])=>`<option value="${key}" ${p.activiteit===key?'selected':''}>${a.l}: ${a.s}</option>`).join('')}</select></div>
+      <span class="note">Je BMI is ${bmiTxt}.</span>`;
+
+  const doelBody=`
+      <div class="seg seg3">${Object.entries(DOEL).map(([key,o])=>`<button class="act ${p.doel===key?'on':''}" data-doelkeuze="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div>
+      ${p.doel==='afvallen'?(P.blok
+        ?`<div class="warnbox">Je BMI is ${bmiTxt}. Onder de 18,5 raden we afvallen af, dus we rekenen met op gewicht blijven. Twijfel je? Overleg dan met je huisarts.</div>`
+        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO).map(([key,o])=>`<button class="act ${p.tempo===key?'on':''}" data-tempo="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div></div>
+          ${num('p-streef','Streefgewicht',p.streef,'kg',35,250,0.5)}
+          ${P.streefLaag?'<div class="warnbox">Bij dit streefgewicht is je BMI lager dan 18,5. Dat is ondergewicht. Kies een hoger streefgewicht.</div>':''}
+          ${!P.streefLaag&&p.streef>=p.gewicht?'<div class="warnbox">Je streefgewicht ligt niet onder je huidige gewicht. Pas het aan of kies een ander doel.</div>':''}
+          <div class="plan">Afvallen gaat het best met krachttraining erbij. Dan verlies je vet en houd je je spieren.</div>`):''}
+      ${p.doel==='spier'?(P.geenTraining
+        ?`<div class="warnbox"><b>Spiermassa opbouwen kan alleen als je traint.</b> Je activiteit staat op zittend. Eet je dan meer dan je verbruikt, dan kom je vooral vet aan en dat is niet gezond. Daarom rekenen we nu met je onderhoud van ${nl(P.tdee)} kcal.</div>
+          <div class="plan">Ga je 3 keer per week krachttraining doen? Zet dan je activiteit hoger. Pas dan komt er een overschot bij.</div>
+          <button class="btn" data-act="gatrainen">Ik ga 3 keer per week trainen</button>`
+        :'<div class="plan">Het overschot is alleen gezond <b>als je traint</b>. Doe 3 keer per week krachttraining en maak de oefeningen elke week een klein beetje zwaarder. Train je een week niet, eet dan op onderhoud.</div>'):''}
+      ${p.doel==='fit'?'<div class="plan">Je eet wat je verbruikt. Focus op meer bewegen, beter slapen en genoeg eiwit, dan word je fitter zonder dat je gewicht verandert.</div>':''}`;
+
+  const adviesBody=`
+      <span class="note">Op basis van je gegevens. Begin je net? Dan bouwen we rustig op, zodat je het volhoudt.</span>
+      <div class="card">
+        <div class="label">Waar sta je nu?</div>
+        <div class="grid2">${num('p-stappenNu','Stappen per dag',p.stappenNu,'',0,30000,500)}${num('p-beweegNu','Sporten per week',p.beweegNu,'min',0,1500,10)}</div>
+        <span class="note">Een schatting is goed genoeg. Later haalt de app dit uit je telefoon of horloge.</span>
+      </div>
+      ${advBlok('stappen','Stappen per dag',500,'stappen',A.stappen.doel,
+        A.stappen.klaar?'Je zit al boven de 7.000. Vasthouden is nu het doel.':`Opbouw naar 7.000 in ${A.stappen.weken} ${A.stappen.weken===1?'week':'weken'}`,
+        A.stappen.klaar?'':`Deze week <b>${nl(A.stappen.doel)}</b> per dag, daarna elke week 1.000 erbij tot <b>7.000</b>.`,
+        [['Waarom 7.000 en geen 10.000?','De 10.000 stappen komen uit een Japanse reclamecampagne uit de jaren 60. Een analyse van 57 studies (The Lancet Public Health, 2025) laat zien dat 7.000 stappen al bijna dezelfde gezondheidswinst geeft. Daarboven wordt de extra winst klein.'],
+         ['Waarom niet meteen 7.000?',`Je zet nu ongeveer ${nl(p.stappenNu)} stappen. Wie te snel te veel wil, haakt vaak af of krijgt last van voeten en knieën. 1.000 stappen erbij is ongeveer 10 minuten extra wandelen.`],
+         ['Hoe kom ik aan meer stappen?','15 minuten wandelen is ongeveer 1.500 stappen. Wandel na de lunch, neem de trap of loop rond tijdens het bellen.']])}
+      ${advBlok('beweegWeek','Sporten per week',10,'min',A.beweegWeek.doel,
+        A.beweegWeek.klaar?'Je haalt de beweegrichtlijn al.':`Opbouw naar 150 min in ${A.beweegWeek.weken} ${A.beweegWeek.weken===1?'week':'weken'}`,
+        A.beweegWeek.klaar?'':`Deze week <b>${A.beweegWeek.doel} minuten</b> over minstens 3 dagen, daarna elke week 20 erbij tot <b>150</b>.`,
+        [['Hoeveel moet ik bewegen?','De Gezondheidsraad adviseert minstens 150 minuten per week matig intensief bewegen, verdeeld over meerdere dagen. Je hartslag en ademhaling gaan omhoog, maar praten lukt nog. Stevig wandelen of fietsen telt ook.'],
+         ['Moet ik ook krachttraining doen?',`Ja, 2 keer per week oefeningen voor spieren en botten, zoals squats, traplopen of krachttraining. Dat kan ook thuis.${p.leeftijd>=65?' Voor 65-plussers komen daar balansoefeningen bij.':''}`],
+         ['Moet ik elke dag sporten?','Nee. Je spieren worden sterker tijdens het herstel, dus rustdagen zijn nodig. Wissel sportdagen af met wandeldagen.']])}
+      ${advBlok('slaap','Slaap per nacht',.5,'uur',A.slaap.doel,`Advies voor jouw leeftijd: ${A.slaap.range} uur`,'',
+        [['Hoeveel slaap heb ik nodig?',`Voor volwassenen${p.leeftijd>=65?' vanaf 65 jaar':''} is ${A.slaap.range} uur het advies. Ga je sporten, dan heb je die slaap extra nodig om te herstellen.`],
+         ['Hoe slaap ik beter?','Ga elke dag rond dezelfde tijd naar bed en sta op hetzelfde tijdstip op, ook in het weekend. Stop een uur voor het slapen met je telefoon en drink na 15:00 geen koffie meer.']])}
+      ${advBlok('groente','Groente per dag',50,'gram',A.groente.doel,'Voor alle volwassenen gelijk, plus 2 stuks fruit','',
+        [['Hoeveel groente moet ik eten?','Het advies van de Schijf van Vijf is 250 gram per dag, ongeveer 4 à 5 opscheplepels. Dat geldt voor alle volwassenen, wat je gewicht ook is.'],
+         ['Hoe haal ik die 250 gram?','Eet ook bij de lunch al groente, zoals komkommer of tomaat op je brood, of een soep. Diepvriesgroente telt net zo goed mee.']])}
+      <div class="advice">
+        <div class="head"><div><div class="label">Eiwit per dag</div><div class="big" style="font-size:22px">${P.eiwit}<small>gram advies</small></div>
+        <div class="note">Voor je doel: ${DOEL[P.doel].l.toLowerCase()}, ongeveer ${Math.round(P.eiwit/4)} tot ${Math.round(P.eiwit/3)} g per maaltijd</div></div></div>
+        <details class="how" data-keep="adv-eiwit" ${isOpen('adv-eiwit')}><summary>Waarom dit advies?</summary>
+          <p><b>Waarom eiwit?</b><br>Eiwit heb je nodig om spieren te herstellen en op te bouwen. Zonder sport is het advies 0,8 g per kilo. ${P.doel==='afvallen'?'Als je minder eet, helpt extra eiwit (1,6 tot 2,0 g per kilo) om je spieren te behouden, en je hebt langer een vol gevoel.':P.doel==='spier'?'Voor spieropbouw is 1,6 tot 2,2 g per kilo het advies. Meer heeft weinig extra effect.':'Om fitter te worden is 1,2 tot 1,6 g per kilo genoeg.'}</p>
+          <p><b>Hoe verdeel ik het?</b><br>Over 3 à 4 maaltijden. Dat werkt beter dan alles in één keer.</p>
+          <p><b>Waar zit veel eiwit in?</b><br>Kwark, magere yoghurt, eieren, kip, vis, linzen, kikkererwten, tofu en noten.</p>
+        </details>
+      </div>
+      <button class="btn" data-act="adoptall">Neem alle adviezen over</button>`;
+
+  const ritmeBody=`
+      <span class="note">Je drinkschema loopt van opstaan tot 1 uur voor je bedtijd.</span>
+      ${[['werk','Doordeweeks'],['weekend','Weekend']].map(([k,l])=>`
+        <div class="field"><label>${l}</label><div class="grid2">
+          <div class="unit"><input type="time" id="r-${k}-op" data-ritme="${k}.op" value="${S.ritme[k].op}" aria-label="${l} opstaan"><span>op</span></div>
+          <div class="unit"><input type="time" id="r-${k}-bed" data-ritme="${k}.bed" value="${S.ritme[k].bed}" aria-label="${l} bedtijd"><span>bed</span></div>
+        </div></div>`).join('')}
+      <div class="field"><label>Maat van je glas of fles</label>
+        <div class="acts">${[200,250,330,500,750].map(v=>`<button class="act ${S.glasMl===v?'on':''}" data-glasml="${v}">${v} ml</button>`).join('')}</div></div>`;
+
+  const faq=[['Ik heb in jaren niet gesport. Waar begin ik?','Begin met wandelen en kies één nieuwe gewoonte tegelijk. Na 2 à 3 weken, als het vanzelf gaat, voeg je iets toe.'],
+    ['Tellen fietsen en traplopen mee?','Ja. Alles waarbij je hartslag en ademhaling omhooggaan telt mee voor je beweegminuten.'],
+    ['Wat als ik een dag of een week mis?','Dat is normaal. Pak het de volgende dag weer op. Het gaat om wat je gemiddeld doet over weken en maanden.'],
+    ['Is spierpijn na het sporten normaal?','Lichte spierpijn na een nieuwe training is normaal en trekt binnen 1 tot 3 dagen weg. Pijn in je gewrichten of op je borst, of duizeligheid? Stop dan en neem contact op met je huisarts.'],
+    ['Moet ik eerst afvallen voordat ik ga sporten?','Nee. Bewegen is op elk gewicht goed voor je hart, je humeur en je slaap. Begin rustig en bouw op.']];
+
+  return `
+  <header class="top"><div><div class="date">Profiel</div><h2 class="hello">Jouw plan</h2></div></header>
+  <div class="stack">
+    <div class="result" aria-live="polite">
+      <div><div class="label">Calorieën per dag</div><div class="big">${nl(P.kcal)}<small>kcal</small></div></div>
+      <div><div class="label">Water per dag</div><div class="big">${liter(wb)}<small>liter</small></div></div>
+      <div class="macros">
+        <div><span>Eiwit</span><b>${P.eiwit} g</b><span>${kg1(P.ek[0])} tot ${kg1(P.ek[1])} g/kg</span></div>
+        <div><span>Koolhydraten</span><b>${P.kh} g</b><span>brandstof</span></div>
+        <div><span>Vet</span><b>${P.vet} g</b><span>${Math.round(P.vetPct*100)}% van je kcal</span></div>
+      </div>
+      <div class="full">${samenvatting} Eet daarnaast minstens 30 g vezels per dag.</div>
+    </div>
+
+    <details class="how" data-keep="how" ${isOpen('how')}>
+      <summary>Hoe berekenen we dit?</summary>
+      <p><b>Calorieën.</b> Je verbruik in rust volgens de Mifflin-St Jeor-formule: <code>10 × gewicht + 6,25 × lengte − 5 × leeftijd ${p.geslacht==='man'?'+ 5':'− 161'}</code> = ${nl(b)} kcal. Keer je activiteitsfactor (${ACT[p.activiteit].f.toLocaleString('nl-NL')}) is ${nl(k)} kcal: je onderhoud.</p>
+      <p><b>Je doel.</b> Afvallen: 300 of 500 kcal onder je onderhoud. 1 kilo lichaamsvet is ongeveer 7.700 kcal, dus 500 kcal per dag minder is ongeveer 0,45 kg per week. Nooit onder je verbruik in rust, en nooit onder 1.500 kcal (man) of 1.200 kcal (vrouw). Spiermassa: 300 kcal boven je onderhoud, maar alleen als je activiteitsniveau laat zien dat je traint. Zittend rekenen we met je onderhoud, omdat een overschot zonder training vooral vet oplevert.</p>
+      <p><b>Eiwit, koolhydraten en vet.</b> Eiwit per kilo: afvallen 1,6 tot 2,0 g, spiermassa 1,6 tot 2,2 g, fitter 1,2 tot 1,6 g. Bij een BMI van 30 of hoger rekenen we met het gewicht bij BMI 25. Vet is ${Math.round(P.vetPct*100)}% van je calorieën, de rest komt uit koolhydraten.</p>
+      <p><b>Water.</b> EFSA adviseert ${p.geslacht==='man'?'2,5':'2,0'} liter vocht per dag, waarvan ongeveer 80% uit drinken: ${liter(waterBasis(p))} liter. Plus ${ACT[p.activiteit].w} ml voor je activiteitsniveau, en 500 ml op warme of sportdagen.</p>
+      <p>Dit zijn schattingen voor gezonde volwassenen. Zwanger, topsporter of een medische aandoening? Overleg met je huisarts of een diëtist.</p>
+    </details>
+
+    ${sect('over','Over jou',`${esc(S.naam)} · ${p.geslacht==='man'?'man':'vrouw'} · ${p.leeftijd} jaar · ${p.lengte} cm · ${kg1(p.gewicht)} kg · ${ACT[p.activiteit].l.toLowerCase()}`,overBody)}
+    ${sect('doel','Je doel',`${DOEL[P.doel].l}${P.doel==='afvallen'?` · ${TEMPO[p.tempo].l.toLowerCase()} tempo · naar ${kg1(p.streef)} kg${P.weken?` in ca. ${P.weken} weken`:''}`:''}`,doelBody)}
+    ${sect('advies','Jouw advies',`${nl(d.stappen)} stappen · ${d.beweegWeek} min sporten per week · ${fmt(d.slaap)} uur slaap · ${d.groente} g groente`,adviesBody)}
+    ${sect('ritme','Dagritme en water',`Doordeweeks ${S.ritme.werk.op} tot ${S.ritme.werk.bed} · weekend ${S.ritme.weekend.op} tot ${S.ritme.weekend.bed} · glas ${S.glasMl} ml`,ritmeBody)}
+    ${sect('herinner','Herinneringen',`${aanTal} van 3 aan`,`<div>${tg('water','Elke 2 uur water drinken')}${tg('beweeg','Na 1 uur zitten even bewegen')}${tg('slaap','Om 22:30 afbouwen voor de nacht')}<div class="toggle"><span>Geluid en trilling bij afvinken</span><button class="btn sm ${S.geluid!==false?'':'ghost'}" data-act="geluid">${S.geluid!==false?'Aan':'Uit'}</button></div></div><span class="note">Herinneringen voor je gewoontes stel je in bij Gewoontes.</span>`)}
+    ${sect('faq','Vragen van beginners',`${faq.length} vragen en antwoorden`,faq.map(([q,a])=>`<details class="how"><summary>${q}</summary><p>${a}</p></details>`).join('')+'<div class="warnbox">Klachten aan je hart, longen of gewrichten, of ouder dan 50 en lang inactief geweest? Overleg dan eerst met je huisarts.</div>')}
+
+    ${sect('data','Je gegevens','Back-up maken, terugzetten of wissen',`
+      <span class="note">Je gegevens staan alleen op dit apparaat. Maak af en toe een back-up, zeker voordat je van telefoon wisselt.</span>
+      <div class="row" style="flex-wrap:wrap;justify-content:flex-start"><button class="btn sm" data-act="backup">Back-up downloaden</button><label class="btn sm ghost" for="restoreFile" style="cursor:pointer">Back-up terugzetten</label></div>
+      <input type="file" id="restoreFile" accept="application/json,.json" hidden>
+      <div class="row" style="flex-wrap:wrap;justify-content:flex-start"><button class="btn sm ghost" data-act="reset">Voorbeelddata laden</button><button class="btn sm ghost" style="border-color:var(--kcal);color:var(--kcal)" data-act="wisalles">${pendingDel==='__alles'?'Zeker weten? Tik nog een keer':'Alles wissen'}</button></div>`)}
+    <p class="note" style="text-align:center;margin:0">Ritmo · je gegevens blijven op dit apparaat</p>
+  </div>`;
+}
+
+
+/* ---------- Beloning en groei ---------- */
+const BELONING=['Lekker bezig!','Weer een stem voor wie je wilt worden.','Zo bouw je het op.','Kleine stap, groot verschil.','Dat telt!','Je houdt woord tegenover jezelf.','Sterk. Morgen weer.','Gewoon gedaan. Zo werkt het.'];
+const MIJLPALEN={3:'3 dagen op rij',7:'1 week op rij',14:'2 weken op rij',21:'21 dagen op rij',30:'30 dagen op rij',50:'50 dagen op rij',100:'100 dagen op rij'};
+const DOELEN3=[['water','Waterdoel'],['stappen','Stappendoel'],['groente','Groentedoel']];
+let geboot=false, justDone=null, audioCtx=null;
+const pctTxt=v=>(+v).toLocaleString('nl-NL',{maximumFractionDigits:2});
+const datumKort=k=>new Date(k+'T12:00').toLocaleDateString('nl-NL',{day:'numeric',month:'short'});
+function doelenVandaag(){return {water:S.waterMl>=waterDoel(),stappen:S.stappen>=S.doelen.stappen,groente:som('groente')>=S.doelen.groente}}
+// Dagscore voor de groei: elke gewoonte en elk dagdoel (water, stappen, groente) telt even zwaar. Alles gehaald = 1% groei.
+function dagFractie(key){const n=S.gewoontes.length,h=S.gewoontes.filter(x=>x.log[key]).length,g=(S.doelLog||{})[key]||{},gd=DOELEN3.filter(([k])=>g[k]).length;return {h,n,gd,s:(h+gd)/((n+3)||1)}}
+function groeiReeks(){let idx=100;const uit=[];for(let o=29;o>=0;o--){const k=dk(o),f=dagFractie(k);idx*=1+0.01*f.s;uit.push({k,o,idx,...f})}return uit}
+function xpInfo(){
+  let xp=0;S.gewoontes.forEach(h=>xp+=Object.keys(h.log).length*10);
+  Object.values(S.doelLog||{}).forEach(g=>DOELEN3.forEach(([k])=>{if(g[k])xp+=15}));
+  const dagen=new Set();S.gewoontes.forEach(h=>Object.keys(h.log).forEach(d=>dagen.add(d)));
+  dagen.forEach(d=>{if(S.gewoontes.length>1&&S.gewoontes.every(h=>h.log[d]))xp+=25});
+  Object.values(S.bonus||{}).forEach(v=>xp+=v);
+  xp+=(S.workouts||[]).length*20+((S.records||{}).handmatig||[]).length*10;
+  const per=250;return {xp,level:Math.floor(xp/per)+1,in:xp%per,per};
+}
+function besteReeks(h){const ds=Object.keys(h.log).sort();let best=0,cur=0,prev=null;ds.forEach(d=>{const t=new Date(d+'T12:00');cur=prev&&(t-prev)/864e5<1.5?cur+1:1;best=Math.max(best,cur);prev=t});return best}
+function ding(groot){
+  if(S.geluid===false)return;
+  try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();const t=audioCtx.currentTime;
+    (groot?[523.25,659.25,783.99,1046.5]:[659.25,987.77]).forEach((f,i)=>{const o=audioCtx.createOscillator(),g=audioCtx.createGain(),s=t+i*.09;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.08,s+.01);g.gain.exponentialRampToValueAtTime(.0001,s+.28);o.connect(g).connect(audioCtx.destination);o.start(s);o.stop(s+.3)})}catch(e){}
+}
+function tril(p){if(S.geluid===false)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function confetti(x,y,n){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cv=$('#fx'),r=cv.parentElement.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  cv.width=r.width*dpr;cv.height=r.height*dpr;const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+  const cs=getComputedStyle(document.documentElement),C=['--accent','--sun','--water','--kcal','--sleep'].map(v=>cs.getPropertyValue(v).trim());
+  const ps=Array.from({length:n},()=>({x:x-r.left,y:y-r.top,vx:(Math.random()-.5)*9,vy:-Math.random()*9-3,s:Math.random()*5+4,c:C[Math.floor(Math.random()*C.length)],a:Math.random()*6,va:(Math.random()-.5)*.4,l:1}));
+  let f=0;cancelAnimationFrame(cv._raf);
+  (function tick(){ctx.clearRect(0,0,r.width,r.height);ps.forEach(p=>{p.vy+=.33;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;p.l-=.011;ctx.save();ctx.globalAlpha=Math.max(0,p.l);ctx.translate(p.x,p.y);ctx.rotate(p.a);ctx.fillStyle=p.c;ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);ctx.restore()});if(++f<110)cv._raf=requestAnimationFrame(tick);else ctx.clearRect(0,0,r.width,r.height)})();
+}
+function vier({titel,sub,xp,groot,x,y}){
+  const el=$('#reward');
+  el.innerHTML=`<div class="rw-xp">+${xp} XP</div><div><div class="rw-t">${esc(titel)}</div>${sub?`<div class="rw-s">${sub}</div>`:''}</div>`;
+  el.className='reward show'+(groot?' groot':'');clearTimeout(el._h);el._h=setTimeout(()=>{el.className='reward'+(groot?' groot':'')},groot?3200:2000);
+  ding(groot);tril(groot?[30,50,30,50,80]:25);
+  const r=$('.phone').getBoundingClientRect();confetti(x??r.left+r.width/2,y??r.top+r.height*.45,groot?150:45);
+}
+function groeiHTML(){
+  const R=groeiReeks(),nu=R[R.length-1],X=xpInfo();
+  const proj=[];let p=nu.idx;for(let i=1;i<=30;i++){p*=1.01;proj.push(p)}
+  const W=340,H=180,L=30,Rr=14,T=22,B=24,ymin=100,ymax=Math.ceil(proj[29]/10)*10;
+  const xs=i=>L+(W-L-Rr)*i/59, ys=v=>T+(H-T-B)*(1-(v-ymin)/(ymax-ymin));
+  const pts=R.map((d,i)=>`${xs(i).toFixed(1)},${ys(d.idx).toFixed(1)}`);
+  const area=`M${xs(0)},${ys(ymin)} L${pts.join(' L')} L${xs(29)},${ys(ymin)} Z`;
+  const pr=[`${xs(29).toFixed(1)},${ys(nu.idx).toFixed(1)}`,...proj.map((v,i)=>`${xs(30+i).toFixed(1)},${ys(v).toFixed(1)}`)];
+  const mid=Math.round((ymin+ymax)/2/5)*5;
+  window._groei={R,proj,xs,ys,W};
+  const tellen=S.gewoontes.map(h=>[h.t,R.filter(d=>h.log[d.k]).length]);
+  const doelTel=DOELEN3.map(([k,l])=>[l,R.filter(d=>((S.doelLog||{})[d.k]||{})[k]).length]);
+  const best=Math.max(0,...S.gewoontes.map(besteReeks));
+  const badges=Object.entries(MIJLPALEN).filter(([n])=>+n<=best);
+  const volgende=Object.keys(MIJLPALEN).map(Number).find(n=>n>best);
+  return `<div class="card groei">
+    <div class="row"><div class="label">Jouw groei</div><span class="chip">Level ${X.level}</span></div>
+    <div class="row" style="align-items:flex-end"><div class="big">+${(nu.idx-100).toLocaleString('nl-NL',{maximumFractionDigits:1})}%<small>groei in 30 dagen</small></div></div>
+    <div class="plan">Vandaag: <b>+${pctTxt(nu.s)}%</b> · ${nu.h} van ${nu.n} gewoontes · ${nu.gd} van 3 dagdoelen
+      <div class="bar" style="margin-top:8px"><i style="width:${Math.round(nu.s*100)}%;background:var(--sun)"></i></div></div>
+    <div style="position:relative">
+      <svg id="groeiSvg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Groei-index over de afgelopen 30 dagen, van 100 naar ${Math.round(nu.idx)}. Als je elke dag alles doet: ${Math.round(proj[29])} over 30 dagen.">
+        ${[ymin,mid,ymax].map(v=>`<line x1="${L}" x2="${W-Rr}" y1="${ys(v)}" y2="${ys(v)}" stroke="var(--line)" stroke-width="1"/><text x="${L-6}" y="${ys(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`).join('')}
+        <path d="${area}" fill="var(--accent)" fill-opacity=".14"/>
+        <polyline points="${pts.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+        <polyline points="${pr.join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 4" stroke-opacity=".6"/>
+        <circle cx="${xs(59)}" cy="${ys(proj[29])}" r="3.5" fill="var(--accent)" fill-opacity=".6"/>
+        <text x="${xs(59)}" y="${ys(proj[29])-8}" text-anchor="end" font-size="10.5" font-weight="700" fill="var(--ink)">${Math.round(proj[29])}</text>
+        <line id="gx" x1="0" x2="0" y1="${T}" y2="${H-B}" stroke="var(--muted)" stroke-width="1" opacity="0"/>
+        <circle cx="${xs(29)}" cy="${ys(nu.idx)}" r="5.5" fill="var(--sun)" stroke="var(--surface-2)" stroke-width="2"/>
+        <text x="${xs(29)}" y="${ys(nu.idx)-11}" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">${Math.round(nu.idx)}</text>
+        <text x="${L}" y="${H-6}" font-size="10" fill="var(--muted)">30 dagen terug</text>
+        <text x="${xs(29)}" y="${H-6}" text-anchor="middle" font-size="10" fill="var(--muted)">vandaag</text>
+        <text x="${W-Rr}" y="${H-6}" text-anchor="end" font-size="10" fill="var(--muted)">over 30 dagen</text>
+        <rect x="${L}" y="0" width="${W-L-Rr}" height="${H}" fill="transparent" class="ghit"/>
+      </svg>
+      <div class="gtip" id="gtip" hidden></div>
+    </div>
+    <div class="legend"><span><i></i>Jouw groei</span><span><i class="d"></i>Als je elke dag alles doet</span></div>
+    <div><div class="row"><span class="note">Level ${X.level}</span><span class="note">${X.in} / ${X.per} XP naar level ${X.level+1}</span></div>
+      <div class="bar" style="margin-top:4px"><i style="width:${Math.round(X.in/X.per*100)}%;background:var(--sun)"></i></div></div>
+    <details class="more" data-keep="groei-meer" ${openSet.has('groei-meer')?'open':''}><summary>Opgeteld en je badges${CHEV}</summary><div class="more-b">
+      <div class="label">De afgelopen 30 dagen</div>
+      <table class="nut"><tbody>${tellen.map(([t,n])=>`<tr><td>${esc(t)}</td><td>${n} keer</td></tr>`).join('')}${doelTel.map(([l,n])=>`<tr><td>${l} gehaald</td><td>${n} dagen</td></tr>`).join('')}</tbody></table>
+      <div class="label">Badges</div>
+      <div class="acts">${badges.length?badges.map(([,l])=>`<span class="chip">${l}</span>`).join(''):'<span class="note">Nog geen badges.</span>'}</div>
+      ${volgende?`<span class="note">Je langste reeks is ${best} ${best===1?'dag':'dagen'}. Volgende badge: ${MIJLPALEN[volgende]}.</span>`:''}
+    </div></details>
+    <details class="more" data-keep="groei-uitleg" ${openSet.has('groei-uitleg')?'open':''}><summary>Hoe werkt de groei-index?${CHEV}</summary><div class="more-b">
+      <span class="note">Elke gewoonte en elk dagdoel (water, stappen en groente) telt even zwaar. Haal je alles, dan groei je die dag 1%. Haal je de helft, dan 0,5%. Dat stapelt zich op, zoals rente op rente: wie 30 dagen alles doet, komt uit op 135. Het is geen meting van je lichaam maar van je consistentie. De stippellijn laat zien waar je komt als je vanaf nu elke dag alles doet.</span>
+      <span class="note">Punten (XP): 10 per gewoonte, 15 per gehaald dagdoel en 25 extra voor een dag waarop je al je gewoontes doet. Soms krijg je een verrassingsbonus.</span>
+    </div></details>
+  </div>`;
+}
+
+/* ---------- Productscanner ---------- */
+// Demo-database: echte waarden per 100 g/ml uit Open Food Facts. In de echte app wordt elke barcode live opgezocht.
+const PRODUCTEN={
+  '8717163800324':{naam:'Pindakaas 100%',merk:'Calvé',per:'g',kcal:573,vet:44,verz:5.7,kh:16,suiker:6.2,vezel:9.7,eiwit:26,zout:0,nutri:'A',portie:15},
+  '8712800035640':{naam:'Drinkyoghurt',merk:'Optimel',per:'ml',kcal:31,vet:0,verz:0,kh:3.7,suiker:3.4,vezel:null,eiwit:3.2,zout:0.11,nutri:'B',portie:200},
+  '8718265746060':{naam:'Havermout',merk:'AH Basic',per:'g',kcal:375,vet:7,verz:1.5,kh:59,suiker:0.7,vezel:10,eiwit:14,zout:0,nutri:'A',portie:40},
+  '8718452240265':{naam:'Havermout',merk:'Jumbo',per:'g',kcal:371,vet:6.7,verz:1.1,kh:59.5,suiker:0.8,vezel:9.7,eiwit:13.2,zout:0.1,zoutTxt:'< 0,1',nutri:'A',portie:40},
+  '5449000131805':{naam:'Coca-Cola Zero Sugar',merk:'Coca-Cola',per:'ml',kcal:0,vet:0,verz:0,kh:0,suiker:0,vezel:null,eiwit:0,zout:0.02,nutri:'C',portie:330}
+};
+let scan={state:'idle'};
+const LIVE_OK=!IN_CLAUDE&&!!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)&&window.isSecureContext;
+let liveReader=null;
+function stopLive(){try{liveReader&&liveReader.reset()}catch(e){}liveReader=null;const o=$('#live');if(o)o.hidden=true}
+async function startLive(){
+  if(!window.ZXing){toast('Scanner wordt nog geladen. Probeer het zo opnieuw.');return}
+  const o=$('#live');o.hidden=false;
+  const hints=new Map();hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.EAN_13,ZXing.BarcodeFormat.EAN_8,ZXing.BarcodeFormat.UPC_A,ZXing.BarcodeFormat.UPC_E]);
+  liveReader=new ZXing.BrowserMultiFormatReader(hints,250);
+  try{await liveReader.decodeFromConstraints({audio:false,video:{facingMode:{ideal:'environment'},width:{ideal:1280},height:{ideal:720}}},$('#liveVideo'),(res)=>{if(res&&liveReader){const c=res.getText();stopLive();tril(40);zoekCode(c)}})}
+  catch(e){stopLive();scan={state:'msg',msg:'Ritmo kan je camera niet gebruiken. Sta cameratoegang toe in de instellingen van je telefoon, of maak een foto van de barcode.',nietGevonden:false};if(tab==='voeding')render()}
+}
+const ICON_BAR='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13 8v8M17 8v8"/></svg>';
+const ICON_CAM='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>';
+function standaardType(){const m=minNu();return m<10*60+30?'Ontbijt':m<14*60?'Lunch':m<17*60?'Tussendoor':'Avondeten'}
+const n1=v=>(+v).toLocaleString('nl-NL',{maximumFractionDigits:1});
+async function verklein(file,max=1600){
+  const bmp=await createImageBitmap(file);const f=Math.min(1,max/Math.max(bmp.width,bmp.height));
+  // Witte rand eromheen: barcodes hebben een lege marge nodig om gelezen te worden
+  const w=Math.round(bmp.width*f),h=Math.round(bmp.height*f),m=Math.round(Math.max(w,h)*0.08);
+  const c=document.createElement('canvas');c.width=w+2*m;c.height=h+2*m;const x=c.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(bmp,m,m,w,h);return c;
+}
+async function leesBarcode(file){
+  let c; try{c=await verklein(file)}catch(e){return null}
+  if('BarcodeDetector' in window){try{const bd=new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']});const r=await bd.detect(c);if(r&&r[0])return r[0].rawValue}catch(e){}}
+  if(window.ZXing){
+    const hints=new Map();hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
+    hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.EAN_13,ZXing.BarcodeFormat.EAN_8,ZXing.BarcodeFormat.UPC_A,ZXing.BarcodeFormat.UPC_E]);
+    for(const max of [1600,900]){
+      try{const cc=max===1600?c:await verklein(file,max);const res=await new ZXing.BrowserMultiFormatReader(hints).decodeFromImageUrl(cc.toDataURL('image/png'));if(res)return res.getText()}catch(e){}
+    }
+  }
+  return null;
+}
+async function zoekOFF(c){
+  scan={state:'busy',code:c,msg:'Product opzoeken in Open Food Facts...'};render();
+  const nietGevonden=m=>{scan={state:'msg',code:c,nietGevonden:true,msg:m};render()};
+  let j=null;
+  try{const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),9000);
+    const r=await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(c)}.json?fields=product_name,product_name_nl,brands,quantity,serving_quantity,nutriscore_grade,nutriments`,{signal:ctl.signal});clearTimeout(tm);
+    j=await r.json()}catch(e){return nietGevonden(`Open Food Facts is nu niet bereikbaar. Controleer je internet, of maak een foto van het etiket of vul de waarden zelf in.`)}
+  const p=j&&j.status===1&&j.product,n=p&&p.nutriments||{};
+  let kcal=getal(n['energy-kcal_100g']);if(kcal==null&&getal(n.energy_100g)!=null)kcal=Math.round(getal(n.energy_100g)/4.184);
+  if(!p||kcal==null)return nietGevonden(`Barcode <b>${esc(c)}</b> staat nog niet in Open Food Facts${p?' met voedingswaarden':''}. Vul de waarden zelf in, dan onthoudt Ritmo dit product voor de volgende keer.`);
+  const g=k=>getal(n[k+'_100g']), ns=String(p.nutriscore_grade||'').toUpperCase();
+  const prod={naam:s70(p.product_name_nl||p.product_name)||'Product',merk:s70(String(p.brands||'').split(',')[0]),per:/\d\s*(ml|cl|l)\b/i.test(p.quantity||'')?'ml':'g',kcal,vet:g('fat'),verz:g('saturated-fat'),kh:g('carbohydrates'),suiker:g('sugars'),vezel:g('fiber'),eiwit:g('proteins'),zout:g('salt'),nutri:/^[A-E]$/.test(ns)?ns:null,portie:getal(p.serving_quantity),bron:'Open Food Facts',code:c};
+  scan={state:'result',product:prod,portie:prod.portie||100,type:standaardType()};render();
+}
+function zoekCode(code){
+  const c=String(code).replace(/\D/g,'');
+  if(!c){scan={state:'msg',msg:'Vul een barcode in van 8 of 13 cijfers.'};return render()}
+  const eigen=S.mijnProducten&&(S.mijnProducten[c]||S.mijnProducten[c.padStart(13,'0')]);
+  const p=eigen||PRODUCTEN[c]||PRODUCTEN[c.padStart(13,'0')]||PRODUCTEN[c.replace(/^0+/,'')];
+  if(p)scan={state:'result',product:{...p,code:c,bron:eigen?'Uit je eigen producten':'Gevonden via barcode'},portie:p.portie||100,type:standaardType()};
+  else return zoekOFF(c);
+  render();
+}
+async function scanBarcodeFoto(file){
+  if(!file)return;
+  scan={state:'busy',msg:'Barcode zoeken op je foto...'};render();
+  const code=await leesBarcode(file);
+  if(!code){scan={state:'msg',msg:'Ik zie geen barcode op deze foto. Houd je telefoon recht boven de barcode, zorg voor genoeg licht en probeer het opnieuw.'};return render()}
+  zoekCode(code);
+}
+const getal=v=>{if(v==null||v==='')return null;const x=parseFloat(String(v).replace(',','.').replace(/[^0-9.\-]/g,''));return isFinite(x)&&x>=0?x:null};
+async function scanEtiketFoto(file){
+  if(!file)return;
+  const code=scan.code||null;
+  scan={state:'busy',code,msg:'Claude leest het etiket. Dit duurt meestal 10 tot 30 seconden...'};render();
+  const sample=await samp;
+  if(!sample){scan={state:'msg',code,nietGevonden:!!code,msg:'Etiket lezen met AI komt in een volgende versie van Ritmo. Vul de waarden nu zelf in, dan onthoudt de app het product.'};return render()}
+  try{
+    const lim=await sample.limits().catch(()=>null);
+    if(!lim||!lim.images)throw {code:'images_unavailable'};
+    const r=await sample.json(`Op deze foto staat het etiket van een voedingsproduct. Lees de tabel met voedingswaarden uit, per 100 g of per 100 ml (niet per portie).
+Antwoord met alleen JSON in deze vorm:
+{"leesbaar":true,"naam":"productnaam als die op de foto staat, anders Product","merk":"merk of lege tekst","per":"g of ml","kcal":0,"vet":0,"verz":0,"kh":0,"suiker":0,"vezel":null,"eiwit":0,"zout":0,"portie":null}
+verz = waarvan verzadigd vet, kh = koolhydraten, suiker = waarvan suikers, portie = portiegrootte in g of ml als die op het etiket staat. Gebruik getallen met een punt als decimaalteken. Staat een waarde er niet op, gebruik null. Staat er alleen kJ, reken om naar kcal (delen door 4,184). Kun je geen voedingstabel lezen, antwoord dan alleen {"leesbaar":false}.`,{images:file});
+    const kcal=getal(r&&r.kcal);
+    if(!r||r.leesbaar===false||kcal==null){scan={state:'msg',code,nietGevonden:!!code,msg:'Ik kan de voedingswaarden op deze foto niet goed lezen. Maak een scherpe foto van de tabel met voedingswaarden, zonder schittering.'};return render()}
+    const p={naam:s70(r.naam)||'Product',merk:s70(r.merk),per:r.per==='ml'?'ml':'g',kcal,vet:getal(r.vet),verz:getal(r.verz),kh:getal(r.kh),suiker:getal(r.suiker),vezel:getal(r.vezel),eiwit:getal(r.eiwit),zout:getal(r.zout),nutri:null,portie:getal(r.portie),bron:'Etiket gelezen door Claude',code};
+    scan={state:'result',product:p,portie:p.portie||100,type:standaardType()};
+  }catch(e){
+    const c=e&&e.code;
+    const m={not_granted:'Je hebt de app geen toegang tot Claude gegeven. Scan de barcode of vul de waarden zelf in.',images_unavailable:'Foto\'s naar Claude sturen kan hier niet. Scan de barcode of vul de waarden zelf in.',image_rejected:'Deze foto kan niet worden gelezen. Probeer een andere foto (JPG of PNG).',rate_limited:'Even te vaak gevraagd. Probeer het over een paar minuten opnieuw.',refused:'Claude kan deze foto niet verwerken. Maak een foto van alleen het etiket.'};
+    scan={state:'msg',code,nietGevonden:!!code,msg:m[c]||'Het etiket lezen lukte niet. Probeer het nog een keer met een scherpe foto, of vul de waarden zelf in.'};
+  }
+  render();
+}
+function scanTotaal(){
+  const p=scan.product,f=(scan.portie||0)/100,t=k=>p[k]==null?0:p[k]*f, kd=plan(S.profiel).kcal;
+  return `<b>${nl(t('kcal'))} kcal</b> · ${n1(t('eiwit'))} g eiwit · ${n1(t('kh'))} g koolhydraten · ${n1(t('vet'))} g vet<br><span class="note">Dat is ${pct(t('kcal'),kd)}% van je dagdoel van ${nl(kd)} kcal.</span>`;
+}
+function scanHTML(){
+  if(scan.state==='result'){
+    const p=scan.product,u=p.per,ed=!!scan.edit;
+    const VELDEN=[['kcal','Energie','kcal'],['vet','Vet'],['verz','waarvan verzadigd',0,1],['kh','Koolhydraten'],['suiker','waarvan suikers',0,1],['vezel','Vezels'],['eiwit','Eiwit'],['zout','Zout']];
+    const rij=([k,l,eh,sub])=>`<tr class="${sub?'sub':''}"><td>${ed?`<label for="sp-${k}">${l}</label>`:l}</td><td>${ed
+      ?`<span class="unitin"><input type="number" class="mini" id="sp-${k}" data-sp="${k}" value="${p[k]==null?'':p[k]}" min="0" step="0.1" inputmode="decimal"><span>${eh||'g'}</span></span>`
+      :(k==='zout'&&p.zoutTxt?p.zoutTxt+' g':p[k]==null?'onbekend':`${n1(p[k])} ${eh||'g'}`)}</td></tr>`;
+    const chips=[...new Set([p.portie,100,p.portie?p.portie*2:null].filter(Boolean))];
+    const nieuw=p.code&&(!PRODUCTEN[p.code]||ed)&&!(S.mijnProducten&&S.mijnProducten[p.code]&&!ed);
+    return `<div class="card scan">
+      ${ed?`<div class="label">${p.bron==='Zelf ingevuld'?'Product zelf invullen':'Waarden aanpassen'}</div>
+        <div class="field"><label for="sp-naam">Productnaam</label><input type="text" id="sp-naam" data-sp="naam" value="${esc(p.naam||'')}" maxlength="60" placeholder="Bijv. volkorenbrood"></div>
+        <div class="grid2"><div class="field"><label for="sp-merk">Merk</label><input type="text" id="sp-merk" data-sp="merk" value="${esc(p.merk||'')}" maxlength="40"></div>
+        <div class="field"><label for="sp-per">Waarden per</label><select id="sp-per" data-sp="per"><option value="g" ${u==='g'?'selected':''}>100 gram</option><option value="ml" ${u==='ml'?'selected':''}>100 ml</option></select></div></div>
+        ${p.code?`<span class="note">Barcode ${esc(p.code)}</span>`:''}`
+      :`<div class="row" style="align-items:flex-start"><div style="min-width:0"><div class="label">${esc(p.bron)}</div><div class="sentence" style="font-size:19px">${esc(p.naam)}</div><div class="note">${esc(p.merk||'')}${p.merk&&p.code?' · ':''}${p.code?esc(p.code):''}</div></div>
+        ${p.nutri?`<span class="nutri n-${p.nutri}" title="Nutri-Score ${p.nutri}">${p.nutri}</span>`:''}</div>`}
+      <div style="overflow-x:auto"><table class="nut"><thead><tr><th>Per 100 ${u}</th><th></th></tr></thead><tbody>${VELDEN.map(rij).join('')}</tbody></table></div>
+      ${ed?'':'<button class="btn sm ghost" style="align-self:flex-start" data-act="scanedit">Waarden aanpassen</button>'}
+      <div class="field"><label for="scanPortie">Hoeveel neem je?</label><div class="unit"><input type="number" id="scanPortie" value="${scan.portie}" min="1" max="3000" inputmode="decimal"><span>${u}</span></div></div>
+      <div class="acts">${chips.map(v=>`<button type="button" class="act ${scan.portie===v?'on':''}" data-portie="${v}">${v===p.portie?`1 portie (${v} ${u})`:v===p.portie*2?`2 porties`:`${v} ${u}`}</button>`).join('')}</div>
+      <div class="plan" id="scanTot" aria-live="polite">${scanTotaal()}</div>
+      <div class="field"><label for="scanType">Bij welke maaltijd?</label><select id="scanType">${['Ontbijt','Lunch','Tussendoor','Avondeten'].map(t=>`<option ${t===scan.type?'selected':''}>${t}</option>`).join('')}</select></div>
+      ${nieuw?`<button class="switch ${scan.onthoud!==false?'on':''}" data-act="scanonthoud"><span>Onthoud dit product voor de volgende scan</span><span class="k"></span></button>`:''}
+      <div class="row"><button class="btn ghost" data-act="scanclose">Annuleren</button><button class="btn" data-act="scanadd">Toevoegen aan vandaag</button></div>
+      ${p.bron==='Etiket gelezen door Claude'?'<span class="note">Controleer de waarden even met het etiket. AI kan een cijfer verkeerd lezen. Klopt iets niet? Tik op Waarden aanpassen.</span>':p.bron==='Gevonden via barcode'||p.bron==='Open Food Facts'?'<span class="note">Bron: Open Food Facts, een open database die door gebruikers wordt bijgehouden. Klopt iets niet? Tik op Waarden aanpassen.</span>':''}
+    </div>`;
+  }
+  const status=scan.state==='busy'?`<div class="plan" aria-live="polite">${esc(scan.msg)}</div>`:scan.state==='msg'?`<div class="warnbox">${scan.msg}</div>${scan.nietGevonden?`<div class="row" style="justify-content:flex-start;flex-wrap:wrap"><label class="btn sm scanbtn" for="scanLabel">${ICON_CAM}Foto van etiket</label><button class="btn sm ghost" data-act="scanhand">Zelf invullen</button></div>`:''}`:'';
+  return `<div class="card scan">
+    <div><div class="label">Product scannen</div><div class="note" style="margin-top:2px">Scan de barcode, of maak een foto van het etiket als het product niet gevonden wordt.</div></div>
+    <div class="grid2">
+      ${LIVE_OK?`<button class="btn scanbtn" data-act="scanlive">${ICON_BAR}Scan barcode</button>`:`<label class="btn scanbtn" for="scanBarcode">${ICON_BAR}Scan barcode</label>`}
+      <label class="btn ghost scanbtn" for="scanLabel">${ICON_CAM}Foto van etiket</label>
+    </div>
+    <input type="file" id="scanBarcode" accept="image/*" capture="environment" hidden>
+    <input type="file" id="scanLabel" accept="image/*" capture="environment" hidden>
+    ${status}
+    <details class="more" data-keep="scan-meer" ${openSet.has('scan-meer')?'open':''}><summary>${Object.keys(S.mijnProducten||{}).length?'Mijn producten, barcode intypen en voorbeelden':'Barcode intypen of een voorbeeld proberen'}${CHEV}</summary><div class="more-b">
+      <form class="addrow" id="codeForm"><input type="text" id="codeInput" placeholder="Barcode intypen" inputmode="numeric" maxlength="14" aria-label="Barcode"><button class="btn sm" type="submit">Zoeken</button></form>
+      <div class="acts">${Object.entries(PRODUCTEN).map(([c,p])=>`<button type="button" class="act" data-demo="${c}">${esc(p.merk)} ${esc(p.naam.toLowerCase())}</button>`).join('')}</div>
+      ${Object.keys(S.mijnProducten||{}).length?`<div class="label" style="margin-top:4px">Mijn producten</div><div class="acts">${Object.entries(S.mijnProducten).map(([c,p])=>`<button type="button" class="act" data-demo="${esc(c)}">${esc(p.naam)}</button>`).join('')}</div>`:''}
+      <span class="note">Ritmo zoekt elke barcode op in Open Food Facts, een open database met miljoenen producten. Zelf ingevulde producten onthoudt de app.</span>
+    </div></details>
+  </div>`;
+}
+
+const views={vandaag:renderVandaag,gewoontes:renderGewoontes,voeding:renderVoeding,beweging:renderBeweging,profiel:renderProfiel};
+let gSel=100,fSel=0;
+function leegState(naam){
+  const d=defaults();
+  Object.assign(d,{naam:naam||'Jij',identiteit:'Ik ben iemand die goed voor zijn lichaam zorgt',waterMl:0,stappen:0,slaap:0,stemming:null,warm:false,gewoontes:[],maaltijden:[],workouts:[],doelLog:{},bonus:{},mijnProducten:{},aiPlan:null,startVandaag:null,
+    records:{lijst:['Squat (eigen gewicht)','Push-up','Plank'],handmatig:[]}});
+  return d;
+}
+function welkomHTML(){return `<div class="welkom">
+  <img src="icons/icon-192.png" width="72" height="72" alt="" style="border-radius:18px">
+  <h2 class="hello" style="font-size:34px">Welkom bij Ritmo</h2>
+  <p style="margin:0;color:var(--muted)">Gezonder leven, één gewoonte tegelijk. Vul je naam in en stel daarna onder Profiel je gegevens en doel in.</p>
+  <div class="field"><label for="welkomNaam">Hoe heet je?</label><input type="text" id="welkomNaam" maxlength="20" placeholder="Je voornaam" autocomplete="given-name"></div>
+  <button class="btn" data-act="welkomstart">Begin met Ritmo</button>
+  <button class="btn ghost" data-act="welkomdemo">Eerst rondkijken met voorbeelddata</button>
+  <span class="note">Je gegevens worden alleen op dit apparaat bewaard.</span>
+</div>`}
+function render(){
+  if(eersteKeer){screen.innerHTML=welkomHTML();document.querySelector('nav.tabs').hidden=true;return}
+  document.querySelector('nav.tabs').hidden=false;
+  const y=screen.scrollTop;
+  nieuweDag();
+  S.doelLog=S.doelLog||{};
+  const dNu=doelenVandaag(),dVorig=S.doelLog[dk(0)]||{};S.doelLog[dk(0)]=dNu;
+  if(geboot){const nieuw=DOELEN3.filter(([k])=>dNu[k]&&!dVorig[k]);if(nieuw.length)setTimeout(()=>vier({titel:nieuw.map(x=>x[1]).join(' en ')+' gehaald!',sub:`Groei vandaag: +${pctTxt(dagFractie(dk(0)).s)}%`,xp:15*nieuw.length}),30)}
+  geboot=true;
+  checkHerinnering();
+  screen.innerHTML=views[tab]();
+  screen.scrollTop=y;
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===tab));
+  save();
+}
+function go(t){if(liveReader)stopLive();tab=t;wiz=null;pendingDel=null;wo=null;woDel=null;recForm=null;recEdit=false;gSel=100;fSel=0;screen.scrollTop=0;render();screen.scrollTop=0}
+document.getElementById('live').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;if(b.dataset.act==='livestop')stopLive();if(b.dataset.act==='livefoto')stopLive()});
+document.getElementById('scanBarcodeGlobal').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];e.target.value='';if(tab!=='voeding')go('voeding');scanBarcodeFoto(f)});
+document.querySelector('nav.tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)go(b.dataset.tab)});
+
+function checkWaterDoel(){}
+
+screen.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const d=b.dataset;
+  if(d.go)return go(d.go);
+  if(d.glass!==undefined){const voor=S.waterMl,i=+d.glass,tot=(i+1)*S.glasMl;S.waterMl=S.waterMl===tot?i*S.glasMl:tot;checkWaterDoel(voor);return render()}
+  if(d.mood){S.stemming=+d.mood;toast('Stemming opgeslagen');return render()}
+  if(d.habit){const h=S.gewoontes.find(x=>x.id===d.habit);if(!h)return render();const key=`${dk(0)}|${h.id}`;
+    if(h.log[dk(0)]){delete h.log[dk(0)];if(S.bonus)delete S.bonus[key];return render()}
+    const br=b.getBoundingClientRect();h.log[dk(0)]=true;
+    const bonus=Math.random()<.25;if(bonus){S.bonus=S.bonus||{};S.bonus[key]=5}
+    const r=reeks(h),mp=MIJLPALEN[r],allen=S.gewoontes.length>1&&S.gewoontes.every(isDone);
+    justDone=h.id;render();justDone=null;
+    const g=`Groei vandaag: +${pctTxt(dagFractie(dk(0)).s)}%`,bx=bonus?5:0,xy={x:br.left+br.width/2,y:br.top+br.height/2};
+    if(allen)vier({titel:'Perfecte dag!',sub:`Alle ${S.gewoontes.length} gewoontes gedaan. +25 XP extra.${bonus?' Plus een bonus van 5 XP.':''} ${g}`,xp:35+bx,groot:true});
+    else if(mp)vier({titel:mp+'!',sub:`${esc(h.t)}. Nieuwe badge verdiend. ${g}`,xp:10+bx,groot:true,...xy});
+    else vier({titel:BELONING[Math.floor(Math.random()*BELONING.length)],sub:`${bonus?'<b>Verrassingsbonus +5 XP</b> · ':''}${r>1?`${r} dagen op rij · `:''}${g}`,xp:10+bx,...xy});
+    return}
+  if(d.act==='geluid'){S.geluid=S.geluid===false;toast(S.geluid?'Geluid en trilling aan':'Geluid en trilling uit');return render()}
+  if(d.snooze){snooze[d.snooze]=minNu()+15;toast('Ik herinner je over 15 minuten');return render()}
+  if(d.herinner){const h=S.gewoontes.find(x=>x.id===d.herinner);if(h){h.herinnering=!h.herinnering;toast(h.herinnering?`Herinnering om ${h.tijd} aan`:'Herinnering uit')}return render()}
+  if(d.delhabit){if(pendingDel===d.delhabit){S.gewoontes=S.gewoontes.filter(x=>x.id!==d.delhabit);pendingDel=null;toast('Gewoonte verwijderd')}else pendingDel=d.delhabit;return render()}
+  if(d.wset){wiz.d[d.wset]=d.v;return render()}
+  if(d.act==='welkomstart'){const n=($('#welkomNaam').value||'').trim();S=leegState(cap(n));eersteKeer=false;save();tab='profiel';openSet.add('over');openSet.add('doel');render();screen.scrollTop=0;toast('Vul je gegevens in voor je persoonlijke plan');return}
+  if(d.act==='welkomdemo'){S=defaults();eersteKeer=false;save();render();toast('Voorbeelddata geladen. Wissen kan onder Profiel.');return}
+  if(d.act==='wisalles'){if(pendingDel==='__alles'){const n=S.naam;S=leegState(n);pendingDel=null;save();toast('Alles gewist');return render()}pendingDel='__alles';return render()}
+  if(d.act==='backup'){try{const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`ritmo-backup-${dk(0)}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('Back-up gedownload')}catch(e){toast('Back-up maken lukte niet')}return}
+  if(d.act==='scanlive'){startLive();return}
+  if(d.demo){zoekCode(d.demo);return}
+  if(d.portie){scan.portie=+d.portie;return render()}
+  if(d.act==='scanclose'){scan={state:'idle'};return render()}
+  if(d.act==='scanhand'){scan={state:'result',edit:true,product:{naam:'',merk:'',per:'g',kcal:null,vet:null,verz:null,kh:null,suiker:null,vezel:null,eiwit:null,zout:null,nutri:null,portie:null,bron:'Zelf ingevuld',code:scan.code||null},portie:100,type:standaardType()};return render()}
+  if(d.act==='scanedit'&&scan.product){scan.edit=true;delete scan.product.zoutTxt;scan.product.nutri=null;return render()}
+  if(d.act==='scanonthoud'){scan.onthoud=scan.onthoud===false;return render()}
+  if(d.act==='scanadd'&&scan.product){const p=scan.product,f=scan.portie/100,typ=($('#scanType')||{}).value||scan.type;
+    if(!String(p.naam||'').trim())return toast('Vul eerst een productnaam in');
+    if(p.kcal==null)return toast('Vul eerst de calorieën per 100 '+p.per+' in');
+    let onthouden=false;
+    if(p.code&&scan.onthoud!==false&&(!PRODUCTEN[p.code]||scan.edit)&&!(S.mijnProducten[p.code]&&!scan.edit)){
+      const {bron,code,...rest}=p;S.mijnProducten[p.code]={...rest,naam:String(p.naam).trim(),portie:p.portie||scan.portie};onthouden=true}
+    S.maaltijden.push({type:typ,naam:`${p.naam} (${n1(scan.portie)} ${p.per})`,kcal:Math.round((p.kcal||0)*f),eiwit:Math.round((p.eiwit||0)*f),groente:0,fruit:0});
+    scan={state:'idle'};toast(onthouden?'Toegevoegd en onthouden':'Toegevoegd aan '+typ.toLowerCase());return render()}
+  if(d.act==='wostart'){wo=nieuweWo();render();screen.scrollTop=0;return}
+  if(d.act==='woschema'||d.act==='woschemavul'){if(!wo)wo=nieuweWo();wo.type='Krachttraining';wo.oef=SCHEMA.map(([n,eh,r])=>{const v=vorigeOef(n);return oefVan(n,eh,v?v.o.sets.map(s=>({...s})):[{r,kg:0},{r,kg:0},{r,kg:0}])});render();if(d.act==='woschema')screen.scrollTop=0;return}
+  if(d.act==='woherhaal'){const l=sorteerWo().find(w=>w.type==='Krachttraining'&&w.oef.length);wo=nieuweWo();if(l){wo.min=l.min;wo.oef=l.oef.map(o=>oefVan(o.naam,o.eenheid,o.sets.map(s=>({...s}))))}render();screen.scrollTop=0;return}
+  if(d.act==='wocancel'){wo=null;render();screen.scrollTop=0;return}
+  if(d.act==='wosave'&&wo)return bewaarWorkout();
+  if(d.woquick){wo=nieuweWo(d.woquick);if(d.woquick!=='Krachttraining')wo.min=30;render();screen.scrollTop=0;return}
+  if(d.oefop!==undefined&&wo){const i=+d.oefop,[x]=wo.oef.splice(i,1);wo.oef.splice(i-1,0,x);return render()}
+  if(d.wotype&&wo){if(wo.type!==d.wotype)wo.sport={};wo.type=d.wotype;return render()}
+  if(d.sportkies&&wo){const[k,v]=d.sportkies.split('|');wo.sport[k]=wo.sport[k]===v?'':v;return render()}
+  if(d.teller&&wo){const[k,v]=d.teller.split('|');wo.sport[k]=Math.max(0,(wo.sport[k]||0)+(+v));return render()}
+  if(d.wozwaar&&wo){wo.zwaar=+d.wozwaar;return render()}
+  if(d.oefadd&&wo){const i=oefInfo(d.oefadd),v=vorigeOef(i[0]);wo.oef.push(oefVan(i[0],i[1],v?v.o.sets.map(s=>({...s})):[{r:i[1]==='sec'?20:10,kg:0},{r:i[1]==='sec'?20:10,kg:0},{r:i[1]==='sec'?20:10,kg:0}]));return render()}
+  if(d.oefdel!==undefined&&wo){wo.oef.splice(+d.oefdel,1);return render()}
+  if(d.setadd!==undefined&&wo){const o=wo.oef[+d.setadd],l=o.sets[o.sets.length-1]||{r:10,kg:0};o.sets.push({...l});return render()}
+  if(d.setdel!==undefined&&wo){const[oi,si]=d.setdel.split('.').map(Number);wo.oef[oi].sets.splice(si,1);return render()}
+  if(d.gewicht!==undefined&&wo){wo.oef[+d.gewicht].sets.forEach(s=>{if(!s.kg)s.kg=2});wo.oef[+d.gewicht].gew=1;return render()}
+  if(d.wobewerk){const w=(S.workouts||[]).find(x=>x.id===d.wobewerk);if(w){wo=JSON.parse(JSON.stringify(w));wo.bewerk=true;render();screen.scrollTop=0}return}
+  if(d.wodel){if(woDel===d.wodel){S.workouts=S.workouts.filter(x=>x.id!==d.wodel);woDel=null;toast('Workout verwijderd')}else woDel=d.wodel;return render()}
+  if(d.act==='recedit'){recEdit=!recEdit;openSet.add('records');return render()}
+  if(d.recadd){if(!S.records.lijst.includes(d.recadd))S.records.lijst.push(d.recadd);openRecForm(d.recadd);return}
+  if(d.reclog){openRecForm(d.reclog);return}
+  if(d.recdel){S.records.lijst=S.records.lijst.filter(n=>n!==d.recdel);return render()}
+  if(d.act==='recnieuw'){openRecForm(S.records.lijst[0]||'Goblet squat');return}
+  if(d.act==='recannul'){recForm=null;return render()}
+  if(d.act==='recsave'&&recForm){const F=recForm,v=getal(F.waarde);
+    if(!v)return toast('Vul eerst je record in');if(F.date>dk(0))return toast('Kies een datum van vandaag of eerder');
+    const voor=recDetail(F.naam),cur=F.eenheid==='kg'?voor.kg:voor.r,nieuw=v>cur;
+    S.records.handmatig.push({id:'r'+Date.now(),naam:F.naam,waarde:v,eenheid:F.eenheid,date:F.date||dk(0)});
+    if(!S.records.lijst.includes(F.naam))S.records.lijst.push(F.naam);
+    recForm=null;render();
+    const txt=`${esc(F.naam)}: ${F.eenheid==='kg'?n1(v)+' kg':v+(F.eenheid==='sec'?' seconden':' herhalingen')}`;
+    vier({titel:nieuw?'Nieuw record!':'Record gelogd',sub:nieuw?txt+(cur?` (was ${F.eenheid==='kg'?n1(cur)+' kg':cur})`:''):txt+'. Je beste blijft staan.',xp:10,groot:nieuw});return}
+  if(d.rsel){resetSel[d.rsel]=!resetSel[d.rsel];return render()}
+  if(d.reset)return doReset([d.reset]);
+  if(d.act==='resetnu')return doReset(Object.keys(resetSel).filter(k=>resetSel[k]));
+  if(d.act==='undo'&&lastReset){S=JSON.parse(lastReset.snap);lastReset=null;toast('Teruggezet');return render()}
+  if(d.act==='nieuwedagok'){nieuweDagMelding=false;return render()}
+  if(d.aiadd!==undefined&&S.aiPlan){const [it]=S.aiPlan.items.splice(+d.aiadd,1);if(it){voegToe(it);toast(`"${it.t}" toegevoegd`)}if(!S.aiPlan.items.length)S.aiPlan=null;return render()}
+  if(d.aiskip!==undefined&&S.aiPlan){S.aiPlan.items.splice(+d.aiskip,1);if(!S.aiPlan.items.length)S.aiPlan=null;return render()}
+  if(d.act==='aimaak'){if(aiState!=='loading')maakPlan(false);return}
+  if(d.act==='aiopnieuw'){if(aiState!=='loading')maakPlan(true);return}
+  if(d.act==='aistop'){if(aiCtl)aiCtl.abort();return}
+  if(d.act==='aialles'&&S.aiPlan){const n=S.aiPlan.items.length;S.aiPlan.items.forEach(voegToe);S.aiPlan=null;toast(`${n} gewoontes toegevoegd`);return render()}
+  if(d.act&&d.act.startsWith('wiz')){
+    if(d.act==='wizstart')wiz={step:0,d:{t:'',stapel:'',waar:'',tijd:'',tweeMin:'',beloning:'',herinnering:true}};
+    else if(d.act==='wizcancel')wiz=null;
+    else if(d.act==='wizprev')wiz.step--;
+    else if(d.act==='wizherinner')wiz.d.herinnering=!wiz.d.herinnering;
+    else if(d.act==='wiznext'){
+      if(wiz.step===0&&!wiz.d.t.trim())return toast('Vul eerst een gewoonte in');
+      if(wiz.step===1&&!wiz.d.stapel.trim()&&!wiz.d.tijd)return toast('Kies een moment of een tijd');
+      wiz.step++;
+    }
+    else if(d.act==='wizsave'){
+      const w=wiz.d;
+      S.gewoontes.push({id:'h'+Date.now(),t:cap(w.t.trim()),stapel:w.stapel.trim(),waar:w.waar.trim(),tijd:w.tijd,tweeMin:cap(w.tweeMin.trim())||cap(w.t.trim()),beloning:cap(w.beloning.trim())||'Afvinken en mijn reeks zien groeien',herinnering:!!(w.herinnering&&w.tijd),log:{}});
+      wiz=null;toast('Gewoonte opgeslagen');
+    }
+    render();screen.scrollTop=0;return;
+  }
+  if(d.delmeal!==undefined){S.maaltijden.splice(+d.delmeal,1);toast('Maaltijd verwijderd');return render()}
+  if(d.g!==undefined){gSel=+d.g;b.parentNode.querySelectorAll('.act').forEach(x=>x.classList.toggle('on',x===b));return}
+  if(d.f!==undefined){fSel=+d.f;b.parentNode.querySelectorAll('.act').forEach(x=>x.classList.toggle('on',x===b));return}
+  if(d.sex){S.profiel.geslacht=d.sex;toast('Behoefte opnieuw berekend');return render()}
+  if(d.glasml){S.glasMl=+d.glasml;toast(`Glasmaat: ${d.glasml} ml`);return render()}
+  if(d.actPick){S.activiteit=d.actPick;S._min=+d.min;return render()}
+  if(d.doel){const k=d.doel,v=+(S.doelen[k]+(+d.d)).toFixed(1);if(v>0)S.doelen[k]=v;return render()}
+  if(d.melding){S.meldingen[d.melding]=!S.meldingen[d.melding];return render()}
+  if(d.doelkeuze){S.profiel.doel=d.doelkeuze;openSet.add('doel');toast(d.doelkeuze==='spier'&&S.profiel.activiteit==='zittend'?'Let op: spiermassa vraagt krachttraining':`Doel: ${DOEL[d.doelkeuze].l}`);return render()}
+  if(d.act==='gatrainen'){S.profiel.activiteit='matig';toast('Activiteit: gemiddeld actief. Overschot berekend.');return render()}
+  if(d.tempo){S.profiel.tempo=d.tempo;toast('Tempo aangepast');return render()}
+  if(d.adopt){S.doelen[d.adopt]=+d.v;toast('Advies overgenomen');return render()}
+  if(d.act==='adoptall'){const A=advies();['stappen','beweegWeek','slaap','groente'].forEach(k=>S.doelen[k]=A[k].doel);toast('Alle adviezen overgenomen');return render()}
+  const voor=S.waterMl;
+  switch(d.act){
+    case 'water+':S.waterMl+=S.glasMl;checkWaterDoel(voor);break;
+    case 'water-':S.waterMl=Math.max(0,S.waterMl-S.glasMl);break;
+    case 'startnu':S.startVandaag={d:dagKey(),m:minNu()};toast(`Drinkschema start vandaag om ${hhmm(minNu())}`);break;
+    case 'startreset':S.startVandaag=null;toast('Normale opstaantijd teruggezet');break;
+    case 'warm':S.warm=!S.warm;toast(S.warm?'Waterdoel +500 ml':'Waterdoel terug naar normaal');break;
+    case 'stappen':S.stappen+=1000;break;
+    case 'slaap+':S.slaap=Math.min(12,S.slaap+.25);break;
+    case 'slaap-':S.slaap=Math.max(0,S.slaap-.25);break;
+    case 'min+':S._min=Math.min(240,S._min+5);break;
+    case 'min-':S._min=Math.max(5,S._min-5);break;
+    case 'logact':if(!S.activiteit)return toast('Kies eerst een activiteit');S.week[vandaagIdx]+=S._min;toast(`${S._min} min ${S.activiteit.toLowerCase()} gelogd`);S.activiteit=null;break;
+    case 'reset':S=defaults();toast('Voorbeelddata hersteld');break;
+    default:return;
+  }
+  render();
+});
+
+screen.addEventListener('submit',e=>{
+  e.preventDefault();
+  if(e.target.id==='recAddForm'){const n=cap($('#recAddNaam').value.trim());if(!n)return;if(!S.records.lijst.includes(n))S.records.lijst.push(n);openRecForm(n);return}
+  if(e.target.id==='oefForm'&&wo){const n=$('#oefNaam').value.trim();if(!n)return;wo.oef.push(oefVan(cap(n),'herh',[{r:10,kg:0},{r:10,kg:0},{r:10,kg:0}]));render();return}
+  if(e.target.id==='codeForm'){zoekCode($('#codeInput').value);return}
+  if(e.target.id==='habitForm'){const v=$('#habitInput').value.trim();if(!v)return;S.gewoontes.push({t:v,done:false,streak:0});toast('Gewoonte toegevoegd');render()}
+  if(e.target.id==='mealForm'){const n=$('#mealName').value.trim();if(!n)return;
+    S.maaltijden.push({type:$('#mealType').value,naam:n,kcal:Math.max(0,Math.min(3000,+$('#mealKcal').value||0)),eiwit:Math.max(0,Math.min(200,+$('#mealEiwit').value||0)),groente:gSel,fruit:fSel});
+    toast('Maaltijd opgeslagen');gSel=100;fSel=0;render()}
+});
+screen.addEventListener('toggle',e=>{const k=e.target&&e.target.dataset&&e.target.dataset.keep;if(k){if(e.target.open)openSet.add(k);else openSet.delete(k)}},true);
+screen.addEventListener('pointermove',e=>{
+  const svg=e.target.closest&&e.target.closest('#groeiSvg');if(!svg||!window._groei)return;
+  const G=window._groei,rc=svg.getBoundingClientRect(),vx=(e.clientX-rc.left)/rc.width*G.W;
+  let i=Math.round((vx-G.xs(0))/(G.xs(1)-G.xs(0)));i=Math.max(0,Math.min(59,i));
+  const gx=svg.querySelector('#gx');gx.setAttribute('x1',G.xs(i));gx.setAttribute('x2',G.xs(i));gx.setAttribute('opacity','.6');
+  const tip=$('#gtip');let txt;
+  if(i<30){const d=G.R[i];txt=`<b>${d.o===0?'Vandaag':datumKort(d.k)}</b> · index ${Math.round(d.idx)}<br>${d.h} van ${d.n} gewoontes, ${d.gd} van 3 dagdoelen`}
+  else txt=`<b>Over ${i-29} ${i-29===1?'dag':'dagen'}</b><br>${Math.round(G.proj[i-30])} als je elke dag alles doet`;
+  tip.innerHTML=txt;tip.hidden=false;const px=G.xs(i)/G.W*rc.width;tip.style.left=Math.max(4,Math.min(rc.width-tip.offsetWidth-4,px-tip.offsetWidth/2))+'px';
+});
+screen.addEventListener('pointerout',e=>{if(e.target.closest&&e.target.closest('#groeiSvg')&&!e.relatedTarget?.closest?.('#groeiSvg')){const t=$('#gtip');if(t)t.hidden=true;const gx=$('#gx');if(gx)gx.setAttribute('opacity','0')}});
+screen.addEventListener('input',e=>{const t=e.target;if(wo&&t.dataset.sport){const k=t.dataset.sport;wo.sport[k]=t.value;if(k==='tijd'){const x=parseTijd(t.value);if(x){wo.min=Math.max(1,Math.ceil(x/60));const m=$('#wo-min');if(m)m.value=wo.min}}const el=$('#wo-tempo');if(el){const tp=tempoVan(wo.type,wo.sport);el.innerHTML=tp?`Je tempo: <b>${tp.txt}</b>`:'Vul afstand en tijd in, dan rekent de app je tempo uit.'}return}if(wo&&t.dataset.wo){wo[t.dataset.wo]=t.dataset.wo==='min'?(getal(t.value)||0):t.value;return}if(recForm&&t.dataset.rec){const k=t.dataset.rec;recForm[k]=t.value;if(k==='naam'){const dd=recDetail(t.value);recForm.eenheid=dd.kg||oefInfo(t.value)[2]?'kg':dd.eh;render()}else if(k==='eenheid')render();return}if(wo&&t.dataset.oef){const[oi,k]=t.dataset.oef.split('.');if(wo.oef[+oi]){wo.oef[+oi][k]=t.value;if(k==='eenheid')render()}return}if(wo&&t.dataset.set){const[oi,si,k]=t.dataset.set.split('.');const st=wo.oef[+oi]&&wo.oef[+oi].sets[+si];if(st)st[k]=getal(t.value)||0;return}if(t.dataset.sp&&scan.product){const k=t.dataset.sp;scan.product[k]=(k==='naam'||k==='merk'||k==='per')?t.value:getal(t.value);if(k==='per')return render();const el=$('#scanTot');if(el)el.innerHTML=scanTotaal();return}if(t.id==='scanPortie'&&scan.product){scan.portie=getal(t.value)||0;const el=$('#scanTot');if(el)el.innerHTML=scanTotaal();return}if(t.id==='scanType'){scan.type=t.value}if(t.dataset.w&&wiz)wiz.d[t.dataset.w]=t.value;
+  if(t.dataset.ai&&S.aiPlan){const[i,k]=t.dataset.ai.split('.');if(S.aiPlan.items[+i]){S.aiPlan.items[+i][k]=t.value;save()}}});
+screen.addEventListener('change',e=>{
+  const t=e.target;
+  if(t.id==='restoreFile'){const f=t.files&&t.files[0];t.value='';if(!f)return;f.text().then(txt=>{const o=JSON.parse(txt);if(!o||!Array.isArray(o.gewoontes)||!o.profiel)throw 0;S=Object.assign(defaults(),o);save();toast('Back-up teruggezet');render()}).catch(()=>toast('Dit bestand is geen geldige Ritmo-back-up'));return}
+  if(t.id==='scanBarcode'){const f=t.files&&t.files[0];t.value='';return scanBarcodeFoto(f)}
+  if(t.id==='scanLabel'){const f=t.files&&t.files[0];t.value='';return scanEtiketFoto(f)}
+  if(t.id==='scanType'){scan.type=t.value;return}
+  if(t.id==='scanPortie'||t.dataset.sp||t.dataset.wo||t.dataset.set||t.dataset.oef||t.dataset.rec||t.dataset.sport)return;
+  if(t.dataset.w||t.dataset.ai)return;
+  if(t.id==='identInput'){S.identiteit=t.value.trim()||defaults().identiteit;save();toast('Identiteit opgeslagen');return}
+  if(t.id==='naamInput'){S.naam=t.value.trim()||'Jij';save();toast('Naam opgeslagen');return}
+  if(t.dataset.ritme){const[k,veld]=t.dataset.ritme.split('.');if(!t.value)return render();S.ritme[k][veld]=t.value;toast('Dagritme opgeslagen');return render()}
+  if(t.id==='p-act'){S.profiel.activiteit=t.value;toast('Behoefte opnieuw berekend');return render()}
+  if(t.dataset.p){
+    const min=+t.min,max=+t.max;let v=parseFloat(String(t.value).replace(',','.'));
+    if(isNaN(v)){toast('Vul een getal in');return render()}
+    if(v<min||v>max){toast(`Kies een waarde tussen ${min} en ${max}`);v=Math.max(min,Math.min(max,v))}
+    S.profiel[t.dataset.p]=v;toast('Behoefte opnieuw berekend');render();
+  }
+});
+
+render();
+// Elke minuut het schema bijwerken, behalve als iemand aan het typen is
+setInterval(()=>{const a=document.activeElement;if((tab==='vandaag'||tab==='gewoontes'&&!wiz)&&!(a&&a.matches('input,select')))render()},30000);
+</script>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{reg.addEventListener('updatefound',()=>{const nw=reg.installing;if(!nw)return;nw.addEventListener('statechange',()=>{if(nw.state==='installed'&&navigator.serviceWorker.controller){try{toast('Nieuwe versie van Ritmo geladen')}catch(e){}}})})}).catch(()=>{})})}
+</script>
+</body>
+</html>
