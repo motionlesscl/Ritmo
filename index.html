@@ -348,7 +348,7 @@ const ACT={
 };
 const defaults=()=>({
   naam:'Mo',
-  profiel:{geslacht:'man',leeftijd:30,lengte:180,gewicht:78,activiteit:'licht',stappenNu:5000,beweegNu:60,doel:'afvallen',tempo:'normaal',streef:74},
+  profiel:{geslacht:'man',leeftijd:30,lengte:180,gewicht:78,activiteit:'licht',stappenNu:5000,beweegNu:60,doel:'afvallen',tempo:'normaal',streef:74,tempoSpier:'rustig',streefSpier:82},
   dag:dk(0), weekStart:dk((new Date().getDay()+6)%7),
   glasMl:250, waterMl:1250, warm:false, mijnProducten:{}, doelLog:mkDoelLog(), bonus:{}, geluid:true, workouts:mkWorkouts(), records:{lijst:['Goblet squat','Push-up','Glute bridge','Plank'],handmatig:[]},
   ritme:{werk:{op:'07:00',bed:'23:00'},weekend:{op:'09:30',bed:'00:00'}}, startVandaag:null,
@@ -651,6 +651,7 @@ function waterSchema(){
 
 /* ---------- Doel: afvallen, fitter worden, spiermassa ---------- */
 const DOEL={afvallen:{l:'Afvallen',s:'Vet verliezen'},fit:{l:'Fitter',s:'Op gewicht blijven'},spier:{l:'Spiermassa',s:'Met krachttraining'}};
+const TEMPO_SPIER={rustig:{l:'Rustig',s:'+10% kcal · ca. 0,25% per week erbij',pct:.10,bw:.0025},normaal:{l:'Normaal',s:'+15% kcal · ca. 0,4% per week erbij',pct:.15,bw:.004}};
 const TEMPO={rustig:{l:'Rustig',s:'−300 kcal · ca. 0,3 kg per week',d:300},normaal:{l:'Normaal',s:'−500 kcal · ca. 0,5 kg per week',d:500}};
 const bmi=p=>p.gewicht/((p.lengte/100)**2);
 function plan(p){
@@ -668,7 +669,9 @@ function plan(p){
   }
   // Spiermassa: alleen een overschot als je ook traint. Zittend + overschot = vooral vet erbij.
   const geenTraining=doel==='spier'&&p.activiteit==='zittend';
-  if(doel==='spier'&&!geenTraining){kcal=tdee+300;kgWeek=.25;ek=[1.6,2.2];vetPct=.25}
+  // Spieropbouw: 10 tot 20% boven onderhoud, 0,25 tot 0,5% van je lichaamsgewicht per week erbij (Iraki e.a., 2019)
+  if(doel==='spier'&&!geenTraining){const T=TEMPO_SPIER[p.tempoSpier]||TEMPO_SPIER.rustig;kcal=tdee*(1+T.pct);kgWeek=p.gewicht*T.bw;ek=[1.6,2.2];vetPct=.25;
+    if(p.streefSpier>p.gewicht)weken=Math.ceil((p.streefSpier-p.gewicht)/kgWeek)}
   kcal=Math.round(kcal/10)*10;
   const eiwit=Math.round(refKg*(ek[0]+ek[1])/2), vet=Math.round(kcal*vetPct/9), kh=Math.max(0,Math.round((kcal-eiwit*4-vet*9)/4));
   return {doel,blok,tdee,rust,kcal,ek,refKg,eiwit,vet,kh,vetPct,kgWeek,weken,ondergrens,streefLaag,bmi:B,geenTraining};
@@ -1111,7 +1114,7 @@ function renderProfiel(){
   const bmiTxt=P.bmi.toLocaleString('nl-NL',{maximumFractionDigits:1});
   const samenvatting=P.doel==='afvallen'
     ?`Ongeveer ${kg1(P.kgWeek)} kg per week eraf.${P.weken?` Je streefgewicht van ${kg1(p.streef)} kg haal je over ongeveer ${P.weken} weken.`:''}${P.ondergrens?' We gaan niet lager dan dit, ook al kies je een sneller tempo.':''}`
-    :P.doel==='spier'?(P.geenTraining?'Je eet nu op onderhoud. Een overschot komt er pas bij als je gaat trainen.':'Een klein overschot van 300 kcal, samen met 3 keer per week krachttraining. Zo kom je ongeveer 0,25 kg per week aan en blijft de vettoename beperkt.')
+    :P.doel==='spier'?(P.geenTraining?'Je eet nu op onderhoud. Een overschot komt er pas bij als je gaat trainen.':`Ongeveer ${kg1(P.kgWeek)} kg per week erbij.${P.weken?` Je streefgewicht van ${kg1(p.streefSpier)} kg haal je over ongeveer ${P.weken} weken.`:''} Alleen met 3 keer per week krachttraining.`)
     :'Om op gewicht te blijven en fitter te worden.';
   const num=(id,l,v,u,min,max,step=1)=>`<div class="field"><label for="${id}">${l}</label><div class="unit"><input type="number" id="${id}" data-p="${id.replace('p-','')}" value="${v}" min="${min}" max="${max}" step="${step}" inputmode="decimal"><span>${u}</span></div></div>`;
   const doel=(k,l,stap,eenheid)=>`<div class="toggle"><span>${l}</span><div class="stepper"><button class="btn round ghost sm" data-doel="${k}" data-d="-${stap}" aria-label="Verlaag">−</button><span>${d[k].toLocaleString('nl-NL')} ${eenheid}</span><button class="btn round sm" data-doel="${k}" data-d="${stap}" aria-label="Verhoog">+</button></div></div>`;
@@ -1154,7 +1157,11 @@ function renderProfiel(){
         ?`<div class="warnbox"><b>Spiermassa opbouwen kan alleen als je traint.</b> Je activiteit staat op zittend. Eet je dan meer dan je verbruikt, dan kom je vooral vet aan en dat is niet gezond. Daarom rekenen we nu met je onderhoud van ${nl(P.tdee)} kcal.</div>
           <div class="plan">Ga je 3 keer per week krachttraining doen? Zet dan je activiteit hoger. Pas dan komt er een overschot bij.</div>
           <button class="btn" data-act="gatrainen">Ik ga 3 keer per week trainen</button>`
-        :'<div class="plan">Het overschot is alleen gezond <b>als je traint</b>. Doe 3 keer per week krachttraining en maak de oefeningen elke week een klein beetje zwaarder. Train je een week niet, eet dan op onderhoud.</div>'):''}
+        :`<div class="field"><label>Tempo</label><div class="seg">${Object.entries(TEMPO_SPIER).map(([key,o])=>`<button class="act ${p.tempoSpier===key?'on':''}" data-tempospier="${key}">${o.l}<small>${o.s}</small></button>`).join('')}</div></div>
+          ${num('p-streefSpier','Streefgewicht',p.streefSpier,'kg',35,250,0.5)}
+          ${p.streefSpier<=p.gewicht?'<div class="warnbox">Je streefgewicht ligt niet boven je huidige gewicht. Pas het aan of kies een ander doel.</div>':''}
+          ${p.streefSpier>p.gewicht*1.1?'<div class="warnbox">Dat is meer dan 10% erbij. Kies liever eerst een tussendoel. Na een paar maanden zie je beter hoeveel je echt aankomt aan spier en hoeveel aan vet.</div>':''}
+          <div class="plan">Rustig is het beste voor beginners: je kunt dan vooral spier opbouwen, met weinig vet erbij. Het overschot is alleen gezond <b>als je traint</b>: 3 keer per week krachttraining, en de oefeningen elke week een klein beetje zwaarder. Train je een week niet, eet dan op onderhoud.</div>`):''}
       ${p.doel==='fit'?'<div class="plan">Je eet wat je verbruikt. Focus op meer bewegen, beter slapen en genoeg eiwit, dan word je fitter zonder dat je gewicht verandert.</div>':''}`;
 
   const adviesBody=`
@@ -1226,14 +1233,14 @@ function renderProfiel(){
     <details class="how" data-keep="how" ${isOpen('how')}>
       <summary>Hoe berekenen we dit?</summary>
       <p><b>Calorieën.</b> Je verbruik in rust volgens de Mifflin-St Jeor-formule: <code>10 × gewicht + 6,25 × lengte − 5 × leeftijd ${p.geslacht==='man'?'+ 5':'− 161'}</code> = ${nl(b)} kcal. Keer je activiteitsfactor (${ACT[p.activiteit].f.toLocaleString('nl-NL')}) is ${nl(k)} kcal: je onderhoud.</p>
-      <p><b>Je doel.</b> Afvallen: 300 of 500 kcal onder je onderhoud. 1 kilo lichaamsvet is ongeveer 7.700 kcal, dus 500 kcal per dag minder is ongeveer 0,45 kg per week. Nooit onder je verbruik in rust, en nooit onder 1.500 kcal (man) of 1.200 kcal (vrouw). Spiermassa: 300 kcal boven je onderhoud, maar alleen als je activiteitsniveau laat zien dat je traint. Zittend rekenen we met je onderhoud, omdat een overschot zonder training vooral vet oplevert.</p>
+      <p><b>Je doel.</b> Afvallen: 300 of 500 kcal onder je onderhoud. 1 kilo lichaamsvet is ongeveer 7.700 kcal, dus 500 kcal per dag minder is ongeveer 0,45 kg per week. Nooit onder je verbruik in rust, en nooit onder 1.500 kcal (man) of 1.200 kcal (vrouw). Spiermassa: 10% (rustig) of 15% (normaal) boven je onderhoud, goed voor ongeveer 0,25 of 0,4% van je lichaamsgewicht per week erbij. Dat geldt alleen als je activiteitsniveau laat zien dat je traint. Zittend rekenen we met je onderhoud, omdat een overschot zonder training vooral vet oplevert.</p>
       <p><b>Eiwit, koolhydraten en vet.</b> Eiwit per kilo: afvallen 1,6 tot 2,0 g, spiermassa 1,6 tot 2,2 g, fitter 1,2 tot 1,6 g. Bij een BMI van 30 of hoger rekenen we met het gewicht bij BMI 25. Vet is ${Math.round(P.vetPct*100)}% van je calorieën, de rest komt uit koolhydraten.</p>
       <p><b>Water.</b> EFSA adviseert ${p.geslacht==='man'?'2,5':'2,0'} liter vocht per dag, waarvan ongeveer 80% uit drinken: ${liter(waterBasis(p))} liter. Plus ${ACT[p.activiteit].w} ml voor je activiteitsniveau, en 500 ml op warme of sportdagen.</p>
       <p>Dit zijn schattingen voor gezonde volwassenen. Zwanger, topsporter of een medische aandoening? Overleg met je huisarts of een diëtist.</p>
     </details>
 
     ${sect('over','Over jou',`${esc(S.naam)} · ${p.geslacht==='man'?'man':'vrouw'} · ${p.leeftijd} jaar · ${p.lengte} cm · ${kg1(p.gewicht)} kg · ${ACT[p.activiteit].l.toLowerCase()}`,overBody)}
-    ${sect('doel','Je doel',`${DOEL[P.doel].l}${P.doel==='afvallen'?` · ${TEMPO[p.tempo].l.toLowerCase()} tempo · naar ${kg1(p.streef)} kg${P.weken?` in ca. ${P.weken} weken`:''}`:''}`,doelBody)}
+    ${sect('doel','Je doel',`${DOEL[P.doel].l}${P.doel==='afvallen'?` · ${TEMPO[p.tempo].l.toLowerCase()} tempo · naar ${kg1(p.streef)} kg${P.weken?` in ca. ${P.weken} weken`:''}`:P.doel==='spier'&&!P.geenTraining?` · ${TEMPO_SPIER[p.tempoSpier].l.toLowerCase()} tempo · naar ${kg1(p.streefSpier)} kg${P.weken?` in ca. ${P.weken} weken`:''}`:P.geenTraining?' · eerst gaan trainen':''}`,doelBody)}
     ${sect('advies','Jouw advies',`${nl(d.stappen)} stappen · ${d.beweegWeek} min sporten per week · ${fmt(d.slaap)} uur slaap · ${d.groente} g groente`,adviesBody)}
     ${sect('ritme','Dagritme en water',`Doordeweeks ${S.ritme.werk.op} tot ${S.ritme.werk.bed} · weekend ${S.ritme.weekend.op} tot ${S.ritme.weekend.bed} · glas ${S.glasMl} ml`,ritmeBody)}
     ${sect('herinner','Herinneringen',`${aanTal} van 3 aan`,`<div>${tg('water','Elke 2 uur water drinken')}${tg('beweeg','Na 1 uur zitten even bewegen')}${tg('slaap','Om 22:30 afbouwen voor de nacht')}<div class="toggle"><span>Geluid en trilling bij afvinken</span><button class="btn sm ${S.geluid!==false?'':'ghost'}" data-act="geluid">${S.geluid!==false?'Aan':'Uit'}</button></div></div><span class="note">Herinneringen voor je gewoontes stel je in bij Gewoontes.</span>`)}
@@ -1647,6 +1654,7 @@ screen.addEventListener('click',e=>{
   if(d.melding){S.meldingen[d.melding]=!S.meldingen[d.melding];return render()}
   if(d.doelkeuze){S.profiel.doel=d.doelkeuze;openSet.add('doel');toast(d.doelkeuze==='spier'&&S.profiel.activiteit==='zittend'?'Let op: spiermassa vraagt krachttraining':`Doel: ${DOEL[d.doelkeuze].l}`);return render()}
   if(d.act==='gatrainen'){S.profiel.activiteit='matig';toast('Activiteit: gemiddeld actief. Overschot berekend.');return render()}
+  if(d.tempospier){S.profiel.tempoSpier=d.tempospier;toast('Tempo aangepast');return render()}
   if(d.tempo){S.profiel.tempo=d.tempo;toast('Tempo aangepast');return render()}
   if(d.adopt){S.doelen[d.adopt]=+d.v;toast('Advies overgenomen');return render()}
   if(d.act==='adoptall'){const A=advies();['stappen','beweegWeek','slaap','groente'].forEach(k=>S.doelen[k]=A[k].doel);toast('Alle adviezen overgenomen');return render()}
