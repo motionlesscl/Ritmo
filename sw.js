@@ -1,5 +1,5 @@
 // Ritmo service worker: werkt offline en haalt updates op zodra er internet is.
-const VERSIE='ritmo-v1';
+const VERSIE='ritmo-v2';
 const BASIS=['./','./index.html','./manifest.webmanifest','./vendor/zxing.min.js','./icons/icon-192.png','./icons/icon-512.png','./icons/maskable-512.png','./icons/apple-touch-icon.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSIE).then(c=>c.addAll(BASIS)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==VERSIE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
