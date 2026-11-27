@@ -356,10 +356,10 @@ const defaults=()=>({
   stappen:6420, slaap:7.25, stemming:3,
   identiteit:'Ik ben iemand die goed voor zijn lichaam zorgt',
   gewoontes:[
-    {id:'h1',t:'Een glas water drinken',stapel:'Nadat ik ben opgestaan',waar:'in de keuken',tijd:'07:05',tweeMin:'Een glas vullen en opdrinken',beloning:'Afvinken en mijn reeks zien groeien',herinnering:true,log:mkLog('110111110111111111111111111111'.slice(1),true)},
+    {id:'h1',t:'Een glas water drinken',stapel:'Nadat ik ben opgestaan',waar:'in de keuken',tijd:'07:05',tweeMin:'',klein:true,makkelijk:'Een leeg glas klaarzetten op het aanrecht',beloning:'Afvinken en mijn reeks zien groeien',herinnering:true,log:mkLog('110111110111111111111111111111'.slice(1),true)},
     {id:'h2',t:'Wandelen',stapel:'Na de lunch',waar:'rond het kantoor',tijd:'12:45',tweeMin:'Mijn jas aantrekken en naar buiten lopen',beloning:'Mijn favoriete podcast luisteren tijdens het lopen',herinnering:true,log:mkLog('0011011101111011011111011111'.padStart(29,'0'))},
     {id:'h3',t:'Thuis trainen',stapel:'Als ik thuiskom van mijn werk',waar:'in de woonkamer',tijd:'18:00',tweeMin:'Eén set squats doen',beloning:'Daarna douchen met muziek aan',herinnering:true,log:mkLog('00010010001010010100101001100'.slice(0,29))},
-    {id:'h4',t:'Mijn telefoon wegleggen',stapel:'Nadat ik mijn tanden heb gepoetst',waar:'aan de oplader in de gang',tijd:'22:45',tweeMin:'Mijn telefoon in de gang leggen',beloning:'10 minuten lezen in bed',herinnering:false,log:mkLog('00000001001001100110110111010'.slice(0,29))}
+    {id:'h4',t:'Mijn telefoon wegleggen',stapel:'Nadat ik mijn tanden heb gepoetst',waar:'aan de oplader in de gang',tijd:'22:45',tweeMin:'',klein:true,makkelijk:'De oplader in de gang leggen, niet naast mijn bed',beloning:'10 minuten lezen in bed',herinnering:false,log:mkLog('00000001001001100110110111010'.slice(0,29))}
   ],
   maaltijden:[
     {type:'Ontbijt',naam:'Havermout met banaan en noten',kcal:420,eiwit:14,groente:0,fruit:1},
@@ -515,7 +515,7 @@ function bannerHTML(){
   const h=S.gewoontes.find(x=>x.id===banner);if(!h)return '';
   return `<div class="banner" role="status"><div class="label" style="color:inherit;opacity:.8">Herinnering · ${h.tijd}</div>
     <div style="font-weight:700">${esc(zin(h))}</div>
-    <div style="font-size:13px">Geen zin? Doe alleen de 2-minutenversie: ${esc(low(h.tweeMin))}.</div>
+    <div style="font-size:13px">${h.klein||!h.tweeMin?'Het kost je minder dan 2 minuten. Doe het nu meteen.':`Geen zin? Doe alleen je mini-versie: ${esc(low(h.tweeMin))}.`}</div>
     <div class="row" style="justify-content:flex-start"><button class="btn sm" data-habit="${h.id}">Gedaan</button><button class="btn sm ghost" data-snooze="${h.id}">Over 15 minuten</button></div></div>`;
 }
 function habitRow(h,compact){
@@ -528,7 +528,7 @@ function habitRow(h,compact){
       ${gemist(h)?'<span class="miss">Gisteren gemist. Mis niet twee keer achter elkaar.</span>':''}
       ${compact?'':`<div class="dots" aria-label="Afgelopen 7 dagen">${[6,5,4,3,2,1,0].map(o=>`<i class="${h.log[dk(o)]?'on':''} ${o===0?'today':''}"></i>`).join('')}<span>7 dagen</span></div>
       <details class="how"><summary>Jouw plan</summary>
-        <p><b>Plan:</b> ${esc(zin(h))}</p><p><b>2-minutenversie:</b> ${esc(h.tweeMin)}</p><p><b>Beloning:</b> ${esc(h.beloning)}</p>
+        <p><b>Plan:</b> ${esc(zin(h))}</p>${h.klein?(h.makkelijk?`<p><b>Makkelijk gemaakt:</b> ${esc(h.makkelijk)}</p>`:''):`<p><b>Mini-versie:</b> ${esc(h.tweeMin)}</p>`}<p><b>Beloning:</b> ${esc(h.beloning)}</p>
         <div class="row" style="margin-top:10px;flex-wrap:wrap"><button class="btn sm ${h.herinnering?'':'ghost'}" data-herinner="${h.id}" ${h.tijd?'':'disabled'}>Herinnering ${h.herinnering?'aan':'uit'}</button>
         <button class="btn sm ghost" style="border-color:var(--muted);color:var(--muted)" data-delhabit="${h.id}">${pendingDel===h.id?'Zeker weten? Tik nog een keer':'Verwijderen'}</button></div>
       </details>`}
@@ -584,22 +584,29 @@ function renderWizard(){
   const inp=(key,ph,type='text')=>`<input type="${type}" id="w-${key}" data-w="${key}" value="${esc(d[key]||'')}" placeholder="${ph}" maxlength="70">`;
   let body='';
   if(s===0)body=`<div class="law">Begin</div><div class="sentence">Welke gewoonte wil je opbouwen?</div>
+    <span class="note">In 4 korte stappen maak je een plan volgens de methode van Atomic Habits: wanneer en waar je het doet, hoe je het makkelijk maakt en hoe je het leuk maakt. Zo hoef je niet op wilskracht te vertrouwen.</span>
     ${inp('t','Bijv. wandelen')}${chips('t',['Wandelen','Een glas water drinken','Thuis trainen','Groente eten bij de lunch','Eerder naar bed gaan'])}
     <span class="note">Kies één gewoonte tegelijk. Past hij bij "${esc(S.identiteit)}"? Dan zit je goed.</span>`;
   if(s===1)body=`<div class="law">Wet 1 · Maak het zichtbaar</div><div class="sentence">Wanneer en waar ga je het doen?</div>
-    <span class="note">Koppel het aan iets wat je al elke dag doet. Dat moment wordt je seintje.</span>
+    <span class="note">Koppel je nieuwe gewoonte aan iets wat je al elke dag doet. Dat bestaande moment wordt je seintje, zodat je er niet aan hoeft te denken.</span>
+    <div class="plan"><b>Voorbeelden</b><br>Na mijn ochtendkoffie doe ik 10 squats.<br>Als ik opsta, maak ik meteen mijn bed op.<br>Nadat ik mijn tanden heb gepoetst, leg ik mijn telefoon in de gang.</div>
     <div class="field"><label for="w-stapel">Na welke bestaande gewoonte?</label>${inp('stapel','Bijv. na mijn ochtendkoffie')}</div>
     ${chips('stapel',['Nadat ik ben opgestaan','Na mijn ochtendkoffie','Na de lunch','Als ik thuiskom van mijn werk','Nadat ik mijn tanden heb gepoetst'])}
     <div class="grid2"><div class="field"><label for="w-waar">Waar?</label>${inp('waar','Bijv. in de woonkamer')}</div><div class="field"><label for="w-tijd">Hoe laat ongeveer?</label>${inp('tijd','','time')}</div></div>`;
-  if(s===2)body=`<div class="law">Wet 3 · Maak het makkelijk</div><div class="sentence">Wat is de versie van 2 minuten?</div>
-    <span class="note">Maak het zo klein dat je geen nee kunt zeggen. Wil je gaan hardlopen? Dan is de 2-minutenversie: je hardloopschoenen aantrekken. Eerst moet het een gewoonte worden, daarna maak je het groter.</span>
-    ${inp('tweeMin','Bijv. mijn sportschoenen aantrekken')}`;
+  if(s===2){const k=d.klein;body=`<div class="law">Wet 3 · Maak het makkelijk</div><div class="sentence">Duurt "${esc(low(d.t)||'je gewoonte')}" langer dan 2 minuten?</div>
+    <span class="note">Hoe minder moeite iets kost, hoe groter de kans dat je het elke dag doet. Kost je gewoonte meer tijd, dan maak je een mini-versie voor de dagen dat je geen zin hebt. Is hij al kort, dan maak je het nog makkelijker door dingen klaar te zetten.</span>
+    <div class="seg"><button type="button" class="act ${k===false?'on':''}" data-wklein="nee">Ja, langer<small>bijv. 20 min wandelen</small></button><button type="button" class="act ${k===true?'on':''}" data-wklein="ja">Nee, het is al kort<small>bijv. bed opmaken</small></button></div>
+    ${k===false?`<div class="field"><label for="w-tweeMin">Wat is je mini-versie van 2 minuten?</label>${inp('tweeMin','Bijv. mijn sportschoenen aantrekken')}</div>
+      <div class="plan"><b>Voorbeelden</b><br>20 minuten hardlopen: je hardloopschoenen aantrekken en naar buiten stappen.<br>Een boek lezen: één bladzijde lezen.<br>Thuis trainen: één set squats.<br><br>Het gaat er niet om dat je maar 2 minuten bezig bent, maar dat je begint. Wie begonnen is, gaat vaak vanzelf door. En lukt alleen de mini-versie, dan telt die dag ook.</div>`:''}
+    ${k===true?`<div class="plan">Top, dan is je gewoonte al klein genoeg. Een mini-versie is niet nodig.</div>
+      <div class="field"><label for="w-makkelijk">Wat zet je klaar of haal je weg? (optioneel)</label>${inp('makkelijk','Bijv. minder kussens op mijn bed')}</div>
+      <div class="plan"><b>Voorbeelden</b><br>Water drinken: een gevulde fles naast je bed.<br>Vitamines nemen: het potje naast je tandenborstel.<br>Bed opmaken: minder kussens op je bed, dan ben je sneller klaar.</div>`:''}`}
   if(s===3)body=`<div class="law">Wet 2 en 4 · Maak het aantrekkelijk en bevredigend</div><div class="sentence">Hoe maak je het leuk?</div>
     <span class="note">Koppel je gewoonte aan iets waar je zin in hebt, of beloon jezelf direct daarna.</span>
     ${inp('beloning','Bijv. podcast luisteren tijdens het doen')}${chips('beloning',['Mijn favoriete podcast erbij','Muziek aan die ik goed vind','Afvinken en mijn reeks zien groeien','Daarna een kop koffie of thee'])}
     <button type="button" class="switch ${d.herinnering?'on':''}" data-act="wizherinner"><span>Herinner me ${d.tijd?`om ${d.tijd}`:'(kies in stap 2 een tijd)'}</span><span class="k"></span></button>`;
   if(s===4)body=`<div class="law">Jouw plan</div><div class="sentence">${esc(zin(d))}</div>
-    <div class="plan"><b>2-minutenversie:</b> ${esc(d.tweeMin||d.t)}<br><b>Beloning:</b> ${esc(d.beloning||'Afvinken en je reeks zien groeien')}<br><b>Herinnering:</b> ${d.herinnering&&d.tijd?d.tijd:'uit'}</div>
+    <div class="plan">${d.klein?(d.makkelijk?`<b>Makkelijk gemaakt:</b> ${esc(d.makkelijk)}<br>`:''):`<b>Mini-versie:</b> ${esc(d.tweeMin||d.t)}<br>`}<b>Beloning:</b> ${esc(d.beloning||'Afvinken en je reeks zien groeien')}<br><b>Herinnering:</b> ${d.herinnering&&d.tijd?d.tijd:'uit'}</div>
     <span class="note">Tip: zeg je plan een keer hardop. Met een concreet plan voor wanneer en waar houden mensen een gewoonte vaker vol.</span>`;
   return `
   <header class="top"><div><div class="date">Nieuwe gewoonte · stap ${s+1} van ${N}</div><h2 class="hello">${['Kies je gewoonte','Maak het zichtbaar','Maak het makkelijk','Maak het leuk','Klaar om te starten'][s]}</h2></div></header>
@@ -1569,6 +1576,7 @@ screen.addEventListener('click',e=>{
   if(d.herinner){const h=S.gewoontes.find(x=>x.id===d.herinner);if(h){h.herinnering=!h.herinnering;toast(h.herinnering?`Herinnering om ${h.tijd} aan`:'Herinnering uit')}return render()}
   if(d.delhabit){if(pendingDel===d.delhabit){S.gewoontes=S.gewoontes.filter(x=>x.id!==d.delhabit);pendingDel=null;toast('Gewoonte verwijderd')}else pendingDel=d.delhabit;return render()}
   if(d.wset){wiz.d[d.wset]=d.v;return render()}
+  if(d.wklein&&wiz){wiz.d.klein=d.wklein==='ja';return render()}
   if(d.act==='welkomstart'){const n=($('#welkomNaam').value||'').trim();S=leegState(cap(n));eersteKeer=false;save();tab='profiel';openSet.add('over');openSet.add('doel');render();screen.scrollTop=0;toast('Vul je gegevens in voor je persoonlijke plan');return}
   if(d.act==='welkomdemo'){S=defaults();eersteKeer=false;save();render();toast('Voorbeelddata geladen. Wissen kan onder Profiel.');return}
   if(d.act==='wisalles'){if(pendingDel==='__alles'){const n=S.naam;S=leegState(n);pendingDel=null;save();toast('Alles gewist');return render()}pendingDel='__alles';return render()}
@@ -1632,18 +1640,20 @@ screen.addEventListener('click',e=>{
   if(d.act==='aistop'){if(aiCtl)aiCtl.abort();return}
   if(d.act==='aialles'&&S.aiPlan){const n=S.aiPlan.items.length;S.aiPlan.items.forEach(voegToe);S.aiPlan=null;toast(`${n} gewoontes toegevoegd`);return render()}
   if(d.act&&d.act.startsWith('wiz')){
-    if(d.act==='wizstart')wiz={step:0,d:{t:'',stapel:'',waar:'',tijd:'',tweeMin:'',beloning:'',herinnering:true}};
+    if(d.act==='wizstart')wiz={step:0,d:{t:'',stapel:'',waar:'',tijd:'',tweeMin:'',beloning:'',herinnering:true,klein:null,makkelijk:''}};
     else if(d.act==='wizcancel')wiz=null;
     else if(d.act==='wizprev')wiz.step--;
     else if(d.act==='wizherinner')wiz.d.herinnering=!wiz.d.herinnering;
     else if(d.act==='wiznext'){
       if(wiz.step===0&&!wiz.d.t.trim())return toast('Vul eerst een gewoonte in');
       if(wiz.step===1&&!wiz.d.stapel.trim()&&!wiz.d.tijd)return toast('Kies een moment of een tijd');
+      if(wiz.step===2&&wiz.d.klein==null)return toast('Kies eerst of je gewoonte langer dan 2 minuten duurt');
+      if(wiz.step===2&&wiz.d.klein===false&&!wiz.d.tweeMin.trim())return toast('Vul je mini-versie in');
       wiz.step++;
     }
     else if(d.act==='wizsave'){
       const w=wiz.d;
-      S.gewoontes.push({id:'h'+Date.now(),t:cap(w.t.trim()),stapel:w.stapel.trim(),waar:w.waar.trim(),tijd:w.tijd,tweeMin:cap(w.tweeMin.trim())||cap(w.t.trim()),beloning:cap(w.beloning.trim())||'Afvinken en mijn reeks zien groeien',herinnering:!!(w.herinnering&&w.tijd),log:{}});
+      S.gewoontes.push({id:'h'+Date.now(),t:cap(w.t.trim()),stapel:w.stapel.trim(),waar:w.waar.trim(),tijd:w.tijd,tweeMin:w.klein?'':(cap(w.tweeMin.trim())||cap(w.t.trim())),klein:!!w.klein,makkelijk:cap((w.makkelijk||'').trim()),beloning:cap(w.beloning.trim())||'Afvinken en mijn reeks zien groeien',herinnering:!!(w.herinnering&&w.tijd),log:{}});
       wiz=null;toast('Gewoonte opgeslagen');
     }
     render();screen.scrollTop=0;return;
